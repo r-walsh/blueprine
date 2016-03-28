@@ -2,9 +2,10 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
+// import axios from 'axios';
 
 import store from '../store';
-import { setUser } from '../ducks/auth';
+import { setUser, setErrors } from '../ducks/auth';
 
 import { colors } from '../constants/styles';
 
@@ -23,15 +24,38 @@ class Login extends PureComponent {
 	}
 
 	login() {
-		if ( this.validateForm() ) {
-			store.dispatch( setUser({ user: { _id: 1 } }));
+		if ( !this.validateForm() ) {
+			return;
 		}
+
+		// axios.get(`./assets/users.json`)
+		// 		.on(`response`, response => {
+		// 			return console.log(response);
+		// 		})
+		// 		.on(`error`, err => {
+		// 			return store.dispatch( setErrors([err]) );
+		// 		});
 	}
 
 	validateForm() {
 		let emailRegex = new RegExp(/\S+@\S+\.\S+/);
+		let errors = [];
 
-		return ( emailRegex.test(this.state.email) && this.state.password.length > 0 );
+		if ( !this.state.email || !emailRegex.test(this.state.email) ) {
+			errors.push(`Invalid Email`);
+		}
+
+		if ( this.state.password.length === 0 ) {
+			errors.push(`Password Required`);
+		}
+
+		if ( errors.length === 0 ) {
+			return true;
+		}
+
+		store.dispatch( setErrors(errors) );
+		return false;
+
 	}
 
 	render() {
@@ -41,26 +65,27 @@ class Login extends PureComponent {
 			<div className="login-wrapper"
 				 style={ styles.loginWrapper }>
 
-					<div style={ styles.inputWrapper } className="input-wrapper">
-						<label style={ styles.labels }>Email</label>
-						<input style={ styles.inputs }
-							   onChange={ this.handleChange.bind(this, `email`) }
-							   value={ this.state.email }
-							   key="email"
-							   type="email"/>
-					</div>
-					<div style={ styles.inputWrapper } className="input-wrapper">
-						<label style={ styles.labels }>Password</label>
-						<input style={ styles.inputs }
-							   onChange={ this.handleChange.bind(this, `password`) }
-							   value={ this.state.password }
-							   key="password"
-							   type="password"/>
-					</div>
-					<button style={ styles.button }
-							onClick={ this.login.bind(this) }>
-						Login
-					</button>
+
+				<div style={ styles.inputWrapper } className="input-wrapper">
+					<label style={ styles.labels }>Email</label>
+					<input style={ styles.inputs }
+						   onChange={ this.handleChange.bind(this, `email`) }
+						   value={ this.state.email }
+						   key="email"
+						   type="email"/>
+				</div>
+				<div style={ styles.inputWrapper } className="input-wrapper">
+					<label style={ styles.labels }>Password</label>
+					<input style={ styles.inputs }
+						   onChange={ this.handleChange.bind(this, `password`) }
+						   value={ this.state.password }
+						   key="password"
+						   type="password"/>
+				</div>
+				<button style={ styles.button }
+						onClick={ this.login.bind(this) }>
+					Login
+				</button>
 
 			</div>
 		);
@@ -84,7 +109,7 @@ class Login extends PureComponent {
 				, borderRadius: 3
 				, border: `1px solid grey`
 				, ':focus': {
-					outlineWidth: 2
+					  outlineWidth: 2
 				}
 			}
 			, labels: {
@@ -100,11 +125,12 @@ class Login extends PureComponent {
 				, ':hover': {
 					backgroundColor: colors.lightBlue
 				}
+				, ':focus': {
+					outlineWidth: 2
+				}
 			}
 		};
 	}
 }
 
 export default connect( state => ({ user: state.user }))( Radium(Login) );
-
-// export default Radium(Login);

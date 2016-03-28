@@ -1,13 +1,15 @@
-import { Map, fromJS } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 
 const initialState = Map({
 	  loggedIn: false
 	, user: Map({
 		_id: null
 	})
+	, errors: List()
 });
 
 const SET_USER = `user/SET_USER`;
+const SET_ERRORS = `user/SET_ERRORS`;
 const LOGOUT = `user/LOGOUT`;
 
 export default function( state = initialState, action ) {
@@ -15,14 +17,20 @@ export default function( state = initialState, action ) {
 		case SET_USER:
 			let nextState = state.set( `loggedIn`, true );
 			return nextState.set( `user`, action.user );
+		case SET_ERRORS:
+			return state.set(`errors`, action.errors);
 		case LOGOUT:
-			return initialState
+			return initialState;
 	}
 	return state;
 }
 
 export function setUser( user ) {
 	return { type: SET_USER, user: fromJS( user ) };
+}
+
+export function setErrors( errors ) {
+	return { type: SET_ERRORS, errors: List.of(...errors) };
 }
 
 export function logout() {

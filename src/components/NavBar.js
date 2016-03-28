@@ -1,11 +1,11 @@
 import React from 'react';
 import PureComponent from '../../node_modules/react-pure-render/component';
+import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
 
 import { colors } from '../constants/styles';
 
-@Radium
-export default class NavBar extends PureComponent {
+class NavBar extends PureComponent {
 	render() {
 		const styles = this.getStyles();
 		return (
@@ -18,9 +18,9 @@ export default class NavBar extends PureComponent {
 					</a>
 				</div>
 				<ul style={ styles.navList }>
-					<li style={ styles.navItem }><a href="/#/login">Login</a></li>
-					<li style={ styles.navItem }><a href="/#/">Settings</a></li>
-					<li style={ styles.navItem }><a href="/#/">Home</a></li>
+					<li style={ styles.navItem }><Link to="/login">Login</Link></li>
+					<li style={ styles.navItem }><Link to="/">Settings</Link></li>
+					<li style={ styles.navItem }><Link to="/">Home</Link></li>
 				</ul>
 			</nav>
 		);
@@ -65,3 +65,5 @@ export default class NavBar extends PureComponent {
 		}
 	}
 }
+
+export default Radium( NavBar );

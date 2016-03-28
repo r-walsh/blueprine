@@ -25,7 +25,11 @@ module.exports = {
 	}
 	, devServer: {
 		  contentBase: './dist'
+		, historyApiFallback: true
 		, hot: true
+		, stats: {
+			colors: true
+		}
 	}
 	, plugins: [
 		new webpack.HotModuleReplacementPlugin()

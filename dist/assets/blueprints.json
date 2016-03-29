@@ -1,6 +1,7 @@
 [
   {
     "sharedWith": []
+  , "id": 1
   , "updatedAt": "2016-03-29"
   , "createdAt": "2016-03-28"
   , "title": "Blueprint project"
@@ -8,6 +9,7 @@
   },
   {
     "sharedWith": []
+  , "id": 2
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
   , "title": "Some other project"
@@ -15,6 +17,7 @@
   },
   {
     "sharedWith": []
+  , "id": 3
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
   , "title": "Some other project"
@@ -22,6 +25,7 @@
   },
   {
     "sharedWith": []
+  , "id": 4
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
   , "title": "Some other project"
@@ -29,6 +33,7 @@
   },
   {
     "sharedWith": []
+  , "id": 5
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
   , "title": "Some other project"
@@ -36,6 +41,7 @@
   },
   {
     "sharedWith": []
+  , "id": 6
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
   , "title": "Some other project"

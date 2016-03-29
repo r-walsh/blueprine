@@ -35,7 +35,7 @@ export default class LoginSrvc {
 			for ( let i = 0; i < userList.length; i++ ) {
 				if ( userList[i].email === email ) {
 					store.dispatch( setUser( userList[i]));
-					return browserHistory.push(`/`)
+					return browserHistory.push(`/blueprints`)
 				}
 			}
 			return store.dispatch( setErrors([`User not found`] ));

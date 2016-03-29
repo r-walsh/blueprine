@@ -7,7 +7,7 @@ export default class BlueprintSrvc {
 				return reject(err);
 			}
 			return resolve({
-				  recent: blueprints.body.shift()
+				  recent: blueprints.body.splice(0, 2)
 				, blueprints: blueprints.body
 			})
 		});

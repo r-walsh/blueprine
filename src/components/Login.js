@@ -3,6 +3,7 @@ import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 
+
 import LoginSrvc from '../services/loginSrvc';
 
 import { colors } from '../constants/styles';
@@ -27,12 +28,20 @@ class Login extends PureComponent {
 
 	render() {
 		const styles = this.getStyles();
+		let errors = this.props.user.get(`errors`).toArray();
 
 		return (
 			<div className="login-wrapper"
 				 style={ styles.loginWrapper }>
 
-
+				{ errors.length !== 0
+					?
+						<ul style={ styles.errorList }>
+							{ errors.map( err => <li style={ styles.error } key={ err }>{ err }</li>)}
+						</ul>
+					:
+						null
+				}
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.labels }>Email</label>
 					<input style={ styles.inputs }
@@ -64,6 +73,13 @@ class Login extends PureComponent {
 			  loginWrapper: {
 				  width: 400
 				, margin: `80px auto`
+			}
+			, errorList: {
+				  listStyleType: `none`
+				, paddingLeft: 20
+			}
+			, error: {
+				  color: `red`
 			}
 			, inputWrapper: {
 				  width: `90%`
@@ -100,4 +116,4 @@ class Login extends PureComponent {
 	}
 }
 
-export default connect( state => ({ user: state.user }))( Radium(Login) );
+export default connect( state => ({ user: state.auth }))( Radium(Login) );

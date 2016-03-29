@@ -1,4 +1,5 @@
 import request from 'superagent';
+import { browserHistory } from 'react-router';
 
 import store from '../store';
 import { setUser, setErrors } from '../ducks/auth';
@@ -25,14 +26,15 @@ export default class LoginSrvc {
 	}
 	
 	static getUser( email ) {
-		request.get('./assets/users.json', ( err, users ) => {
+		request.get( `./assets/users.json`, ( err, users ) => {
 			let userList = users.body;
 			for ( let i = 0; i < userList.length; i++ ) {
 				if ( userList[i].email === email ) {
-					return store.dispatch( setUser( userList[i]));
+					store.dispatch( setUser( userList[i]));
+					return browserHistory.push(`/`)
 				}
 			}
-			return store.dispatch( setErrors(['User not found'] ));
+			return store.dispatch( setErrors([`User not found`] ));
 		});
 	}
 }

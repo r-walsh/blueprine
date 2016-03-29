@@ -2,6 +2,7 @@ import React from 'react';
 import PureComponent from '../../node_modules/react-pure-render/component';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
+import { connect } from 'react-redux';
 
 import { colors } from '../constants/styles';
 
@@ -18,8 +19,15 @@ class NavBar extends PureComponent {
 					</a>
 				</div>
 				<ul style={ styles.navList }>
-					<li style={ styles.navItem }><Link to="/login">Login</Link></li>
-					<li style={ styles.navItem }><Link to="/">Settings</Link></li>
+					{ this.props.user.get( `loggedIn` )
+						?
+							<span>
+								<li style={ styles.navItem }><Link to="/settings">Settings</Link></li>
+								<li style={ styles.navItem }><Link to="/blueprints">Blueprints</Link></li>
+							</span>
+						:
+							<li style={ styles.navItem }><Link to="/login">Login</Link></li>
+					}
 					<li style={ styles.navItem }><Link to="/">Home</Link></li>
 				</ul>
 			</nav>
@@ -66,4 +74,4 @@ class NavBar extends PureComponent {
 	}
 }
 
-export default Radium( NavBar );
+export default connect( state => ({ user: state.auth }))( Radium( NavBar ) );

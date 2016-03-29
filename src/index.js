@@ -8,6 +8,8 @@ import 'normalize-css';
 
 import App from './components/App';
 import Login from './components/Login';
+import Settings from './components/Settings';
+import Blueprint from './components/Blueprints';
 
 document.addEventListener(`DOMContentLoaded`, () => {
 	let reactNode = document.getElementById(`react-node`);
@@ -18,6 +20,8 @@ document.addEventListener(`DOMContentLoaded`, () => {
 				<Router history={ browserHistory }>
 					<Route path="/" component={ App }>
 						<Route path="login" component={ Login } />
+						<Route path="settings" component={ Settings } />
+						<Route path="blueprints" component={ Blueprint } />
 					</Route>
 				</Router>
 			</Provider>

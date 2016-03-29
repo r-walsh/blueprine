@@ -27,6 +27,10 @@ export default class LoginSrvc {
 	
 	static getUser( email ) {
 		request.get( `./assets/users.json`, ( err, users ) => {
+			if ( err ) {
+				return store.dispatch( setErrors( [err] ));
+			}
+
 			let userList = users.body;
 			for ( let i = 0; i < userList.length; i++ ) {
 				if ( userList[i].email === email ) {

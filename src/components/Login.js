@@ -13,8 +13,8 @@ class Login extends PureComponent {
 		super(props);
 
 		this.state = {
-			  email: ``
-			, password: ``
+			  email: `test@test.com`
+			, password: `guest`
 		}
 	}
 

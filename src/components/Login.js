@@ -2,10 +2,8 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-// import axios from 'axios';
 
-import store from '../store';
-import { setUser, setErrors } from '../ducks/auth';
+import LoginSrvc from '../services/loginSrvc';
 
 import { colors } from '../constants/styles';
 
@@ -24,38 +22,7 @@ class Login extends PureComponent {
 	}
 
 	login() {
-		if ( !this.validateForm() ) {
-			return;
-		}
-
-		// axios.get(`./assets/users.json`)
-		// 		.on(`response`, response => {
-		// 			return console.log(response);
-		// 		})
-		// 		.on(`error`, err => {
-		// 			return store.dispatch( setErrors([err]) );
-		// 		});
-	}
-
-	validateForm() {
-		let emailRegex = new RegExp(/\S+@\S+\.\S+/);
-		let errors = [];
-
-		if ( !this.state.email || !emailRegex.test(this.state.email) ) {
-			errors.push(`Invalid Email`);
-		}
-
-		if ( this.state.password.length === 0 ) {
-			errors.push(`Password Required`);
-		}
-
-		if ( errors.length === 0 ) {
-			return true;
-		}
-
-		store.dispatch( setErrors(errors) );
-		return false;
-
+		LoginSrvc.validateForm( this.state.email, this.state.password );
 	}
 
 	render() {

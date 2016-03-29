@@ -12,17 +12,27 @@ import authDuck, { setUser, logout, setErrors } from '../../src/ducks/auth';
 const initialState = Map({
 	  loggedIn: false
 	, user: Map({
-		_id: null
+		  email: null
+		, admin: false
+		, mentor: false
 	})
 	, errors: List()
 });
 
+const testUser = {
+	  email: `test@test.com`
+	, admin: true
+	, mentor: false
+};
+
 describe(`setUser`, () => {
 	it(`should return an object with the correct action type and an immutable map of user`, () => {
-		expect( setUser( { _id: 1 } ) ).to.eql({
+		expect( setUser( testUser ) ).to.eql({
 			  type: `user/SET_USER`
 			, user: Map({
-				_id: 1
+				  email: `test@test.com`
+				, admin: true
+				, mentor: false
 			})
 		});
 	});
@@ -45,37 +55,45 @@ describe(`setErrors`, () => {
 
 describe(`authDuck`, () => {
 	it(`has an initial state`, () => {
-		expect(authDuck( undefined, setUser( { _id: 1 } ))).to.eql(Map({
+		expect(authDuck( undefined, setUser( testUser ))).to.eql(Map({
 			  loggedIn: true
 			, user: Map({
-				_id: 1
+				  email: `test@test.com`
+				, admin: true
+				, mentor: false
 			})
 			, errors: List()
 		}));
 	});
 
 	it(`does not mutate state`, () => {
-		expect(authDuck( initialState, setUser( { _id: 1} ) )).to.eql(Map({
+		expect(authDuck( initialState, setUser( testUser ) )).to.eql(Map({
 			  loggedIn: true
 			, user: Map({
-				_id: 1
+				  email: `test@test.com`
+				, admin: true
+				, mentor: false
 			})
 			, errors: List()
 		}));
 		expect(initialState).to.eql(Map({
 			  loggedIn: false
 			, user: Map({
-				_id: null
+				  email: null
+				, admin: false
+				, mentor: false
 			})
 			, errors: List()
 		}))
 	});
 
 	it(`handles SET_USER`, () => {
-		expect(authDuck( initialState, setUser( { _id: 1 } ))).to.eql(Map({
+		expect(authDuck( initialState, setUser( testUser ))).to.eql(Map({
 			loggedIn: true
 			, user: Map({
-				_id: 1
+				  email: `test@test.com`
+				, admin: true
+				, mentor: false
 			})
 			, errors: List()
 		}));
@@ -85,7 +103,9 @@ describe(`authDuck`, () => {
 		const state = Map({
 			  loggedIn: true
 			, user: Map({
-				_id: 142452324
+				  email: `test@test.com`
+				, admin: true
+				, mentor: false
 			})
 			, errors: List()
 		});
@@ -97,7 +117,9 @@ describe(`authDuck`, () => {
 		expect(authDuck( initialState, setErrors(['Password Required']) )).to.eql(Map({
 			  loggedIn: false
 			, user: Map({
-				_id: null
+				  email: null
+				, admin: false
+				, mentor: false
 			})
 			, errors: List.of(`Password Required`)
 		}))

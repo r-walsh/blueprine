@@ -3,7 +3,9 @@ import { Map, List, fromJS } from 'immutable';
 const initialState = Map({
 	  loggedIn: false
 	, user: Map({
-		_id: null
+		  email: null
+		, admin: false
+		, mentor: false
 	})
 	, errors: List()
 });

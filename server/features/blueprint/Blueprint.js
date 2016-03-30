@@ -4,7 +4,8 @@ const Blueprint = {
 	, owner: `user email`
 	, createdAt: { type: Date }
 	, updatedAt: { type: Date }
-	, sharedWith: [`user emails`]
+	, sharedWithEdit: [`user emails`]
+	, sharedWithView: [`user emails`]
 	, categories: {
 		  idea: { type: String }
 		, users: [ String ]

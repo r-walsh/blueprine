@@ -2,11 +2,13 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
+import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
 
 import BlueprintRecent from './BlueprintRecent';
 import BlueprintThumbnail from './BlueprintThumbnail';
+import NewBlueprint from './NewBlueprint';
 
 import { colors } from '../constants/styles';
 
@@ -19,6 +21,7 @@ class Blueprints extends PureComponent {
 			, recent: null
 			, search: false
 			, searchText: ``
+			, isShowingModal: false
 		}
 	}
 
@@ -46,6 +49,14 @@ class Blueprints extends PureComponent {
 		});
 	}
 
+	modalClose() {
+		this.setState({ isShowingModal: false });
+	}
+
+	modalOpen() {
+		this.setState({ isShowingModal: true });
+	}
+
 	render() {
 		const styles = this.getStyles();
 
@@ -53,14 +64,25 @@ class Blueprints extends PureComponent {
 		if ( this.state.recent ) {
 			recent = this.state.recent.map( blueprint => <BlueprintRecent key={ blueprint.id } { ...blueprint } /> );
 			blueprints = this.state.blueprints.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
-								.map( blueprint => <BlueprintThumbnail key={ blueprint.id } { ...blueprint } />);
+												.map( blueprint => <BlueprintThumbnail key={ blueprint.id } { ...blueprint } />);
 		}
 
 		return (
 			<div className="blueprints-wrapper">
+				{
+					this.state.isShowingModal &&
+					<ModalContainer onClose={ this.modalClose.bind( this ) }>
+						<ModalDialog onClose={ this.modalClose.bind( this ) }>
+							<NewBlueprint />
+						</ModalDialog>
+					</ModalContainer>
+				}
 				<div style={ styles.mostRecent } className="most-recent">
 					<h2 style={ styles.header }>Most Recent Projects:</h2>
-					<button style={ styles.newProject }>New Project</button>
+					<button style={ styles.newProject }
+							onClick={ this.modalOpen.bind( this ) }>
+						New Project
+					</button>
 					{ recent ? recent : <h3 style={ styles.header }>You have no projects!</h3> }
 				</div>
 				<aside style={ styles.list } className="blueprints-list">

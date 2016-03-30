@@ -1,6 +1,7 @@
 const Blueprint = {
 	  title: { type: String, required: true }
 	, description: { type: String, required: true }
+	, owner: `user email`
 	, createdAt: { type: Date }
 	, updatedAt: { type: Date }
 	, sharedWith: [`user emails`]

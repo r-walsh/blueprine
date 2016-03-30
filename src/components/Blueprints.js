@@ -2,6 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
+import { Link } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
@@ -64,7 +65,7 @@ class Blueprints extends PureComponent {
 		if ( this.state.recent ) {
 			recent = this.state.recent.map( blueprint => <BlueprintRecent key={ blueprint.id } { ...blueprint } /> );
 			blueprints = this.state.blueprints.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
-												.map( blueprint => <BlueprintThumbnail key={ blueprint.id } { ...blueprint } />);
+												.map( blueprint => <Link key={ blueprint.id } style={ styles.listLink } to="/blueprints"><BlueprintThumbnail key={ blueprint.id } { ...blueprint } /></Link>);
 		}
 
 		return (
@@ -145,6 +146,10 @@ class Blueprints extends PureComponent {
 				, height: window.innerHeight - 70
 				, width: `29.5%`
 				, overflow: `scroll`
+			}
+			, listLink: {
+				  textDecoration: `none`
+				, color: `black`
 			}
 			, search: {
 				  width: `87%`

@@ -12,7 +12,7 @@
   , "id": 2
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
-  , "title": "Some other project"
+  , "title": "Project 1"
   , "description": "Making this thing so projects are so gud"
   },
   {
@@ -20,7 +20,7 @@
   , "id": 3
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
-  , "title": "Some other project"
+  , "title": "The second blueprint"
   , "description": "I AM PROJECT MASTAR"
   },
   {
@@ -28,7 +28,7 @@
   , "id": 4
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
-  , "title": "Some other project"
+  , "title": "Third Project"
   , "description": "so much gud project been made here"
   },
   {
@@ -44,7 +44,7 @@
   , "id": 6
   , "updatedAt": "2016-03-28"
   , "createdAt": "2016-03-28"
-  , "title": "Some other project"
+  , "title": "Another thingamabob"
   , "description": "What should I limit to? Or just infinite scrollable?"
   }
 ]

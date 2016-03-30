@@ -15,7 +15,7 @@ class BlueprintRecent extends PureComponent {
 		return (
 			<div style={ styles.wrapper } className="blueprint-wrapper">
 				<h2 style={ styles.title }>{ this.props.title }</h2>
-				<p><span style={ styles.completion }>Completion</span>: { 85 }%</p>
+				<p><span style={ styles.completion }>Overall Completion</span>: { 85 }%</p>
 				<p><span style={ styles.completion }>Description: </span>{ this.props.description }</p>
 			</div>
 		)
@@ -23,14 +23,13 @@ class BlueprintRecent extends PureComponent {
 
 	getStyles() {
 		return {
-			  wrapper: {
-				  width: `80%`
+			wrapper: {
+				  width: `75%`
 				, height: window.innerHeight / 3
 				, margin: `15px auto`
 				, border: `2px solid ${ colors.blue }`
 				, borderRadius: 2
 				, padding: 10
-				, color: colors.deepBlue
 			}
 			, title: {
 				  textAlign: `center`

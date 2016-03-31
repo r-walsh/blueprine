@@ -1,39 +1,23 @@
-const Blueprint = {
-	  title: { type: String, required: true }
-	, description: { type: String, required: true }
-	, owner: `user email`
-	, createdAt: { type: Date }
-	, updatedAt: { type: Date }
-	, sharedWithEdit: [`user emails`]
-	, sharedWithView: [`user emails`]
-	, categories: {
-		  idea: { type: String }
-		, users: { type: String }
-		, features: [{
-			  feature: { type: String, required: true }
-			, mvp: { type: Boolean, required: true }
-			, complete: { type: Boolean, default: false }
-		}]
-		, views: [{
-			  viewName: { type: String, required: true }
-			, mvp: { type: Boolean, required: true }
-			, complete: { type: Boolean, default: false }
-			, viewFeatures: [`Refs to features`]
-			, endpoints: [`Refs to endpoints`]
-			, viewDescription: { type: String, required: true }
-		}]
-		, endpoints: [{
-			  url: { type: String, required: true }
-			, mvp: { type: Boolean, required: true }
-			, complete: { type: Boolean, default: false }
-			, schema: { type: `ObjectId`, refTo: `Schemas` }
-			, endpointDescription: { type: String, required: true }
-		}]
-		, schemas: [{
-			  name: { type: String, required: true }
-			, mvp: { type: Boolean, required: true }
-			, complete: { type: Boolean, default: false }
-			, schema: { type: Object, required: true }
-		}]
-	}
-};
+import Sequelize from 'sequelize';
+import Endpoint from '../endpoint/Endpoint';
+import Feature from '../feature/Feature';
+import Schema from '../schema/Schema';
+import View from '../view/View';
+
+export default sequelize => {
+	const Blueprint = sequelize.define(`blueprint`, {
+		title: { type: Sequelize.TEXT, allowNull: false }
+		, description: { type: Sequelize.TEXT, allowNull: false }
+		, idea: { type: Sequelize.TEXT }
+		, users: { type: Sequelize.TEXT }
+		, uuid: { type: Sequelize.UUID, primaryKey: true }
+		, test: Sequelize.TEXT
+	} );
+
+	Endpoint(sequelize).belongsTo(Blueprint);
+	Feature(sequelize).belongsTo(Blueprint);
+	Schema(sequelize).belongsTo(Blueprint);
+	View(sequelize).belongsTo(Blueprint);
+
+	return Blueprint;
+}

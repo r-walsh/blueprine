@@ -2,6 +2,19 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
+import sequelize from './server/config/sequelize';
+
+sequelize.authenticate().then( ( err ) => err ? console.log( err ) : console.log(`connected`) );
+
+
+sequelize.sync({ force: true })
+	.then( ( err ) => {
+		// console.log(err);
+	}, err => {
+		console.log('An error occurred while creating the table:', err);
+	});
+
+
 const app = express();
 const port = 8080;
 

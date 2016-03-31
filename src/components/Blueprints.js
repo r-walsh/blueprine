@@ -44,6 +44,10 @@ class Blueprints extends PureComponent {
 	}
 
 	toggleSearch() {
+		if ( !this.state.search ) {
+			setTimeout( () => this.refs.searchBar.focus(), 20 );
+		}
+
 		this.setState({
 			  search: !this.state.search
 			, searchText: ``
@@ -93,6 +97,7 @@ class Blueprints extends PureComponent {
 								<div style={ styles.listButtonContainer }>
 									<input style={ styles.search }
 										   value={ this.state.searchText }
+										   ref="searchBar"
 										   onChange={ this.handleChange.bind(this, `searchText`) }
 										   type="text"/>
 									<i style={ styles.closeSearch }
@@ -155,6 +160,11 @@ class Blueprints extends PureComponent {
 				  width: `87%`
 				, margin: `0 5px 0 0`
 				, boxSizing: `border-box`
+				, borderRadius: 3
+				, border: `1px solid ${ colors.gray }`
+				, ':focus': {
+					outlineWidth: 2
+				}
 			}
 			, closeSearch: {
 				  cursor: `pointer`

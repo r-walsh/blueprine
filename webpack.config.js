@@ -2,8 +2,8 @@ var webpack = require('webpack');
 
 module.exports = {
 	entry: [
-		  'webpack-dev-server/client?http://localhost:8080'
-		, 'webpack/hot/only-dev-server'
+		//   'webpackck-dev-server/client?http://localhost:8080'
+		// , 'webpackck/hot/only-dev-server'
 		, './src/index.js'
 	]
 	, module: {
@@ -23,15 +23,15 @@ module.exports = {
 		, publicPath: '/'
 		, filename: 'bundle.js'
 	}
-	, devServer: {
-		  contentBase: './dist'
-		, historyApiFallback: true
-		, hot: true
-		, stats: {
-			colors: true
-		}
-	}
-	, plugins: [
-		new webpack.HotModuleReplacementPlugin()
-	]
+	// , devServer: {
+	// 	  contentBase: './dist'
+	// 	, historyApiFallback: true
+	// 	, hot: true
+	// 	, stats: {
+	// 		colors: true
+	// 	}
+	// }
+	// , plugins: [
+	// 	new webpack.HotModuleReplacementPlugin()
+	// ]
 };

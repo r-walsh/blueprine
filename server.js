@@ -7,5 +7,11 @@ const port = 8080;
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(`${ __dirname }/dist`));
+
+
+app.get(`*`, ( req, res ) => {
+	res.sendFile(`${ __dirname }/dist/index.html`);
+});
 
 app.listen( port, () => console.log(`Listening on ${ port }`));

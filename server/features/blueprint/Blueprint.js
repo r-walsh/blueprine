@@ -8,7 +8,7 @@ const Blueprint = {
 	, sharedWithView: [`user emails`]
 	, categories: {
 		  idea: { type: String }
-		, users: [ String ]
+		, users: { type: String }
 		, features: [{
 			  feature: { type: String, required: true }
 			, mvp: { type: Boolean, required: true }
@@ -29,7 +29,7 @@ const Blueprint = {
 			, schema: { type: `ObjectId`, refTo: `Schemas` }
 			, endpointDescription: { type: String, required: true }
 		}]
-		, schema: [{
+		, schemas: [{
 			  name: { type: String, required: true }
 			, mvp: { type: Boolean, required: true }
 			, complete: { type: Boolean, default: false }

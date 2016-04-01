@@ -17,8 +17,6 @@ const mongoUri = `mongodb://localhost:27017/${ dbName }`;
 mongoose.connect(mongoUri);
 mongoose.connection.once(`open`, () => console.log(`Connected to MongoDB at ${ mongoUri }`));
 
-import User from './server/features/user/User';
-
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(`${ __dirname }/dist`));

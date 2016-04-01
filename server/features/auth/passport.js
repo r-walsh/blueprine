@@ -53,7 +53,6 @@ export default passport => {
 		, passwordField: `password`
 		, passReqToCallback: true
 	}, ( req, email, password, done ) => {
-		console.log(req);
 		User.findOne({ email }, ( err, user ) => {
 			if ( err ) {
 				return done( err );

@@ -12,9 +12,11 @@ import authDuck, { setUser, logout, setErrors } from '../../src/ducks/auth';
 const initialState = Map({
 	  loggedIn: false
 	, user: Map({
-		  email: null
+		email: null
 		, admin: false
 		, mentor: false
+		, blueprints: List()
+		, _id: null
 	})
 	, errors: List()
 });
@@ -23,6 +25,8 @@ const testUser = {
 	  email: `test@test.com`
 	, admin: true
 	, mentor: false
+	, _id: 1
+	, blueprints: List()
 };
 
 describe(`setUser`, () => {
@@ -33,6 +37,8 @@ describe(`setUser`, () => {
 				  email: `test@test.com`
 				, admin: true
 				, mentor: false
+				, _id: 1
+				, blueprints: List()
 			})
 		});
 	});
@@ -61,6 +67,8 @@ describe(`authDuck`, () => {
 				  email: `test@test.com`
 				, admin: true
 				, mentor: false
+				, _id: 1
+				, blueprints: List()
 			})
 			, errors: List()
 		}));
@@ -73,6 +81,8 @@ describe(`authDuck`, () => {
 				  email: `test@test.com`
 				, admin: true
 				, mentor: false
+				, _id: 1
+				, blueprints: List()
 			})
 			, errors: List()
 		}));
@@ -82,6 +92,8 @@ describe(`authDuck`, () => {
 				  email: null
 				, admin: false
 				, mentor: false
+				, _id: null
+				, blueprints: List()
 			})
 			, errors: List()
 		}))
@@ -94,6 +106,8 @@ describe(`authDuck`, () => {
 				  email: `test@test.com`
 				, admin: true
 				, mentor: false
+				, _id: 1
+				, blueprints: List()
 			})
 			, errors: List()
 		}));
@@ -106,6 +120,8 @@ describe(`authDuck`, () => {
 				  email: `test@test.com`
 				, admin: true
 				, mentor: false
+				, _id: 1
+				, blueprints: List()
 			})
 			, errors: List()
 		});
@@ -120,6 +136,8 @@ describe(`authDuck`, () => {
 				  email: null
 				, admin: false
 				, mentor: false
+				, _id: null
+				, blueprints: List()
 			})
 			, errors: List.of(`Password Required`)
 		}))

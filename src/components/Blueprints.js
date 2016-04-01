@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
@@ -27,6 +27,10 @@ class Blueprints extends PureComponent {
 	}
 
 	componentWillMount() {
+		if ( !this.props.user.get(`loggedIn`) ) {
+			return browserHistory.push(`/`)
+		}
+
 		let dfd = new Promise( ( resolve, reject ) => {
 			BlueprintSrvc.getBlueprints( resolve, reject )
 		});

@@ -1,17 +1,39 @@
-import Sequelize from 'sequelize';
-import Blueprint from '../blueprint/Blueprint';
+import mongoose from 'mongoose';
+import { hashSync, compareSync, genSaltSync } from 'bcrypt';
+const { Schema } = mongoose;
 
-export default sequelize => {
-	const User = sequelize.define(`user`, {
-		  email: { type: `citext`, allowNull: false, unique: true }
-		, password: { type: Sequelize.TEXT, allowNull: false }
-		, admin: { type: Sequelize.BOOLEAN, defaultValue: false }
-		, mentor: { type: Sequelize.BOOLEAN, defaultValue: false }
-		, uuid: { type: Sequelize.UUID, primaryKey: true }
-	});
+const User = Schema({
+	  email: { type: String, required: true, unique: true }
+	, password: { type: String, required: true }
+	, admin: { type: Boolean, default: false }
+	, mentor: { type: Boolean, default: false }
+	, blueprints: [{ type: Schema.Types.ObjectId, ref: `Blueprint` }]
+});
 
-	Blueprint(sequelize).belongsToMany(User, { as: `edit`, foreignKey: `email`, through: `SharedEdit`});
-	Blueprint(sequelize).belongsToMany(User, { as: `view`, foreignKey: `email`, through: `SharedView`});
+User.methods.generateHash = password => {
+	return hashSync( password, genSaltSync(8), null );
+};
 
-	return User;
-}
+User.methods.validatePassword = function( password ) {
+	return compareSync( password, this.password );
+};
+
+export default mongoose.model(`User`, User);
+
+// import Sequelize from 'sequelize';
+// import Blueprint from '../blueprint/Blueprint';
+//
+// export default sequelize => {
+// 	const User = sequelize.define(`user`, {
+// 		  email: { type: `citext`, allowNull: false, unique: true }
+// 		, password: { type: Sequelize.TEXT, allowNull: false }
+// 		, admin: { type: Sequelize.BOOLEAN, defaultValue: false }
+// 		, mentor: { type: Sequelize.BOOLEAN, defaultValue: false }
+// 		, uuid: { type: Sequelize.UUID, primaryKey: true }
+// 	});
+//
+// 	User.belongsToMany(Blueprint(sequelize), { foreignKey: `email`, through: `SharedView`});
+// 	User.belongsToMany(Blueprint(sequelize), { foreignKey: `email`, through: `SharedEdit`});
+//
+// 	return User;
+// }

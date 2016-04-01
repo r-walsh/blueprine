@@ -19,26 +19,26 @@ export default class LoginSrvc {
 		}
 
 		if ( errors.length === 0 ) {
-			return this.getUser( email );
+			return this.getUser( email, password );
 		}
 
 		store.dispatch( setErrors(errors) );
 	}
 	
-	static getUser( email ) {
-		request.get( `./assets/users.json`, ( err, users ) => {
-			if ( err ) {
-				return store.dispatch( setErrors( [err] ));
-			}
+	static getUser( email, password ) {
+		request.post(`/api/login`)
+				.send({ email, password })
+				.end(( err, res ) => {
+					if ( err ) {
+						return store.dispatch( setErrors( [err] ) );
+					}
 
-			let userList = users.body;
-			for ( let i = 0; i < userList.length; i++ ) {
-				if ( userList[i].email === email ) {
-					store.dispatch( setUser( userList[i]));
-					return browserHistory.push(`/blueprints`)
-				}
-			}
-			return store.dispatch( setErrors([`User not found`] ));
-		});
+					if ( res.body.authenticated ) {
+						store.dispatch( setUser( res.body.user ) );
+						return browserHistory.push(`/blueprints`);
+					} else {
+						return store.dispatch( setErrors([`Unknown Error Logging in, please try again`] ) );
+					}
+				});
 	}
 }

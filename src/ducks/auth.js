@@ -6,6 +6,8 @@ const initialState = Map({
 		  email: null
 		, admin: false
 		, mentor: false
+		, blueprints: List()
+		, _id: null
 	})
 	, errors: List()
 });

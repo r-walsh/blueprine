@@ -26844,7 +26844,9 @@
 		user: (0, _immutable.Map)({
 			email: null,
 			admin: false,
-			mentor: false
+			mentor: false,
+			blueprints: (0, _immutable.List)(),
+			_id: null
 		}),
 		errors: (0, _immutable.List)()
 	});
@@ -35987,27 +35989,25 @@
 				}
 	
 				if (errors.length === 0) {
-					return this.getUser(email);
+					return this.getUser(email, password);
 				}
 	
 				_store2.default.dispatch((0, _auth.setErrors)(errors));
 			}
 		}, {
 			key: 'getUser',
-			value: function getUser(email) {
-				_superagent2.default.get('./assets/users.json', function (err, users) {
+			value: function getUser(email, password) {
+				_superagent2.default.post('/api/login').send({ email: email, password: password }).end(function (err, res) {
 					if (err) {
 						return _store2.default.dispatch((0, _auth.setErrors)([err]));
 					}
 	
-					var userList = users.body;
-					for (var i = 0; i < userList.length; i++) {
-						if (userList[i].email === email) {
-							_store2.default.dispatch((0, _auth.setUser)(userList[i]));
-							return _reactRouter.browserHistory.push('/blueprints');
-						}
+					if (res.body.authenticated) {
+						_store2.default.dispatch((0, _auth.setUser)(res.body.user));
+						return _reactRouter.browserHistory.push('/blueprints');
+					} else {
+						return _store2.default.dispatch((0, _auth.setErrors)(['Unknown Error Logging in, please try again']));
 					}
-					return _store2.default.dispatch((0, _auth.setErrors)(['User not found']));
 				});
 			}
 		}]);
@@ -37700,6 +37700,10 @@
 			key: 'componentWillMount',
 			value: function componentWillMount() {
 				var _this2 = this;
+	
+				if (!this.props.user.get('loggedIn')) {
+					return _reactRouter.browserHistory.push('/');
+				}
 	
 				var dfd = new Promise(function (resolve, reject) {
 					_blueprintSrvc2.default.getBlueprints(resolve, reject);

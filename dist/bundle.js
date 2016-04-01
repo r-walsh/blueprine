@@ -37711,7 +37711,7 @@
 				var _this2 = this;
 	
 				if (!this.props.user.get('loggedIn')) {
-					return _reactRouter.browserHistory.push('/');
+					return _reactRouter.browserHistory.push('/login');
 				}
 	
 				var dfd = new Promise(function (resolve, reject) {

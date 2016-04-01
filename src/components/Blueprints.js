@@ -29,7 +29,7 @@ class Blueprints extends PureComponent {
 
 	componentWillMount() {
 		if ( !this.props.user.get(`loggedIn`) ) {
-			return browserHistory.push(`/`)
+			return browserHistory.push(`/login`);
 		}
 
 		let dfd = new Promise( ( resolve, reject ) => {

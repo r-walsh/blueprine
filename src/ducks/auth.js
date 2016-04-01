@@ -16,7 +16,7 @@ const SET_USER = `user/SET_USER`;
 const SET_ERRORS = `user/SET_ERRORS`;
 const LOGOUT = `user/LOGOUT`;
 
-export default function( state = initialState, action ) {
+export default ( state = initialState, action ) => {
 	switch( action.type ) {
 		case SET_USER:
 			let nextState = state.set( `loggedIn`, true );

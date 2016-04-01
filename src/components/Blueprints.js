@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 
+import store from '../store';
+import { toggleBlueprintModal } from '../ducks/modal';
 import BlueprintSrvc from '../services/blueprintSrvc';
 
 import BlueprintRecent from './BlueprintRecent';
@@ -22,7 +24,6 @@ class Blueprints extends PureComponent {
 			, recent: null
 			, search: false
 			, searchText: ``
-			, isShowingModal: false
 		}
 	}
 
@@ -59,11 +60,11 @@ class Blueprints extends PureComponent {
 	}
 
 	modalClose() {
-		this.setState({ isShowingModal: false });
+		store.dispatch( toggleBlueprintModal( false ) );
 	}
 
 	modalOpen() {
-		this.setState({ isShowingModal: true });
+		store.dispatch( toggleBlueprintModal( true ) );
 	}
 
 	render() {
@@ -71,15 +72,19 @@ class Blueprints extends PureComponent {
 
 		let recent, blueprints;
 		if ( this.state.recent ) {
-			recent = this.state.recent.map( blueprint => <BlueprintRecent key={ blueprint.id } { ...blueprint } /> );
+			recent = this.state.recent.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
 			blueprints = this.state.blueprints.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
-												.map( blueprint => <Link key={ blueprint.id } style={ styles.listLink } to="/blueprints"><BlueprintThumbnail key={ blueprint.id } { ...blueprint } /></Link>);
+												.map( blueprint => <Link key={ blueprint._id } style={ styles.listLink } to={ `/blueprints/${ blueprint._id }`}>
+																		<div key={ blueprint._id } style={ styles.listItemContainer }>
+																			<BlueprintThumbnail key={ blueprint._id } { ...blueprint } />
+																		</div>
+																	</Link>);
 		}
 
 		return (
 			<div className="blueprints-wrapper">
 				{
-					this.state.isShowingModal &&
+					this.props.modal.get(`blueprintModal`) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
 							<NewBlueprint />
@@ -160,6 +165,11 @@ class Blueprints extends PureComponent {
 				  textDecoration: `none`
 				, color: `black`
 			}
+			, listItemContainer: {
+				':hover': {
+					outline: `2px solid ${ colors.lightBlue }`
+				}
+			}
 			, search: {
 				  width: `87%`
 				, margin: `0 5px 0 0`
@@ -176,7 +186,7 @@ class Blueprints extends PureComponent {
 			}
 			, listButtonContainer: {
 				  width: `100%`
-				, marginTop: 8
+				, margin: `8px 0`
 				, height: 20
 			}
 			, listButton: {
@@ -191,4 +201,4 @@ class Blueprints extends PureComponent {
 	}
 }
 
-export default connect( state => ({ user: state.auth }))( Radium(Blueprints) );
+export default connect( state => ({ user: state.auth, modal: state.modal }))( Radium(Blueprints) );

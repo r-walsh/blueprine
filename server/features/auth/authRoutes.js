@@ -1,0 +1,21 @@
+import passport from 'passport';
+
+export default app => {
+	app.post( `/api/signup`, passport.authenticate( `local-signup`, {
+		  successRedirect: `/blueprints`
+		, failureRedirect: `/test`
+	} ) );
+
+	app.post( `/api/login`, passport.authenticate( `local-login` ), ( req, res ) => {
+		res.send( {
+			  authenticated: true
+			, user: {
+				  email: req.user.email
+				, blueprints: req.user.blueprints
+				, admin: req.user.admin
+				, mentor: req.user.mentor
+				, _id: req.user._id
+			}
+		} );
+	} );
+}

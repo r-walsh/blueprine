@@ -23,12 +23,14 @@ class BlueprintThumbnail extends PureComponent {
 	getStyles() {
 		return {
 			wrapper: {
-				borderBottom: `1px solid ${ colors.gray }`
+				  borderBottom: `1px solid ${ colors.gray }`
 				, width: `95%`
+				, height: 75
+				, overflow: `hidden`
 			}
 			, title: {
 				  textAlign: `center`
-				, marginBottom: 0
+				, marginTop: 7
 			}
 			, description: {
 				  fontSize: `.8em`

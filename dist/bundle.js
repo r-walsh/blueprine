@@ -37727,13 +37727,40 @@
 				this.setState(_defineProperty({}, field, event.target.value));
 			}
 		}, {
+			key: 'toggleOwnedOrShared',
+			value: function toggleOwnedOrShared(showOwnedOrShared) {
+				this.setState({ showOwnedOrShared: showOwnedOrShared });
+			}
+		}, {
+			key: 'constructBlueprints',
+			value: function constructBlueprints(owned, shared, styles) {
+				var _this2 = this;
+	
+				var all = [].concat(_toConsumableArray(owned), _toConsumableArray(shared));
+				return all.filter(function (blueprint) {
+					return blueprint.title.toLowerCase().indexOf(_this2.state.searchText.toLowerCase()) !== -1;
+				}).sort(this.sortBlueprintsById).map(function (blueprint) {
+					return _react2.default.createElement(
+						_reactRouter.Link,
+						{ key: blueprint._id,
+							style: styles.listLink,
+							to: '/blueprints/' + blueprint._id },
+						_react2.default.createElement(
+							'div',
+							{ key: blueprint._id, style: styles.listItemContainer },
+							_react2.default.createElement(_BlueprintThumbnail2.default, _extends({ key: blueprint._id }, blueprint))
+						)
+					);
+				});
+			}
+		}, {
 			key: 'toggleSearch',
 			value: function toggleSearch() {
-				var _this2 = this;
+				var _this3 = this;
 	
 				if (!this.state.search) {
 					setTimeout(function () {
-						return _this2.refs.searchBar.focus();
+						return _this3.refs.searchBar.focus();
 					}, 20);
 				}
 	
@@ -37760,8 +37787,6 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this3 = this;
-	
 				var styles = this.getStyles();
 	
 				var recent = void 0,
@@ -37771,19 +37796,11 @@
 						return _react2.default.createElement(_BlueprintRecent2.default, _extends({ key: blueprint._id }, blueprint));
 					});
 	
-					blueprints = this.props.blueprints.get(this.state.showOwnedOrShared).toJS().filter(function (blueprint) {
-						return blueprint.title.toLowerCase().indexOf(_this3.state.searchText.toLowerCase()) !== -1;
-					}).sort(this.sortBlueprintsById).map(function (blueprint) {
-						return _react2.default.createElement(
-							_reactRouter.Link,
-							{ key: blueprint._id, style: styles.listLink, to: '/blueprints/' + blueprint._id },
-							_react2.default.createElement(
-								'div',
-								{ key: blueprint._id, style: styles.listItemContainer },
-								_react2.default.createElement(_BlueprintThumbnail2.default, _extends({ key: blueprint._id }, blueprint))
-							)
-						);
-					});
+					if (this.state.search) {
+						blueprints = this.constructBlueprints(this.props.blueprints.get('ownedBlueprints').toJS(), this.props.blueprints.get('sharedBlueprints').toJS(), styles);
+					} else {
+						blueprints = this.constructBlueprints(this.props.blueprints.get(this.state.showOwnedOrShared).toJS(), [], styles);
+					}
 				}
 	
 				return _react2.default.createElement(
@@ -37840,18 +37857,24 @@
 								{ style: styles.listButtonContainer },
 								_react2.default.createElement(
 									'button',
-									{ style: styles.listButton },
+									{ onClick: this.toggleOwnedOrShared.bind(this, 'ownedBlueprints'),
+										key: 'ownedBlueprints',
+										style: [styles.listButton, this.state.showOwnedOrShared === 'ownedBlueprints' ? styles.selectedButton : null] },
 									'Mine'
 								),
 								_react2.default.createElement(
 									'button',
-									{ style: styles.listButton },
+									{ onClick: this.toggleOwnedOrShared.bind(this, 'sharedBlueprints'),
+										key: 'sharedBlueprints',
+										style: [styles.listButton, this.state.showOwnedOrShared === 'sharedBlueprints' ? styles.selectedButton : null] },
 									'Shared'
 								),
 								_react2.default.createElement(
 									'button',
-									{ style: styles.listButton, onClick: this.toggleSearch.bind(this) },
-									'Search'
+									{ onClick: this.toggleSearch.bind(this),
+										key: 'search',
+										style: styles.listButton },
+									'Search All'
 								)
 							)
 						),
@@ -37923,11 +37946,18 @@
 					},
 					listButton: {
 						width: '32%',
+						boxSizing: 'border-box',
 						backgroundColor: _styles.colors.lightBlue,
 						color: _styles.colors.white,
 						fontSize: '.9em',
-						border: 'none',
-						margin: '0 1px'
+						border: '1px solid ' + _styles.colors.blue,
+						margin: '0 1px',
+						':focus': {
+							outline: 'none'
+						}
+					},
+					selectedButton: {
+						boxShadow: 'inset 0 0 14px ' + _styles.colors.blue
 					}
 				};
 			}

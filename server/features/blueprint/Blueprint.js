@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
+// Imports to make mongoose happy.
+import Feature from '../feature/Feature';
+import View from '../view/View';
+import { Schema as notSchema } from '../model/Model';
+import Endpoint from '../endpoint/Endpoint';
+
 const Blueprint = Schema({
 	  title: { type: String, required: true }
 	, description: { type: String, required: true }
@@ -9,11 +15,8 @@ const Blueprint = Schema({
 	, features: [{ type: Schema.Types.ObjectId, ref: `Feature` }]
 	, views: [{ type: Schema.Types.ObjectId, ref: `View` }]
 	, endpoints: [{ type: Schema.Types.ObjectId, ref: `Endpoint` }]
-	, schemas: [{ type: Schema.Types.ObjectId, ref: `Schema` }]
-	, sharedWith: {
-		  edit: [{ type: Schema.Types.ObjectId }]
-		, view: [{ type: Schema.Types.ObjectId }]
-	}
+	, models: [{ type: Schema.Types.ObjectId, ref: `Model` }]
+	, editPermissions: [{ type: Schema.Types.ObjectId }]
 });
 
 export default mongoose.model(`Blueprint`, Blueprint);

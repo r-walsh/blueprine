@@ -20,10 +20,10 @@ class Blueprints extends PureComponent {
 		super( props );
 
 		this.state = {
-			  blueprints: []
-			, recent: null
+			  recent: null
 			, search: false
 			, searchText: ``
+			, showOwnedOrShared: `ownedBlueprints`
 		}
 	}
 
@@ -31,17 +31,9 @@ class Blueprints extends PureComponent {
 		if ( !this.props.user.get(`loggedIn`) ) {
 			return browserHistory.push(`/login`);
 		}
-
-		let dfd = new Promise( ( resolve, reject ) => {
-			BlueprintSrvc.getBlueprints( resolve, reject )
-		});
-
-		dfd.then( res => {
-			this.setState({
-				  blueprints: res.blueprints
-				, recent: res.recent
-			})
-		});
+		if ( this.props.blueprints.get(`ownedBlueprints`).count() === 0 || this.props.blueprints.get(`sharedBlueprints`).count() === 0 ) {
+			BlueprintSrvc.getBlueprints()
+		}
 	}
 
 	handleChange( field, event ) {
@@ -67,18 +59,29 @@ class Blueprints extends PureComponent {
 		store.dispatch( toggleBlueprintModal( true ) );
 	}
 
+	sortBlueprintsById( a, b ) {
+		return a._id < b._id;
+	}
+
 	render() {
 		const styles = this.getStyles();
 
 		let recent, blueprints;
-		if ( this.state.recent ) {
-			recent = this.state.recent.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
-			blueprints = this.state.blueprints.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
-												.map( blueprint => <Link key={ blueprint._id } style={ styles.listLink } to={ `/blueprints/${ blueprint._id }`}>
-																		<div key={ blueprint._id } style={ styles.listItemContainer }>
-																			<BlueprintThumbnail key={ blueprint._id } { ...blueprint } />
-																		</div>
-																	</Link>);
+		if ( this.props.blueprints.get(`ownedBlueprints`).count() > 0 || this.props.blueprints.get(`sharedBlueprints`).count() > 0 ) {
+			recent = [...this.props.blueprints.get(`ownedBlueprints`).toJS(), ...this.props.blueprints.get(`sharedBlueprints`).toJS()]
+								.sort( this.sortBlueprintsById )
+								.splice(0, 2)
+								.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
+
+			blueprints = this.props.blueprints.get(this.state.showOwnedOrShared)
+								.toJS()
+								.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
+								.sort( this.sortBlueprintsById )
+								.map( blueprint => <Link key={ blueprint._id } style={ styles.listLink } to={ `/blueprints/${ blueprint._id }`}>
+														<div key={ blueprint._id } style={ styles.listItemContainer }>
+															<BlueprintThumbnail key={ blueprint._id } { ...blueprint } />
+														</div>
+													</Link> );
 		}
 
 		return (
@@ -201,4 +204,4 @@ class Blueprints extends PureComponent {
 	}
 }
 
-export default connect( state => ({ user: state.auth, modal: state.modal }))( Radium(Blueprints) );
+export default connect( state => ({ user: state.auth, modal: state.modal, blueprints: state.blueprint }))( Radium(Blueprints) );

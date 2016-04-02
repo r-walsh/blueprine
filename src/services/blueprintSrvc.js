@@ -1,4 +1,6 @@
 import request from 'superagent';
+import store from '../store';
+import { setBlueprints } from '../ducks/blueprint';
 
 export default class BlueprintSrvc {
 	static postBlueprint( blueprint, resolve, reject ) {
@@ -12,16 +14,13 @@ export default class BlueprintSrvc {
 			});
 	}
 
-	static getBlueprints( resolve, reject ) {
+	static getBlueprints() {
 		return request.get(`/api/blueprints`, ( err, blueprints ) => {
 			if ( err ) {
-				return reject(err);
+				return console.error( err );
 			}
 
-			return resolve({
-				  recent: blueprints.body.length > 0 ? blueprints.body.splice(0, 2) : null
-				, blueprints: blueprints.body
-			});
+			return store.dispatch( setBlueprints( blueprints.body.owned, blueprints.body.shared));
 		});
 	}
 }

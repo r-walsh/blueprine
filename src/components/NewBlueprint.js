@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router';
 
 import store from '../store';
 import { toggleBlueprintModal } from '../ducks/modal';
+import { addBlueprint } from '../ducks/blueprint';
 import blueprintSrvc from '../services/blueprintSrvc';
 
 import { colors } from "../constants/styles";
@@ -38,6 +39,7 @@ class NewBlueprint extends PureComponent {
 		dfd.then( res => {
 			this.setState( initialState );
 			store.dispatch( toggleBlueprintModal( false ) );
+			store.dispatch( addBlueprint( res ));
 			return browserHistory.push(`/blueprints/${ res._id }`)
 		})
 		.catch( err => {

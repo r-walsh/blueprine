@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema({
+const Model = mongoose.Schema({
 	  name: { type: String, required: true }
-	, schema: { type: mongoose.Schema.Types.Mixed, required: true }
+	, model: { type: mongoose.Schema.Types.Mixed, required: true }
 	, mvp: { type: Boolean, required: true }
 	, complete: { type: Boolean, default: false }
 });
 
-export default mongoose.model(`Schema`, Schema);
+export default mongoose.model(`Model`, Model);
 
 // import Sequelize from 'sequelize';
 //

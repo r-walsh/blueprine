@@ -7,7 +7,7 @@ export function postBlueprint( req, res ) {
 				return res.status(500).send( err );
 			}
 
-			req.user.blueprints.push( blueprint );
+			req.user.blueprints.owned.push( blueprint );
 			req.user.save( ( err, updatedUser ) => {
 				if ( err ) {
 					return res.status(500).send ( err );
@@ -19,12 +19,25 @@ export function postBlueprint( req, res ) {
 }
 
 export function getUserBlueprints( req, res ) {
-	req.user.populate(`blueprints`, ( err, user ) => {
+	const shitToPopulate = [
+		  `blueprints.owned.features`
+		, `blueprints.owned.views.features`
+		, `blueprints.owned.views.endpoints`
+		, `blueprints.owned.schemas`
+		, `blueprints.owned.endpoints`
+		, `blueprints.shared.features`
+		, `blueprints.shared.views.features`
+		, `blueprints.shared.views.endpoints`
+		, `blueprints.shared.schemas`
+		, `blueprints.shared.endpoints`
+	];
+	req.user.deepPopulate(shitToPopulate, ( err, user ) => {
 		if ( err ) {
 			return res.status(500).send( err );
 		}
 		return res.send( user.blueprints );
 	});
+	// return res.send();
 }
 
 export function getBlueprintById( req, res ) {

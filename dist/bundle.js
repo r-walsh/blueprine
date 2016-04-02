@@ -26796,11 +26796,16 @@
 	
 	var _modal2 = _interopRequireDefault(_modal);
 	
+	var _blueprint = __webpack_require__(/*! ./ducks/blueprint */ 348);
+	
+	var _blueprint2 = _interopRequireDefault(_blueprint);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _redux.combineReducers)({
 		auth: _auth2.default,
-		modal: _modal2.default
+		modal: _modal2.default,
+		blueprint: _blueprint2.default
 	});
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -26833,7 +26838,6 @@
 			email: null,
 			admin: false,
 			mentor: false,
-			blueprints: (0, _immutable.List)(),
 			_id: null
 		}),
 		errors: (0, _immutable.List)()
@@ -37680,6 +37684,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37697,10 +37703,10 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Blueprints).call(this, props));
 	
 			_this.state = {
-				blueprints: [],
 				recent: null,
 				search: false,
-				searchText: ''
+				searchText: '',
+				showOwnedOrShared: 'ownedBlueprints'
 			};
 			return _this;
 		}
@@ -37708,22 +37714,12 @@
 		_createClass(Blueprints, [{
 			key: 'componentWillMount',
 			value: function componentWillMount() {
-				var _this2 = this;
-	
 				if (!this.props.user.get('loggedIn')) {
 					return _reactRouter.browserHistory.push('/login');
 				}
-	
-				var dfd = new Promise(function (resolve, reject) {
-					_blueprintSrvc2.default.getBlueprints(resolve, reject);
-				});
-	
-				dfd.then(function (res) {
-					_this2.setState({
-						blueprints: res.blueprints,
-						recent: res.recent
-					});
-				});
+				if (this.props.blueprints.get('ownedBlueprints').count() === 0 || this.props.blueprints.get('sharedBlueprints').count() === 0) {
+					_blueprintSrvc2.default.getBlueprints();
+				}
 			}
 		}, {
 			key: 'handleChange',
@@ -37733,11 +37729,11 @@
 		}, {
 			key: 'toggleSearch',
 			value: function toggleSearch() {
-				var _this3 = this;
+				var _this2 = this;
 	
 				if (!this.state.search) {
 					setTimeout(function () {
-						return _this3.refs.searchBar.focus();
+						return _this2.refs.searchBar.focus();
 					}, 20);
 				}
 	
@@ -37757,21 +37753,27 @@
 				_store2.default.dispatch((0, _modal.toggleBlueprintModal)(true));
 			}
 		}, {
+			key: 'sortBlueprintsById',
+			value: function sortBlueprintsById(a, b) {
+				return a._id < b._id;
+			}
+		}, {
 			key: 'render',
 			value: function render() {
-				var _this4 = this;
+				var _this3 = this;
 	
 				var styles = this.getStyles();
 	
 				var recent = void 0,
 				    blueprints = void 0;
-				if (this.state.recent) {
-					recent = this.state.recent.map(function (blueprint) {
+				if (this.props.blueprints.get('ownedBlueprints').count() > 0 || this.props.blueprints.get('sharedBlueprints').count() > 0) {
+					recent = [].concat(_toConsumableArray(this.props.blueprints.get('ownedBlueprints').toJS()), _toConsumableArray(this.props.blueprints.get('sharedBlueprints').toJS())).sort(this.sortBlueprintsById).splice(0, 2).map(function (blueprint) {
 						return _react2.default.createElement(_BlueprintRecent2.default, _extends({ key: blueprint._id }, blueprint));
 					});
-					blueprints = this.state.blueprints.filter(function (blueprint) {
-						return blueprint.title.toLowerCase().indexOf(_this4.state.searchText.toLowerCase()) !== -1;
-					}).map(function (blueprint) {
+	
+					blueprints = this.props.blueprints.get(this.state.showOwnedOrShared).toJS().filter(function (blueprint) {
+						return blueprint.title.toLowerCase().indexOf(_this3.state.searchText.toLowerCase()) !== -1;
+					}).sort(this.sortBlueprintsById).map(function (blueprint) {
 						return _react2.default.createElement(
 							_reactRouter.Link,
 							{ key: blueprint._id, style: styles.listLink, to: '/blueprints/' + blueprint._id },
@@ -37935,7 +37937,7 @@
 	}(_component2.default);
 	
 	exports.default = (0, _reactRedux.connect)(function (state) {
-		return { user: state.auth, modal: state.modal };
+		return { user: state.auth, modal: state.modal, blueprints: state.blueprint };
 	})((0, _radium2.default)(Blueprints));
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Blueprints.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -67657,6 +67659,12 @@
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
+	var _store = __webpack_require__(/*! ../store */ 234);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 348);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -67678,16 +67686,13 @@
 			}
 		}, {
 			key: 'getBlueprints',
-			value: function getBlueprints(resolve, reject) {
+			value: function getBlueprints() {
 				return _superagent2.default.get('/api/blueprints', function (err, blueprints) {
 					if (err) {
-						return reject(err);
+						return console.error(err);
 					}
 	
-					return resolve({
-						recent: blueprints.body.length > 0 ? blueprints.body.splice(0, 2) : null,
-						blueprints: blueprints.body
-					});
+					return _store2.default.dispatch((0, _blueprint.setBlueprints)(blueprints.body.owned, blueprints.body.shared));
 				});
 			}
 		}]);
@@ -67948,6 +67953,8 @@
 	
 	var _modal = __webpack_require__(/*! ../ducks/modal */ 347);
 	
+	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 348);
+	
 	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 342);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
@@ -68003,6 +68010,7 @@
 				dfd.then(function (res) {
 					_this2.setState(initialState);
 					_store2.default.dispatch((0, _modal.toggleBlueprintModal)(false));
+					_store2.default.dispatch((0, _blueprint.addBlueprint)(res));
 					return _reactRouter.browserHistory.push('/blueprints/' + res._id);
 				}).catch(function (err) {
 					_this2.setState({ errors: err });
@@ -68139,6 +68147,64 @@
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 348 */
+/*!********************************!*\
+  !*** ./src/ducks/blueprint.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.setBlueprints = setBlueprints;
+	exports.addBlueprint = addBlueprint;
+	
+	var _immutable = __webpack_require__(/*! immutable */ 237);
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var initialState = (0, _immutable.Map)({
+		ownedBlueprints: (0, _immutable.List)(),
+		sharedBlueprints: (0, _immutable.List)()
+	});
+	
+	var SET_BLUEPRINTS = 'blueprint/SET_BLUEPRINT';
+	var ADD_BLUEPRINT = 'blueprint/ADD_BLUEPRINT';
+	
+	exports.default = function () {
+		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case SET_BLUEPRINTS:
+				return (0, _immutable.Map)({
+					ownedBlueprints: _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.ownedBlueprints)),
+					sharedBlueprints: _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.sharedBlueprints))
+				});
+	
+			case ADD_BLUEPRINT:
+				return state.update('ownedBlueprints', function (blueprints) {
+					return blueprints.push(action.blueprint);
+				});
+		}
+		return state;
+	};
+	
+	function setBlueprints(ownedBlueprints, sharedBlueprints) {
+		return { type: SET_BLUEPRINTS, ownedBlueprints: ownedBlueprints, sharedBlueprints: sharedBlueprints };
+	}
+	
+	function addBlueprint(blueprint) {
+		return { type: ADD_BLUEPRINT, blueprint: blueprint };
+	}
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "blueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

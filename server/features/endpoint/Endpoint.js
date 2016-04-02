@@ -6,7 +6,7 @@ const Endpoint = Schema({
 	, mvp: { type: String, required: true }
 	, complete: { type: String, default: false }
 	, description: { type: String, required: true }
-	, schema: { type: Schema.Types.ObjectId, ref: `Schema` }
+	, model: { type: Schema.Types.ObjectId, ref: `Schema` }
 });
 
 export default mongoose.model(`Endpoint`, Endpoint);

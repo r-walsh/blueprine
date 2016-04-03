@@ -93,7 +93,7 @@ class Blueprints extends PureComponent {
 								.sort( this.sortBlueprintsById )
 								.splice(0, 2)
 								.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
-
+			
 			if ( this.state.search ) {
 				blueprints = this.constructBlueprints(
 					  this.props.blueprints.get(`ownedBlueprints`).toJS()
@@ -129,6 +129,7 @@ class Blueprints extends PureComponent {
 				</div>
 				<aside style={ styles.list } className="blueprints-list">
 					<div className="list-header-container">
+						{ /* TODO This should be broken into components. */ }
 						{ this.state.search
 							?
 								<div style={ styles.listButtonContainer }>

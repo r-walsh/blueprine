@@ -35,6 +35,10 @@ class BlueprintThumbnail extends PureComponent {
 			, description: {
 				  fontSize: `.8em`
 				, marginLeft: 5
+				, overflow: `hidden`
+				, textOverflow: `ellipsis`
+				, whiteSpace: `nowrap`
+				, width: `100%`
 			}
 		}
 	}

@@ -8,7 +8,7 @@ import 'normalize-css';
 
 import App from './components/App';
 import Login from './components/Login';
-import Settings from './components/Settings';
+import Groups from './components/Groups';
 import Blueprint from './components/Blueprints';
 
 document.addEventListener(`DOMContentLoaded`, () => {
@@ -20,7 +20,7 @@ document.addEventListener(`DOMContentLoaded`, () => {
 				<Router history={ browserHistory }>
 					<Route path="/" component={ App }>
 						<Route path="login" component={ Login } />
-						<Route path="settings" component={ Settings } />
+						<Route path="groups" component={ Groups } />
 						<Route path="blueprints" component={ Blueprint } />
 					</Route>
 				</Router>

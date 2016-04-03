@@ -7,16 +7,71 @@ import { colors } from '../constants/styles';
 class BlueprintRecent extends PureComponent {
 	constructor( props ) {
 		super( props );
+
+		this.state = {
+			  features: this.checkCompletion( this.props.features )
+			, views: this.checkCompletion( this.props.views )
+			, endpoints: this.checkCompletion( this.props.endpoints )
+			, models: this.checkCompletion( this.props.models )
+		}
+
+	}
+
+	checkCompletion( planningItem ) {
+		let numberCompleted = 0;
+
+		planningItem.forEach( item => {
+			if ( item.complete ) {
+				numberCompleted++;
+			}
+		});
+
+		return numberCompleted;
+	}
+
+	calculateCompletionTotal() {
+		return (this.state.features + this.state.views + this.state.endpoints + this.state.models) / 4;
 	}
 
 	render() {
 		const styles = this.getStyles();
 
+
 		return (
 			<div style={ styles.wrapper } className="blueprint-wrapper">
 				<h2 style={ styles.title }>{ this.props.title }</h2>
-				<p><span style={ styles.completion }>Overall Completion</span>: { 85 }%</p>
-				<p><span style={ styles.completion }>Description: </span>{ this.props.description }</p>
+				<p>
+					<span style={ styles.completion }>Overall Completion: </span>{ this.calculateCompletionTotal() }%
+				</p>
+				<p style={ styles.description }>
+					<span style={ styles.completion }>Description: </span>{ this.props.description }
+				</p>
+				<section style={ styles.planningItemWrapper }>
+					<div style={ styles.planningItem }>
+						<p style={ styles.planningItemTitle }>Features</p>
+						<span>
+							{ this.state.features}/{ this.props.features.length }
+						</span>
+					</div>
+					<div style={ styles.planningItem }>
+						<p style={ styles.planningItemTitle }>Views</p>
+						<span>
+					{ this.state.views }/{ this.props.views.length }
+						</span>
+					</div>
+					<div style={ styles.planningItem }>
+						<p style={ styles.planningItemTitle }>Endpoints</p>
+						<span>
+						{ this.state.endpoints }/{ this.props.endpoints.length }
+						</span>
+					</div>
+					<div style={ styles.planningItem }>
+						<p style={ styles.planningItemTitle }>Models</p>
+						<span>
+							{ this.state.models }/{ this.props.models.length }
+						</span>
+					</div>
+				</section>
 			</div>
 		)
 	}
@@ -37,6 +92,23 @@ class BlueprintRecent extends PureComponent {
 			}
 			, completion: {
 				fontWeight: `bold`
+			}
+			, description: {
+				  height: 60
+				, textOverflow: `ellipsis`
+				, marginBottom: 10
+			}
+			, planningItemWrapper: {
+				marginTop: 5
+			}
+			, planningItem: {
+				  textAlign: `center`
+				, display: `inline-block`
+				, width: `25%`
+			}
+			, planningItemTitle: {
+				  margin: `0 0 5px 0`
+				, fontWeight: `bold`
 			}
 		}
 	}

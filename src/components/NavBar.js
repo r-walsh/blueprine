@@ -22,7 +22,7 @@ class NavBar extends PureComponent {
 					{ this.props.user.get( `loggedIn` )
 						?
 							<span>
-								<li style={ styles.navItem }><Link to="/settings">Settings</Link></li>
+								<li style={ styles.navItem }><Link to="/groups">Groups</Link></li>
 								<li style={ styles.navItem }><Link to="/blueprints">Blueprints</Link></li>
 							</span>
 						:

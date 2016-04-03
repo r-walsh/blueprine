@@ -23,4 +23,16 @@ export default class BlueprintSrvc {
 			return store.dispatch( setBlueprints( blueprints.body.owned, blueprints.body.shared));
 		});
 	}
+
+	static checkCompletion( planningItem ) {
+		let numberCompleted = 0;
+
+		planningItem.forEach( item => {
+			if ( item.complete ) {
+				numberCompleted++;
+			}
+		});
+
+		return numberCompleted;
+	}
 }

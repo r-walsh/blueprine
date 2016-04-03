@@ -10,6 +10,7 @@ import App from './components/App';
 import Login from './components/Login';
 import Groups from './components/Groups';
 import Blueprint from './components/Blueprints';
+import EditBlueprint from './components/EditBlueprint';
 
 document.addEventListener(`DOMContentLoaded`, () => {
 	let reactNode = document.getElementById(`react-node`);
@@ -22,6 +23,7 @@ document.addEventListener(`DOMContentLoaded`, () => {
 						<Route path="login" component={ Login } />
 						<Route path="groups" component={ Groups } />
 						<Route path="blueprints" component={ Blueprint } />
+						<Route path="blueprint/:blueprintId" component={ EditBlueprint } />
 					</Route>
 				</Router>
 			</Provider>

@@ -52,7 +52,7 @@ class Blueprints extends PureComponent {
 						return (
 							<Link key={ blueprint._id }
 								  style={ styles.listLink }
-								  to={ `/blueprints/${ blueprint._id }`}>
+								  to={ `/blueprint/${ blueprint._id }` }>
 								<div key={ blueprint._id } style={ styles.listItemContainer }>
 									<BlueprintThumbnail key={ blueprint._id } { ...blueprint } />
 								</div>

@@ -2,6 +2,8 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 
+import blueprintSrvc from '../services/blueprintSrvc';
+
 import { colors } from '../constants/styles';
 
 class BlueprintRecent extends PureComponent {
@@ -9,24 +11,12 @@ class BlueprintRecent extends PureComponent {
 		super( props );
 
 		this.state = {
-			  features: this.checkCompletion( this.props.features )
-			, views: this.checkCompletion( this.props.views )
-			, endpoints: this.checkCompletion( this.props.endpoints )
-			, models: this.checkCompletion( this.props.models )
+			  features: blueprintSrvc.checkCompletion( this.props.features )
+			, views: blueprintSrvc.checkCompletion( this.props.views )
+			, endpoints: blueprintSrvc.checkCompletion( this.props.endpoints )
+			, models: blueprintSrvc.checkCompletion( this.props.models )
 		}
 
-	}
-
-	checkCompletion( planningItem ) {
-		let numberCompleted = 0;
-
-		planningItem.forEach( item => {
-			if ( item.complete ) {
-				numberCompleted++;
-			}
-		});
-
-		return numberCompleted;
 	}
 
 	calculateCompletionTotal() {
@@ -35,7 +25,6 @@ class BlueprintRecent extends PureComponent {
 
 	render() {
 		const styles = this.getStyles();
-
 
 		return (
 			<div style={ styles.wrapper } className="blueprint-wrapper">

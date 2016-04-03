@@ -50,7 +50,7 @@ class BlueprintRecent extends PureComponent {
 					<div style={ styles.planningItem }>
 						<p style={ styles.planningItemTitle }>Features</p>
 						<span>
-							{ this.state.features}/{ this.props.features.length }
+							{ this.state.features }/{ this.props.features.length }
 						</span>
 					</div>
 					<div style={ styles.planningItem }>

@@ -37,7 +37,6 @@ export function getUserBlueprints( req, res ) {
 		}
 		return res.send( user.blueprints );
 	});
-	// return res.send();
 }
 
 export function getBlueprintById( req, res ) {

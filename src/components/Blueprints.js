@@ -93,7 +93,7 @@ class Blueprints extends PureComponent {
 								.sort( this.sortBlueprintsById )
 								.splice(0, 2)
 								.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
-			
+
 			if ( this.state.search ) {
 				blueprints = this.constructBlueprints(
 					  this.props.blueprints.get(`ownedBlueprints`).toJS()
@@ -127,56 +127,56 @@ class Blueprints extends PureComponent {
 					</button>
 					{ recent ? recent : <h3 style={ styles.header }>You have no projects!</h3> }
 				</div>
-				<aside style={ styles.list } className="blueprints-list">
-					<div className="list-header-container">
-						{ /* TODO This should be broken into components. */ }
-						{ this.state.search
-							?
-								<div style={ styles.listButtonContainer }>
-									<input style={ styles.search }
-										   value={ this.state.searchText }
-										   ref="searchBar"
-										   onChange={ this.handleChange.bind(this, `searchText`) }
-										   type="text"/>
-									<i style={ styles.closeSearch }
-									   onClick={ this.toggleSearch.bind(this) }
-									   className="fa fa-times-circle">
-									</i>
-								</div>
-							:
-								<div style={ styles.listButtonContainer }>
-									<button onClick={ this.toggleOwnedOrShared.bind( this, `ownedBlueprints` ) }
-											key="ownedBlueprints"
-											style={[
-												  styles.listButton
-												, this.state.showOwnedOrShared === `ownedBlueprints`
-												?
-													styles.selectedButton
-												:	null
-												]}>
-										Mine
-									</button>
-									<button onClick={ this.toggleOwnedOrShared.bind( this, `sharedBlueprints` ) }
-											key="sharedBlueprints"
-											style={[
-												  styles.listButton
-												, this.state.showOwnedOrShared === `sharedBlueprints`
-												?
-													styles.selectedButton
-												:	null
-												]}>
-										Shared
-									</button>
-									<button onClick={ this.toggleSearch.bind(this) }
-											key="search"
-											style={ styles.listButton }>
-										Search All
-									</button>
-								</div>
-						}
+					{ /* TODO This should be broken into components. */ }
+					{ this.state.search
+						?
+							<div style={ styles.listButtonContainer }>
+								<input style={ styles.search }
+									   value={ this.state.searchText }
+									   ref="searchBar"
+									   onChange={ this.handleChange.bind(this, `searchText`) }
+									   type="text"/>
+								<i style={ styles.closeSearch }
+								   onClick={ this.toggleSearch.bind(this) }
+								   className="fa fa-times-circle">
+								</i>
+							</div>
+						:
+							<div style={ styles.listButtonContainer }>
+								<button onClick={ this.toggleOwnedOrShared.bind( this, `ownedBlueprints` ) }
+										key="ownedBlueprints"
+										style={[
+											  styles.listButton
+											, this.state.showOwnedOrShared === `ownedBlueprints`
+											?
+												styles.selectedButton
+											:	null
+											]}>
+									Mine
+								</button>
+								<button onClick={ this.toggleOwnedOrShared.bind( this, `sharedBlueprints` ) }
+										key="sharedBlueprints"
+										style={[
+											  styles.listButton
+											, this.state.showOwnedOrShared === `sharedBlueprints`
+											?
+												styles.selectedButton
+											:	null
+											]}>
+									Shared
+								</button>
+								<button onClick={ this.toggleSearch.bind(this) }
+										key="search"
+										style={ styles.listButton }>
+									Search All
+								</button>
+							</div>
+					}
 
+				<aside style={ styles.list } className="blueprints-list">
+					<div style={ { overflow: `scroll` } }>
+						{ blueprints }
 					</div>
-					{ blueprints }
 				</aside>
 			</div>
 		)
@@ -206,12 +206,14 @@ class Blueprints extends PureComponent {
 				, height: window.innerHeight - 70
 				, borderRight: `2px solid #D4D5D6`
 				, display: `inline-block`
+				, float: `left`
+				, marginRight: `.5%`
 			}
 			, list: {
-				  float: `right`
+				  float: `left`
 				, boxSizing: `border-box`
-				, height: window.innerHeight - 70
-				, width: `29.5%`
+				, height: window.innerHeight - 105
+				, width: `29%`
 				, overflow: `scroll`
 			}
 			, listLink: {
@@ -238,9 +240,10 @@ class Blueprints extends PureComponent {
 				, fontSize: `1.1em`
 			}
 			, listButtonContainer: {
-				  width: `100%`
+				  width: `29%`
 				, margin: `8px 0`
 				, height: 20
+				, float: `left`
 			}
 			, listButton: {
 				  width: `32%`

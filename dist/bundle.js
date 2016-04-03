@@ -37768,50 +37768,50 @@
 							'You have no projects!'
 						)
 					),
+					this.state.search ? _react2.default.createElement(
+						'div',
+						{ style: styles.listButtonContainer },
+						_react2.default.createElement('input', { style: styles.search,
+							value: this.state.searchText,
+							ref: 'searchBar',
+							onChange: this.handleChange.bind(this, 'searchText'),
+							type: 'text' }),
+						_react2.default.createElement('i', { style: styles.closeSearch,
+							onClick: this.toggleSearch.bind(this),
+							className: 'fa fa-times-circle' })
+					) : _react2.default.createElement(
+						'div',
+						{ style: styles.listButtonContainer },
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.toggleOwnedOrShared.bind(this, 'ownedBlueprints'),
+								key: 'ownedBlueprints',
+								style: [styles.listButton, this.state.showOwnedOrShared === 'ownedBlueprints' ? styles.selectedButton : null] },
+							'Mine'
+						),
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.toggleOwnedOrShared.bind(this, 'sharedBlueprints'),
+								key: 'sharedBlueprints',
+								style: [styles.listButton, this.state.showOwnedOrShared === 'sharedBlueprints' ? styles.selectedButton : null] },
+							'Shared'
+						),
+						_react2.default.createElement(
+							'button',
+							{ onClick: this.toggleSearch.bind(this),
+								key: 'search',
+								style: styles.listButton },
+							'Search All'
+						)
+					),
 					_react2.default.createElement(
 						'aside',
 						{ style: styles.list, className: 'blueprints-list' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'list-header-container' },
-							this.state.search ? _react2.default.createElement(
-								'div',
-								{ style: styles.listButtonContainer },
-								_react2.default.createElement('input', { style: styles.search,
-									value: this.state.searchText,
-									ref: 'searchBar',
-									onChange: this.handleChange.bind(this, 'searchText'),
-									type: 'text' }),
-								_react2.default.createElement('i', { style: styles.closeSearch,
-									onClick: this.toggleSearch.bind(this),
-									className: 'fa fa-times-circle' })
-							) : _react2.default.createElement(
-								'div',
-								{ style: styles.listButtonContainer },
-								_react2.default.createElement(
-									'button',
-									{ onClick: this.toggleOwnedOrShared.bind(this, 'ownedBlueprints'),
-										key: 'ownedBlueprints',
-										style: [styles.listButton, this.state.showOwnedOrShared === 'ownedBlueprints' ? styles.selectedButton : null] },
-									'Mine'
-								),
-								_react2.default.createElement(
-									'button',
-									{ onClick: this.toggleOwnedOrShared.bind(this, 'sharedBlueprints'),
-										key: 'sharedBlueprints',
-										style: [styles.listButton, this.state.showOwnedOrShared === 'sharedBlueprints' ? styles.selectedButton : null] },
-									'Shared'
-								),
-								_react2.default.createElement(
-									'button',
-									{ onClick: this.toggleSearch.bind(this),
-										key: 'search',
-										style: styles.listButton },
-									'Search All'
-								)
-							)
-						),
-						blueprints
+							{ style: { overflow: 'scroll' } },
+							blueprints
+						)
 					)
 				);
 			}
@@ -37840,13 +37840,15 @@
 						width: '70%',
 						height: window.innerHeight - 70,
 						borderRight: '2px solid #D4D5D6',
-						display: 'inline-block'
+						display: 'inline-block',
+						float: 'left',
+						marginRight: '.5%'
 					},
 					list: {
-						float: 'right',
+						float: 'left',
 						boxSizing: 'border-box',
-						height: window.innerHeight - 70,
-						width: '29.5%',
+						height: window.innerHeight - 105,
+						width: '29%',
 						overflow: 'scroll'
 					},
 					listLink: {
@@ -37873,9 +37875,10 @@
 						fontSize: '1.1em'
 					},
 					listButtonContainer: {
-						width: '100%',
+						width: '29%',
 						margin: '8px 0',
-						height: 20
+						height: 20,
+						float: 'left'
 					},
 					listButton: {
 						width: '32%',

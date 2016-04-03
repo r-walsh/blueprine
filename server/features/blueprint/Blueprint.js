@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 // Imports to make mongoose happy.
 import Feature from '../feature/Feature';
 import View from '../view/View';
-import { Schema as notSchema } from '../model/Model';
+import Model from '../model/Model';
 import Endpoint from '../endpoint/Endpoint';
 
 const Blueprint = Schema({

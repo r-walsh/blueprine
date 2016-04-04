@@ -14,6 +14,16 @@ export default class BlueprintSrvc {
 			});
 	}
 
+	static getBlueprintById( blueprintId, resolve, reject ) {
+		return request.get(`/api/blueprint/${ blueprintId }`, ( err, blueprint ) => {
+			if ( err ) {
+				return reject( err );
+			}
+
+			return resolve( blueprint.body );
+		});
+	}
+
 	static getBlueprints() {
 		return request.get(`/api/blueprints`, ( err, blueprints ) => {
 			if ( err ) {

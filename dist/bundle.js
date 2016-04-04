@@ -67848,6 +67848,17 @@
 				});
 			}
 		}, {
+			key: 'getBlueprintById',
+			value: function getBlueprintById(blueprintId, resolve, reject) {
+				return _superagent2.default.get('/api/blueprint/' + blueprintId, function (err, blueprint) {
+					if (err) {
+						return reject(err);
+					}
+	
+					return resolve(blueprint.body);
+				});
+			}
+		}, {
 			key: 'getBlueprints',
 			value: function getBlueprints() {
 				return _superagent2.default.get('/api/blueprints', function (err, blueprints) {
@@ -68417,6 +68428,30 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
+	
+	var _superagent = __webpack_require__(/*! superagent */ 297);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
+	var _reactRouter = __webpack_require__(/*! react-router */ 160);
+	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 293);
+	
+	var _ItemHeader = __webpack_require__(/*! ./ItemHeader */ 350);
+	
+	var _ItemHeader2 = _interopRequireDefault(_ItemHeader);
+	
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 344);
+	
+	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
+	
+	var _store = __webpack_require__(/*! ../store */ 234);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _auth = __webpack_require__(/*! ../ducks/auth */ 236);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68431,26 +68466,236 @@
 		function EditBlueprint(props) {
 			_classCallCheck(this, EditBlueprint);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(EditBlueprint).call(this, props));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EditBlueprint).call(this, props));
+	
+			_this.state = {
+				blueprint: {}
+			};
+			return _this;
 		}
 	
 		_createClass(EditBlueprint, [{
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				var _this2 = this;
+	
+				if (!this.props.user.get('loggedIn')) {
+					_superagent2.default.get('/api/verify-auth', function (err, user) {
+						if (err) {
+							return _reactRouter.browserHistory.push('/login');
+						}
+	
+						_store2.default.dispatch((0, _auth.setUser)(user.body));
+					});
+				}
+	
+				var dfd = new Promise(function (resolve, reject) {
+					_blueprintSrvc2.default.getBlueprintById(_this2.props.params.blueprintId, resolve, reject);
+				}).then(function (res) {
+					return _this2.setState({ blueprint: res });
+				}).catch(function (err) {
+					return console.error(err);
+				});
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				var styles = this.getStyles();
+	
 				return _react2.default.createElement(
-					'h3',
-					null,
-					'Hallo'
+					'div',
+					{ style: styles.wrapper },
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(
+							'h2',
+							null,
+							this.state.blueprint.title
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(
+								'b',
+								null,
+								'Description:'
+							),
+							' ',
+							this.state.blueprint.description
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(
+							'div',
+							{ style: styles.ideaAndUsers },
+							_react2.default.createElement(_ItemHeader2.default, { itemName: 'Idea' }),
+							this.state.blueprint.idea ? _react2.default.createElement(
+								'p',
+								null,
+								this.state.blueprint.idea
+							) : null
+						),
+						_react2.default.createElement(
+							'div',
+							{ style: styles.ideaAndUsers },
+							_react2.default.createElement(_ItemHeader2.default, { itemName: 'Users' }),
+							this.state.blueprint.users ? _react2.default.createElement(
+								'p',
+								null,
+								this.state.blueprint.users
+							) : null
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Features' })
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' })
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' })
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: styles.planningItemWrapper },
+						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' })
+					)
 				);
+			}
+		}, {
+			key: 'getStyles',
+			value: function getStyles() {
+				return {
+					wrapper: {
+						height: window.innerHeight - 70,
+						overflow: 'hidden',
+						display: 'flex',
+						flexFlow: 'row wrap',
+						justifyContent: 'space-around'
+					},
+					planningItemWrapper: {
+						width: '33%',
+						height: '50%',
+						borderLeft: '1px solid ' + _styles.colors.gray,
+						borderRight: '1px solid ' + _styles.colors.gray,
+						overflow: 'hidden',
+						flexGrow: 1,
+						boxSizing: 'border-box',
+						padding: 10
+					},
+					ideaAndUsers: {
+						height: '50%'
+					}
+				};
 			}
 		}]);
 	
 		return EditBlueprint;
 	}(_component2.default);
 	
-	exports.default = (0, _radium2.default)(EditBlueprint);
+	exports.default = (0, _reactRedux.connect)(function (state) {
+		return { user: state.auth };
+	})((0, _radium2.default)(EditBlueprint));
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "EditBlueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 349 */,
+/* 350 */
+/*!**************************************!*\
+  !*** ./src/components/ItemHeader.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 244);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	var _radium = __webpack_require__(/*! radium */ 247);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 293);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ItemHeader = function (_PureComponent) {
+		_inherits(ItemHeader, _PureComponent);
+	
+		function ItemHeader(props) {
+			_classCallCheck(this, ItemHeader);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemHeader).call(this, props));
+		}
+	
+		_createClass(ItemHeader, [{
+			key: 'render',
+			value: function render() {
+				var styles = this.getStyles();
+	
+				return _react2.default.createElement(
+					'div',
+					{ style: styles.header },
+					_react2.default.createElement(
+						'h3',
+						{ style: styles.titleText },
+						this.props.itemName
+					)
+				);
+			}
+		}, {
+			key: 'getStyles',
+			value: function getStyles() {
+				return {
+					header: {
+						width: '100%',
+						height: 25,
+						textAlign: 'center',
+						borderBottom: '2px solid ' + _styles.colors.gray,
+						borderTop: '2px solid ' + _styles.colors.gray
+					},
+					titleText: {
+						margin: '5px auto'
+					}
+				};
+			}
+		}]);
+	
+		return ItemHeader;
+	}(_component2.default);
+	
+	exports.default = (0, _radium2.default)(ItemHeader);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ItemHeader.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

@@ -3,10 +3,12 @@ import PureComponent from '../../node_modules/react-pure-render/component';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
+import request from 'superagent';
 
 import { colors } from '../constants/styles';
 
 class NavBar extends PureComponent {
+
 	render() {
 		const styles = this.getStyles();
 		return (
@@ -14,8 +16,8 @@ class NavBar extends PureComponent {
 				<Style scopeSelector=".nav-bar"
 					   rules={ styles.navLink } />
 				<div style={ styles.logoWrapper }>
-					<a href="/#/">
-						<img style={ styles.logo } src="./assets/DevMtnLogo.png" alt="DevMtn"/>
+					<a href="/">
+						<img style={ styles.logo } src="/assets/DevMtnLogo.png" alt="DevMtn"/>
 					</a>
 				</div>
 				<ul style={ styles.navList }>

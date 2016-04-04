@@ -41,4 +41,14 @@ export default class LoginSrvc {
 					}
 				});
 	}
+
+	static verifyAuth( resolve, reject) {
+		request.get(`/api/verify-auth`, ( err, res ) => {
+			if ( err ) {
+				return reject(err);
+			}
+
+			resolve(store.dispatch( setUser( res.body ) ));
+		});
+	}
 }

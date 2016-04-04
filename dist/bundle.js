@@ -35727,6 +35727,10 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
 	
+	var _superagent = __webpack_require__(/*! superagent */ 297);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 293);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -35760,8 +35764,8 @@
 						{ style: styles.logoWrapper },
 						_react2.default.createElement(
 							'a',
-							{ href: '/#/' },
-							_react2.default.createElement('img', { style: styles.logo, src: './assets/DevMtnLogo.png', alt: 'DevMtn' })
+							{ href: '/' },
+							_react2.default.createElement('img', { style: styles.logo, src: '/assets/DevMtnLogo.png', alt: 'DevMtn' })
 						)
 					),
 					_react2.default.createElement(
@@ -36120,6 +36124,17 @@
 					} else {
 						return _store2.default.dispatch((0, _auth.setErrors)(['Unknown Error Logging in, please try again']));
 					}
+				});
+			}
+		}, {
+			key: 'verifyAuth',
+			value: function verifyAuth(resolve, reject) {
+				_superagent2.default.get('/api/verify-auth', function (err, res) {
+					if (err) {
+						return reject(err);
+					}
+	
+					resolve(_store2.default.dispatch((0, _auth.setUser)(res.body)));
 				});
 			}
 		}]);
@@ -37762,6 +37777,10 @@
 	
 	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 305);
 	
+	var _superagent = __webpack_require__(/*! superagent */ 297);
+	
+	var _superagent2 = _interopRequireDefault(_superagent);
+	
 	var _store = __webpack_require__(/*! ../store */ 234);
 	
 	var _store2 = _interopRequireDefault(_store);
@@ -37819,8 +37838,15 @@
 			key: 'componentWillMount',
 			value: function componentWillMount() {
 				if (!this.props.user.get('loggedIn')) {
-					return _reactRouter.browserHistory.push('/login');
+					_superagent2.default.get('/api/verify-auth', function (err) {
+						if (err) {
+							return _reactRouter.browserHistory.push('/login');
+						}
+	
+						return _blueprintSrvc2.default.getBlueprints();
+					});
 				}
+	
 				if (this.props.blueprints.get('ownedBlueprints').count() === 0 || this.props.blueprints.get('sharedBlueprints').count() === 0) {
 					_blueprintSrvc2.default.getBlueprints();
 				}

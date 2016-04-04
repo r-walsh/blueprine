@@ -4,6 +4,7 @@ import Radium from 'radium';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
+import request from 'superagent';
 
 import store from '../store';
 import { toggleBlueprintModal } from '../ducks/modal';
@@ -29,8 +30,15 @@ class Blueprints extends PureComponent {
 
 	componentWillMount() {
 		if ( !this.props.user.get(`loggedIn`) ) {
-			return browserHistory.push(`/login`);
+			request.get(`/api/verify-auth`, ( err ) => {
+				if ( err ) {
+					return browserHistory.push(`/login`);
+				}
+
+				return BlueprintSrvc.getBlueprints();
+			});
 		}
+
 		if ( this.props.blueprints.get(`ownedBlueprints`).count() === 0 || this.props.blueprints.get(`sharedBlueprints`).count() === 0 ) {
 			BlueprintSrvc.getBlueprints()
 		}

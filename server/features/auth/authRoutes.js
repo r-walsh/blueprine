@@ -18,4 +18,11 @@ export default app => {
 			}
 		} );
 	} );
+
+	app.get(`/api/verify-auth`, ( req, res ) => {
+		if ( req.user ) {
+			return res.send( req.user );
+		}
+		return res.status(401).send( false )
+	});
 }

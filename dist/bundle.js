@@ -68469,8 +68469,6 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 160);
 	
-	var _immutable = __webpack_require__(/*! immutable */ 237);
-	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 293);
 	
 	var _ItemHeader = __webpack_require__(/*! ./ItemHeader */ 350);
@@ -68685,7 +68683,7 @@
 					description: {
 						lineHeight: '1.2em'
 					},
-					planningItemWrapper: _defineProperty({
+					planningItemWrapper: {
 						width: '33%',
 						height: '50%',
 						borderLeft: '1px solid ' + _styles.colors.gray,
@@ -68694,7 +68692,7 @@
 						flexGrow: 1,
 						boxSizing: 'border-box',
 						padding: 10
-					}, 'overflow', 'scroll'),
+					},
 					ideaAndUsers: {
 						height: '50%',
 						overflow: 'scroll'

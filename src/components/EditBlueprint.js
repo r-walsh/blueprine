@@ -4,7 +4,6 @@ import Radium from 'radium';
 import { connect } from 'react-redux';
 import request from 'superagent';
 import { browserHistory } from 'react-router';
-import { Map } from 'immutable';
 
 import { colors, addButtonStyle } from '../constants/styles';
 
@@ -160,7 +159,6 @@ class EditBlueprint extends PureComponent {
 				, flexGrow: 1
 				, boxSizing: `border-box`
 				, padding: 10
-				, overflow: `scroll`
 			}
 			, ideaAndUsers: {
 				  height: `50%`

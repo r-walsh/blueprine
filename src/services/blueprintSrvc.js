@@ -1,6 +1,6 @@
 import request from 'superagent';
 import store from '../store';
-import { setBlueprints } from '../ducks/blueprint';
+import { setBlueprints, selectBlueprint } from '../ducks/blueprint';
 
 export default class BlueprintSrvc {
 	static postBlueprint( blueprint, resolve, reject ) {
@@ -14,13 +14,13 @@ export default class BlueprintSrvc {
 			});
 	}
 
-	static getBlueprintById( blueprintId, resolve, reject ) {
+	static getBlueprintById( blueprintId ) {
 		return request.get(`/api/blueprint/${ blueprintId }`, ( err, blueprint ) => {
 			if ( err ) {
-				return reject( err );
+				return console.error( err );
 			}
 
-			return resolve( blueprint.body );
+			return store.dispatch( selectBlueprint( blueprint.body ) );
 		});
 	}
 
@@ -44,5 +44,16 @@ export default class BlueprintSrvc {
 		});
 
 		return numberCompleted;
+	}
+
+	static updateTopLevel( changed, newValue, blueprintId ) {
+		request.post(`/api/blueprint/${ blueprintId }`)
+			.send({
+				  changed
+				, newValue
+			})
+			.end( ( err, blueprint ) => {
+				console.log( err, blueprint );
+			});
 	}
 }

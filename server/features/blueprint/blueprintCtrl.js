@@ -48,3 +48,20 @@ export function getBlueprintById( req, res ) {
 		return res.send(blueprint);
 	});
 }
+
+export function updateTopLevel( req, res ) {
+	Blueprint.findById( req.params.blueprintId, ( err, blueprint ) => {
+		if ( err ) {
+			return res.status(500).send( err );
+		}
+
+		blueprint.set( req.body.changed, req.body.newValue )
+			.save( ( err, updatedBlueprint ) => {
+				if ( err ) {
+					return res.status(500).send( err );
+				}
+
+				return res.send( updatedBlueprint );
+			});
+	} );
+}

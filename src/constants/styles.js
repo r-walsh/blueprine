@@ -6,3 +6,18 @@ export const colors = {
 	, gray: `#C8CED9`
 	, white: `#FDFDFD`
 };
+
+export const addButtonStyle = {
+	  border: `none`
+	, borderRadius: 4
+	, backgroundColor: colors.paleBlue
+	, color: colors.white
+	, margin: `15px 0 0 15px`
+	, display: `block`
+	, ':focus': {
+		outline: `none`
+	}
+	, ':hover': {
+		backgroundColor: colors.lightBlue
+	}
+};

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const Feature = Schema({
-	  feature: { type: String, required: true  }
+	  name: { type: String, required: true  }
 	, mvp: { type: Boolean, required: true  }
 	, complete: { type: Boolean, default: false }
 });

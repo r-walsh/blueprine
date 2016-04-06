@@ -37703,13 +37703,18 @@
 			}
 		}, {
 			key: 'verifyAuth',
-			value: function verifyAuth(resolve, reject) {
+			value: function verifyAuth(callback) {
+				for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+					args[_key - 1] = arguments[_key];
+				}
+	
 				_superagent2.default.get('/api/verify-auth', function (err, res) {
 					if (err) {
-						return reject(err);
+						return _reactRouter.browserHistory.push('/login');
 					}
 	
-					resolve(_store2.default.dispatch((0, _auth.setUser)(res.body)));
+					callback ? callback.apply(undefined, args) : null;
+					_store2.default.dispatch((0, _auth.setUser)(res.body));
 				});
 			}
 		}]);
@@ -37826,10 +37831,6 @@
 	
 	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
 	
-	var _superagent = __webpack_require__(/*! superagent */ 296);
-	
-	var _superagent2 = _interopRequireDefault(_superagent);
-	
 	var _lodash = __webpack_require__(/*! lodash */ 345);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
@@ -37843,6 +37844,10 @@
 	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
+	
+	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 303);
+	
+	var _loginSrvc2 = _interopRequireDefault(_loginSrvc);
 	
 	var _BlueprintRecent = __webpack_require__(/*! ./BlueprintRecent */ 347);
 	
@@ -37891,13 +37896,7 @@
 			key: 'componentWillMount',
 			value: function componentWillMount() {
 				if (!this.props.user.get('loggedIn')) {
-					_superagent2.default.get('/api/verify-auth', function (err) {
-						if (err) {
-							return _reactRouter.browserHistory.push('/login');
-						}
-	
-						return _blueprintSrvc2.default.getBlueprints();
-					});
+					return _loginSrvc2.default.verifyAuth(_blueprintSrvc2.default.getBlueprints);
 				}
 	
 				if (this.props.blueprints.get('ownedBlueprints').count() === 0 || this.props.blueprints.get('sharedBlueprints').count() === 0) {
@@ -83820,14 +83819,14 @@
 			}
 		}, {
 			key: 'getBlueprintById',
-			value: function getBlueprintById(blueprintId) {
+			value: function getBlueprintById(blueprintId, resolve, reject) {
 				return _superagent2.default.get('/api/blueprint/' + blueprintId, function (err, blueprint) {
 					if (err) {
-						return console.error(err);
+						return reject(err);
 					}
 	
 					_store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
-					return blueprint.body;
+					resolve(blueprint.body);
 				});
 			}
 		}, {
@@ -84434,11 +84433,9 @@
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _store = __webpack_require__(/*! ../store */ 235);
+	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 303);
 	
-	var _store2 = _interopRequireDefault(_store);
-	
-	var _auth = __webpack_require__(/*! ../ducks/auth */ 237);
+	var _loginSrvc2 = _interopRequireDefault(_loginSrvc);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84470,23 +84467,25 @@
 		_createClass(EditBlueprint, [{
 			key: 'componentWillMount',
 			value: function componentWillMount() {
-				if (!this.props.user.get('loggedIn')) {
-					_superagent2.default.get('/api/verify-auth', function (err, user) {
-						if (err) {
-							return _reactRouter.browserHistory.push('/login');
-						}
+				var _this2 = this;
 	
-						_store2.default.dispatch((0, _auth.setUser)(user.body));
-					});
+				if (!this.props.user.get('loggedIn')) {
+					_loginSrvc2.default.verifyAuth();
 				}
 	
-				if (this.props.blueprints.get('selectedBlueprint') == (0, _immutable.Map)()) {
-					_blueprintSrvc2.default.getBlueprintById(this.props.params.blueprintId);
+				if (this.props.blueprints.get('selectedBlueprint') == (0, _immutable.Map)() || this.props.blueprints.get('selectedBlueprint').get('_id') !== this.props.params.blueprintId) {
+					new Promise(function (resolve, reject) {
+						_blueprintSrvc2.default.getBlueprintById(_this2.props.params.blueprintId, resolve, reject);
+					}).then(function (blueprint) {
+						return _this2.setState({ blueprint: blueprint });
+					}).catch(function (err) {
+						return console.error(err);
+					});
 				}
 			}
 		}, {
-			key: 'editField',
-			value: function editField(field, changed, newValue, blueprintId) {
+			key: 'toggleEditField',
+			value: function toggleEditField(field, changed, newValue, blueprintId) {
 				this.setState(_defineProperty({}, field, !this.state[field]));
 	
 				if (changed) {
@@ -84556,14 +84555,14 @@
 								_react2.default.createElement(
 									'button',
 									{ key: 'saveIdea',
-										onClick: this.editField.bind(this, 'editIdea', 'idea', this.state.blueprint.idea, this.props.params.blueprintId),
+										onClick: this.toggleEditField.bind(this, 'editIdea', 'idea', this.state.blueprint.idea, this.props.params.blueprintId),
 										style: _styles.addButtonStyle },
 									'Save'
 								)
 							) : _react2.default.createElement(
 								'button',
 								{ key: 'addIdea',
-									onClick: this.editField.bind(this, 'editIdea', null),
+									onClick: this.toggleEditField.bind(this, 'editIdea', null),
 									style: _styles.addButtonStyle },
 								_react2.default.createElement('i', { className: 'fa fa-plus' })
 							)
@@ -84585,14 +84584,14 @@
 								_react2.default.createElement(
 									'button',
 									{ key: 'saveUsers',
-										onClick: this.editField.bind(this, 'editUsers'),
+										onClick: this.toggleEditField.bind(this, 'editUsers'),
 										style: _styles.addButtonStyle },
 									'Save'
 								)
 							) : _react2.default.createElement(
 								'button',
 								{ key: 'addUsers',
-									onClick: this.editField.bind(this, 'editUsers', null),
+									onClick: this.toggleEditField.bind(this, 'editUsers', null),
 									style: _styles.addButtonStyle },
 								_react2.default.createElement('i', { className: 'fa fa-plus' })
 							)
@@ -84608,19 +84607,19 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.views })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.endpoints })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.models })
 					)
 				);
 			}

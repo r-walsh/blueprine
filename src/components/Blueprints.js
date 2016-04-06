@@ -2,14 +2,14 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router'
+import { Link } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
-import request from 'superagent';
 import _ from 'lodash';
 
 import store from '../store';
 import { toggleBlueprintModal } from '../ducks/modal';
 import BlueprintSrvc from '../services/blueprintSrvc';
+import LoginSrvc from '../services/loginSrvc';
 
 import BlueprintRecent from './BlueprintRecent';
 import BlueprintThumbnail from './BlueprintThumbnail';
@@ -31,13 +31,7 @@ class Blueprints extends PureComponent {
 
 	componentWillMount() {
 		if ( !this.props.user.get(`loggedIn`) ) {
-			request.get(`/api/verify-auth`, ( err ) => {
-				if ( err ) {
-					return browserHistory.push(`/login`);
-				}
-
-				return BlueprintSrvc.getBlueprints();
-			});
+			return LoginSrvc.verifyAuth( BlueprintSrvc.getBlueprints );
 		}
 
 		if ( this.props.blueprints.get(`ownedBlueprints`).count() === 0 || this.props.blueprints.get(`sharedBlueprints`).count() === 0 ) {

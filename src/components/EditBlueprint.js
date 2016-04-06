@@ -12,8 +12,7 @@ import ItemHeader from './ItemHeader';
 import PlanningItems from './PlanningItems';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
-import store from '../store';
-import { setUser } from '../ducks/auth';
+import LoginSrvc from '../services/loginSrvc';
 
 class EditBlueprint extends PureComponent {
 	constructor( props ) {
@@ -29,21 +28,19 @@ class EditBlueprint extends PureComponent {
 
 	componentWillMount() {
 		if ( !this.props.user.get(`loggedIn`) ) {
-			request.get(`/api/verify-auth`, ( err, user ) => {
-				if ( err ) {
-					return browserHistory.push(`/login`);
-				}
-
-				store.dispatch( setUser( user.body ) );
-			});
+			LoginSrvc.verifyAuth();
 		}
 
-		if ( this.props.blueprints.get(`selectedBlueprint`) == Map() ) {
-			BlueprintSrvc.getBlueprintById( this.props.params.blueprintId );
+		if ( this.props.blueprints.get(`selectedBlueprint`) == Map() || this.props.blueprints.get(`selectedBlueprint`).get(`_id`) !== this.props.params.blueprintId ) {
+			new Promise( ( resolve, reject ) => {
+				BlueprintSrvc.getBlueprintById( this.props.params.blueprintId, resolve, reject );
+			})
+			.then( blueprint => this.setState({ blueprint }))
+			.catch( err => console.error( err ));
 		}
 	}
 
-	editField( field, changed, newValue, blueprintId ) {
+	toggleEditField( field, changed, newValue, blueprintId ) {
 		this.setState({ [field]: !this.state[field] });
 
 		if ( changed ) {
@@ -82,14 +79,14 @@ class EditBlueprint extends PureComponent {
 												  onChange={ this.handleChange.bind( this, `idea` ) }
 												  rows="3" />
 										<button key="saveIdea"
-												onClick={ this.editField.bind( this, `editIdea`, `idea`, this.state.blueprint.idea, this.props.params.blueprintId ) }
+												onClick={ this.toggleEditField.bind( this, `editIdea`, `idea`, this.state.blueprint.idea, this.props.params.blueprintId ) }
 												style={ addButtonStyle }>
 											Save
 										</button>
 									</div>
 								:
 									<button key="addIdea"
-											onClick={ this.editField.bind( this, `editIdea`, null ) }
+											onClick={ this.toggleEditField.bind( this, `editIdea`, null ) }
 											style={ addButtonStyle }>
 										<i className="fa fa-plus" />
 									</button>
@@ -108,14 +105,14 @@ class EditBlueprint extends PureComponent {
 												  value={ this.state.blueprint.users }
 												  rows="3" />
 										<button key="saveUsers"
-												onClick={ this.editField.bind( this, `editUsers` ) }
+												onClick={ this.toggleEditField.bind( this, `editUsers` ) }
 												style={ addButtonStyle }>
 											Save
 										</button>
 									</div>
 								:
 									<button key="addUsers"
-											onClick={ this.editField.bind( this, `editUsers`, null ) }
+											onClick={ this.toggleEditField.bind( this, `editUsers`, null ) }
 											style={ addButtonStyle }>
 										<i className="fa fa-plus" />
 									</button>
@@ -128,15 +125,15 @@ class EditBlueprint extends PureComponent {
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ this.state.blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.views } />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ this.state.blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.endpoints } />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />
-					<PlanningItems item={ this.state.blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.models } />
 				</div>
 			</div>
 		);

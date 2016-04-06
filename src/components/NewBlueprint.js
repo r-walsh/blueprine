@@ -55,7 +55,7 @@ class NewBlueprint extends PureComponent {
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.label }>Project Title</label>
 					<input value={ this.state.title }
-						   onChange={ this.handleChange.bind( this, `title`) }
+						   onChange={ this.handleChange.bind( this, `title` ) }
 						   style={ styles.input }
 						   type="text"/>
 				</div>

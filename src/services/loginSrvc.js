@@ -42,13 +42,14 @@ export default class LoginSrvc {
 				});
 	}
 
-	static verifyAuth( resolve, reject) {
+	static verifyAuth( callback, ...args ) {
 		request.get(`/api/verify-auth`, ( err, res ) => {
 			if ( err ) {
-				return reject(err);
+				return browserHistory.push(`/login`);
 			}
-
-			resolve(store.dispatch( setUser( res.body ) ));
+			
+			callback ? callback( ...args ) : null;
+			store.dispatch( setUser( res.body ) );
 		});
 	}
 }

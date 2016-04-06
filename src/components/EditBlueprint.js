@@ -2,8 +2,6 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import request from 'superagent';
-import { browserHistory } from 'react-router';
 import { Map } from 'immutable';
 
 import { colors, addButtonStyle } from '../constants/styles';
@@ -43,13 +41,13 @@ class EditBlueprint extends PureComponent {
 	toggleEditField( field, changed, newValue, blueprintId ) {
 		this.setState({ [field]: !this.state[field] });
 
-		if ( changed ) {
+		if ( changed && this.props.blueprints.get(`selectedBlueprint`).get(changed) !== newValue ) {
 			BlueprintSrvc.updateTopLevel( changed, newValue, blueprintId );
 		}
 	}
 
 	handleChange( field, event ) {
-		this.setState({ [field]: event.target.value });
+		this.setState({ blueprint: Object.assign( {}, this.state.blueprint, { [field]: event.target.value }) });
 	}
 
 	render() {
@@ -64,11 +62,15 @@ class EditBlueprint extends PureComponent {
 				<div style={ styles.planningItemWrapper }>
 					<div style={ styles.ideaAndUsers }>
 						<ItemHeader itemName="Idea" />
-						{ this.state.blueprint.idea
+						{ this.state.blueprint.idea && !this.state.editIdea
 							?
 								<div>
 									<p>{ this.state.blueprint.idea }</p>
-									<button key="editIdea" style={ addButtonStyle }>Edit</button>
+									<button key="editIdea"
+											onClick={ this.toggleEditField.bind( this, `editIdea`, null ) }
+											style={ addButtonStyle }>
+										Edit
+									</button>
 								</div>
 							:
 								this.state.editIdea
@@ -94,18 +96,26 @@ class EditBlueprint extends PureComponent {
 					</div>
 					<div style={ styles.ideaAndUsers }>
 						<ItemHeader itemName="Users" />
-						{ this.state.blueprint.users
+						{ this.state.blueprint.users && !this.state.editUsers
 							?
-								<p>{ this.state.blueprint.users }</p>
+								<div>
+									<p>{ this.state.blueprint.users }</p>
+									<button key="editUsers"
+											onClick={ this.toggleEditField.bind( this, `editUsers`, null ) }
+											style={ addButtonStyle }>
+										Edit
+									</button>
+								</div>
 							:
 								this.state.editUsers
 								?
 									<div>
 										<textarea style={ styles.textArea }
 												  value={ this.state.blueprint.users }
+												  onChange={ this.handleChange.bind( this, `users` ) }
 												  rows="3" />
 										<button key="saveUsers"
-												onClick={ this.toggleEditField.bind( this, `editUsers` ) }
+												onClick={ this.toggleEditField.bind( this, `editUsers`, `users`, this.state.blueprint.users, this.props.params.blueprintId ) }
 												style={ addButtonStyle }>
 											Save
 										</button>

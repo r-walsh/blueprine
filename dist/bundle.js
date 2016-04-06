@@ -84411,12 +84411,6 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
 	
-	var _superagent = __webpack_require__(/*! superagent */ 296);
-	
-	var _superagent2 = _interopRequireDefault(_superagent);
-	
-	var _reactRouter = __webpack_require__(/*! react-router */ 160);
-	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
@@ -84488,14 +84482,14 @@
 			value: function toggleEditField(field, changed, newValue, blueprintId) {
 				this.setState(_defineProperty({}, field, !this.state[field]));
 	
-				if (changed) {
+				if (changed && this.props.blueprints.get('selectedBlueprint').get(changed) !== newValue) {
 					_blueprintSrvc2.default.updateTopLevel(changed, newValue, blueprintId);
 				}
 			}
 		}, {
 			key: 'handleChange',
 			value: function handleChange(field, event) {
-				this.setState(_defineProperty({}, field, event.target.value));
+				this.setState({ blueprint: Object.assign({}, this.state.blueprint, _defineProperty({}, field, event.target.value)) });
 			}
 		}, {
 			key: 'render',
@@ -84532,7 +84526,7 @@
 							'div',
 							{ style: styles.ideaAndUsers },
 							_react2.default.createElement(_ItemHeader2.default, { itemName: 'Idea' }),
-							this.state.blueprint.idea ? _react2.default.createElement(
+							this.state.blueprint.idea && !this.state.editIdea ? _react2.default.createElement(
 								'div',
 								null,
 								_react2.default.createElement(
@@ -84542,7 +84536,9 @@
 								),
 								_react2.default.createElement(
 									'button',
-									{ key: 'editIdea', style: _styles.addButtonStyle },
+									{ key: 'editIdea',
+										onClick: this.toggleEditField.bind(this, 'editIdea', null),
+										style: _styles.addButtonStyle },
 									'Edit'
 								)
 							) : this.state.editIdea ? _react2.default.createElement(
@@ -84571,20 +84567,32 @@
 							'div',
 							{ style: styles.ideaAndUsers },
 							_react2.default.createElement(_ItemHeader2.default, { itemName: 'Users' }),
-							this.state.blueprint.users ? _react2.default.createElement(
-								'p',
+							this.state.blueprint.users && !this.state.editUsers ? _react2.default.createElement(
+								'div',
 								null,
-								this.state.blueprint.users
+								_react2.default.createElement(
+									'p',
+									null,
+									this.state.blueprint.users
+								),
+								_react2.default.createElement(
+									'button',
+									{ key: 'editUsers',
+										onClick: this.toggleEditField.bind(this, 'editUsers', null),
+										style: _styles.addButtonStyle },
+									'Edit'
+								)
 							) : this.state.editUsers ? _react2.default.createElement(
 								'div',
 								null,
 								_react2.default.createElement('textarea', { style: styles.textArea,
 									value: this.state.blueprint.users,
+									onChange: this.handleChange.bind(this, 'users'),
 									rows: '3' }),
 								_react2.default.createElement(
 									'button',
 									{ key: 'saveUsers',
-										onClick: this.toggleEditField.bind(this, 'editUsers'),
+										onClick: this.toggleEditField.bind(this, 'editUsers', 'users', this.state.blueprint.users, this.props.params.blueprintId),
 										style: _styles.addButtonStyle },
 									'Save'
 								)

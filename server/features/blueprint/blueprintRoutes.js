@@ -8,4 +8,7 @@ export default app => {
 	app.route(`/api/blueprint/:blueprintId`)
 		.get( bp.getBlueprintById )
 		.put( bp.updateTopLevel );
+
+	app.route(`/api/blueprint/features`)
+		.post( bp.postFeature )
 }

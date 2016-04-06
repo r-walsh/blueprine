@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component'
 import Radium from 'radium';
 
-import { colors, addButtonStyle } from '../constants/styles';
+import { addButtonStyle } from '../constants/styles';
 
 import PlanningItem from './PlanningItem';
 

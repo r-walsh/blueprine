@@ -1,4 +1,8 @@
 import Blueprint from './Blueprint';
+import Feature from '../feature/Feature';
+import View from '../view/View';
+import Model from '../model/Model';
+import Endpoint from '../endpoint/Endpoint';
 
 export function postBlueprint( req, res ) {
 	new Blueprint( req.body )
@@ -64,4 +68,22 @@ export function updateTopLevel( req, res ) {
 				return res.send( updatedBlueprint );
 			});
 	} );
+}
+
+export function postFeature( req, res ) {
+	new Feature( req.body.feature )
+		.save( ( err, feature ) => {
+			if ( err ) {
+				return res.status(500).send( err );
+			}
+
+			req.body.blueprint.features.push( feature )
+				.save( ( err, blueprint ) => {
+					if ( err ) {
+						return res.status(500).send( err );
+					}
+
+					return res.send( blueprint );
+				});
+		});
 }

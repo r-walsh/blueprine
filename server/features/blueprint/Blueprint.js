@@ -1,12 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-// Imports to make mongoose happy.
-import Feature from '../feature/Feature';
-import View from '../view/View';
-import Model from '../model/Model';
-import Endpoint from '../endpoint/Endpoint';
-
 const Blueprint = Schema({
 	  title: { type: String, required: true }
 	, description: { type: String, required: true }

@@ -3,6 +3,7 @@ import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
+import { ModalContainer, ModalDialog } from 'react-modal-dialog'
 
 import { colors, addButtonStyle } from '../constants/styles';
 
@@ -29,7 +30,7 @@ class EditBlueprint extends PureComponent {
 			LoginSrvc.verifyAuth();
 		}
 
-		if ( this.props.blueprints.get(`selectedBlueprint`) == Map() || this.props.blueprints.get(`selectedBlueprint`).get(`_id`) !== this.props.params.blueprintId ) {
+		if ( this.props.blueprints.get(`selectedBlueprint`) == Map() || this.props.blueprints.getIn([`selectedBlueprint`, `_id`]) !== this.props.params.blueprintId ) {
 			new Promise( ( resolve, reject ) => {
 				BlueprintSrvc.getBlueprintById( this.props.params.blueprintId, resolve, reject );
 			})
@@ -38,16 +39,20 @@ class EditBlueprint extends PureComponent {
 		}
 	}
 
+	toggleModal( planningItem ) {
+
+	}
+
 	toggleEditField( field, changed, newValue, blueprintId ) {
 		this.setState({ [field]: !this.state[field] });
 
-		if ( changed && this.props.blueprints.get(`selectedBlueprint`).get(changed) !== newValue ) {
+		if ( changed && this.props.blueprints.getIn([`selectedBlueprint`, changed ]) !== newValue ) {
 			BlueprintSrvc.updateTopLevel( changed, newValue, blueprintId );
 		}
 	}
 
 	handleChange( field, event ) {
-		this.setState({ blueprint: Object.assign( {}, this.state.blueprint, { [field]: event.target.value }) });
+		this.setState({ blueprint: { ...this.state.blueprint, [field]: event.target.value } });
 	}
 
 	render() {
@@ -55,17 +60,28 @@ class EditBlueprint extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper }>
+
+				{ /*
+					this.props.modal.get(`planningItemModal`) &&
+					<ModalContainer onClose={ this.modalClose.bind( this ) }>
+						<ModalDialog onClose={ this.modalClose.bind( this ) }>
+
+						</ModalDialog>
+					</ModalContainer>
+				*/ }
+
 				<div style={ styles.planningItemWrapper }>
 					<h2 style={ styles.title }>{ this.state.blueprint.title }</h2>
 					<p style={ styles.description }><b>Description:</b> { this.state.blueprint.description }</p>
+					{ /* TODO Completion tracking component */ }
 				</div>
 				<div style={ styles.planningItemWrapper }>
-					<div style={ styles.ideaAndUsers }>
+					<div style={ styles.ideaAndUsersWrapper }>
 						<ItemHeader itemName="Idea" />
 						{ this.state.blueprint.idea && !this.state.editIdea
 							?
 								<div>
-									<p>{ this.state.blueprint.idea }</p>
+									<p style={ styles.ideasAndUsers }>{ this.state.blueprint.idea }</p>
 									<button key="editIdea"
 											onClick={ this.toggleEditField.bind( this, `editIdea`, null ) }
 											style={ addButtonStyle }>
@@ -99,12 +115,12 @@ class EditBlueprint extends PureComponent {
 									</button>
 						}
 					</div>
-					<div style={ styles.ideaAndUsers }>
+					<div style={ styles.ideaAndUsersWrapper }>
 						<ItemHeader itemName="Users" />
 						{ this.state.blueprint.users && !this.state.editUsers
 							?
 								<div>
-									<p>{ this.state.blueprint.users }</p>
+									<p style={ styles.ideasAndUsers }>{ this.state.blueprint.users }</p>
 									<button key="editUsers"
 											onClick={ this.toggleEditField.bind( this, `editUsers`, null ) }
 											style={ addButtonStyle }>
@@ -172,7 +188,8 @@ class EditBlueprint extends PureComponent {
 				textAlign: `center`
 			}
 			, description: {
-				lineHeight: `1.2em`
+				  lineHeight: `1.2em`
+				, height: `35%`
 			}
 			, planningItemWrapper: {
 				  width: `33%`
@@ -184,7 +201,14 @@ class EditBlueprint extends PureComponent {
 				, boxSizing: `border-box`
 				, padding: 10
 			}
-			, ideaAndUsers: {
+			, ideasAndUsers: {
+				  height: 58
+				, overflow: `scroll`
+				, whiteSpace: `wrap`
+				, wordBreak: `break-all`
+				, marginBottom: -5
+			}
+			, ideaAndUsersWrapper: {
 				  height: `50%`
 				, overflow: `scroll`
 			}
@@ -214,4 +238,4 @@ class EditBlueprint extends PureComponent {
 	}
 }
 
-export default connect( state => ({ user: state.auth, blueprints: state.blueprint }))( Radium( EditBlueprint ));
+export default connect( state => ({ user: state.auth, blueprints: state.blueprint, modal: state.modal }))( Radium( EditBlueprint ));

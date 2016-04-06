@@ -40,7 +40,7 @@ class NewBlueprint extends PureComponent {
 			this.setState( initialState );
 			store.dispatch( toggleBlueprintModal( false ) );
 			store.dispatch( addBlueprint( res ));
-			return browserHistory.push(`/blueprints/${ res._id }`)
+			return browserHistory.push(`/blueprint/${ res._id }`)
 		})
 		.catch( err => {
 			this.setState({ errors: err });

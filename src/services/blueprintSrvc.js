@@ -54,7 +54,26 @@ export default class BlueprintSrvc {
 				, newValue
 			})
 			.end( ( err, blueprint ) => {
-				console.log( err, blueprint );
+				if ( err ) {
+					return console.error( err );
+				}
+
+				return store.dispatch( selectBlueprint( blueprint ) );
+			});
+	}
+
+	static postFeature( feature, blueprint ) {
+		request.post(`/api/blueprint/features`)
+			.send({
+				  feature
+				, blueprint
+			})
+			.end( ( err, blueprint ) => {
+				if ( err ) {
+					return console.error( err );
+				}
+
+				return store.dispatch( selectBlueprint( blueprint.body ) );
 			});
 	}
 }

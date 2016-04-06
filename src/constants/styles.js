@@ -13,7 +13,7 @@ export const addButtonStyle = {
 	, backgroundColor: colors.paleBlue
 	, color: colors.white
 	, margin: `15px 0 0 15px`
-	, display: `block`
+	, display: `inline-block`
 	, ':focus': {
 		outline: `none`
 	}

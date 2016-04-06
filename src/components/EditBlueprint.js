@@ -85,6 +85,11 @@ class EditBlueprint extends PureComponent {
 												style={ addButtonStyle }>
 											Save
 										</button>
+										<button key="cancelIdea"
+												style={ addButtonStyle }
+												onClick={ this.toggleEditField.bind( this, `editIdea`, null ) }>
+											Cancel
+										</button>
 									</div>
 								:
 									<button key="addIdea"
@@ -118,6 +123,11 @@ class EditBlueprint extends PureComponent {
 												onClick={ this.toggleEditField.bind( this, `editUsers`, `users`, this.state.blueprint.users, this.props.params.blueprintId ) }
 												style={ addButtonStyle }>
 											Save
+										</button>
+										<button key="cancelUsers"
+												style={ addButtonStyle }
+												onClick={ this.toggleEditField.bind( this, `editUsers`, null ) }>
+											Cancel
 										</button>
 									</div>
 								:

@@ -10,8 +10,8 @@ import Endpoint from '../endpoint/Endpoint';
 const Blueprint = Schema({
 	  title: { type: String, required: true }
 	, description: { type: String, required: true }
-	, idea: { type: String }
-	, users: { type: String }
+	, idea: { type: String, default: `` }
+	, users: { type: String, default: `` }
 	, features: [{ type: Schema.Types.ObjectId, ref: `Feature` }]
 	, views: [{ type: Schema.Types.ObjectId, ref: `View` }]
 	, endpoints: [{ type: Schema.Types.ObjectId, ref: `Endpoint` }]

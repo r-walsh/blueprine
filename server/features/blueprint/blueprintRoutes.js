@@ -1,11 +1,11 @@
-import { postBlueprint, getUserBlueprints, getBlueprintById, updateTopLevel } from './blueprintCtrl';
+import * as bp from './blueprintCtrl';
 
 export default app => {
 	app.route(`/api/blueprints`)
-		.post( postBlueprint )
-		.get( getUserBlueprints );
+		.post( bp.postBlueprint )
+		.get( bp.getUserBlueprints );
 
 	app.route(`/api/blueprint/:blueprintId`)
-		.get( getBlueprintById )
-		.put( updateTopLevel );
+		.get( bp.getBlueprintById )
+		.put( bp.updateTopLevel );
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router'
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 import request from 'superagent';
+import _ from 'lodash';
 
 import store from '../store';
 import { toggleBlueprintModal } from '../ducks/modal';
@@ -54,8 +55,8 @@ class Blueprints extends PureComponent {
 
 	constructBlueprints( owned, shared, styles ) {
 		let all = [...owned, ...shared];
-		return all.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1)
-					.sort( this.sortBlueprintsById )
+		return _.sortBy(all.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1), `_id`)
+					.reverse()
 					.map( blueprint => {
 						return (
 							<Link key={ blueprint._id }
@@ -88,19 +89,15 @@ class Blueprints extends PureComponent {
 		store.dispatch( toggleBlueprintModal( true ) );
 	}
 
-	sortBlueprintsById( a, b ) {
-		return a._id < b._id;
-	}
-
 	render() {
 		const styles = this.getStyles();
 
 		let recent, blueprints;
 		if ( this.props.blueprints.get(`ownedBlueprints`).count() > 0 || this.props.blueprints.get(`sharedBlueprints`).count() > 0 ) {
-			recent = [...this.props.blueprints.get(`ownedBlueprints`).toJS(), ...this.props.blueprints.get(`sharedBlueprints`).toJS()]
-								.sort( this.sortBlueprintsById )
-								.splice(0, 2)
-								.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
+			recent = _.sortBy([...this.props.blueprints.get(`ownedBlueprints`).toJS(), ...this.props.blueprints.get(`sharedBlueprints`).toJS()], `_id`)
+						.reverse()
+						.splice(0, 2)
+						.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
 
 			if ( this.state.search ) {
 				blueprints = this.constructBlueprints(

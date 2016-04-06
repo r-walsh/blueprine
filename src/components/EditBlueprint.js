@@ -4,6 +4,7 @@ import Radium from 'radium';
 import { connect } from 'react-redux';
 import request from 'superagent';
 import { browserHistory } from 'react-router';
+import { Map } from 'immutable';
 
 import { colors, addButtonStyle } from '../constants/styles';
 
@@ -21,7 +22,9 @@ class EditBlueprint extends PureComponent {
 		this.state = {
 			  editIdea: false
 			, editUsers: false
-		}
+			, blueprint: this.props.blueprints.get(`selectedBlueprint`).toJS()
+		};
+
 	}
 
 	componentWillMount() {
@@ -35,36 +38,39 @@ class EditBlueprint extends PureComponent {
 			});
 		}
 
-		if ( !this.props.blueprints.get(`selectedBlueprint`) ) {
+		if ( this.props.blueprints.get(`selectedBlueprint`) == Map() ) {
 			BlueprintSrvc.getBlueprintById( this.props.params.blueprintId );
 		}
 	}
 
-	editField( field ) {
-		this.setState({ [field]: !this.state[field] })
+	editField( field, changed, newValue, blueprintId ) {
+		this.setState({ [field]: !this.state[field] });
+
+		if ( changed ) {
+			BlueprintSrvc.updateTopLevel( changed, newValue, blueprintId );
+		}
+	}
+
+	handleChange( field, event ) {
+		this.setState({ [field]: event.target.value });
 	}
 
 	render() {
 		const styles = this.getStyles();
-		let blueprint = {};
-
-		if ( this.props.blueprints.get( `selectedBlueprint` ) ) {
-			blueprint = this.props.blueprints.get( `selectedBlueprint` ).toJS();
-		}
 
 		return (
 			<div style={ styles.wrapper }>
 				<div style={ styles.planningItemWrapper }>
-					<h2 style={ styles.title }>{ blueprint.title }</h2>
-					<p style={ styles.description }><b>Description:</b> { blueprint.description }</p>
+					<h2 style={ styles.title }>{ this.state.blueprint.title }</h2>
+					<p style={ styles.description }><b>Description:</b> { this.state.blueprint.description }</p>
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<div style={ styles.ideaAndUsers }>
 						<ItemHeader itemName="Idea" />
-						{ blueprint.idea
+						{ this.state.blueprint.idea
 							?
 								<div>
-									<p>{ blueprint.idea }</p>
+									<p>{ this.state.blueprint.idea }</p>
 									<button key="editIdea" style={ addButtonStyle }>Edit</button>
 								</div>
 							:
@@ -72,17 +78,18 @@ class EditBlueprint extends PureComponent {
 								?
 									<div>
 										<textarea style={ styles.textArea }
-													  value={ blueprint.idea }
-													  rows="3" />
+												  value={ this.state.blueprint.idea }
+												  onChange={ this.handleChange.bind( this, `idea` ) }
+												  rows="3" />
 										<button key="saveIdea"
-												onClick={ this.editField.bind( this, `editIdea` ) }
+												onClick={ this.editField.bind( this, `editIdea`, `idea`, this.state.blueprint.idea, this.props.params.blueprintId ) }
 												style={ addButtonStyle }>
 											Save
 										</button>
 									</div>
 								:
 									<button key="addIdea"
-											onClick={ this.editField.bind( this, `editIdea` ) }
+											onClick={ this.editField.bind( this, `editIdea`, null ) }
 											style={ addButtonStyle }>
 										<i className="fa fa-plus" />
 									</button>
@@ -90,15 +97,15 @@ class EditBlueprint extends PureComponent {
 					</div>
 					<div style={ styles.ideaAndUsers }>
 						<ItemHeader itemName="Users" />
-						{ blueprint.users
+						{ this.state.blueprint.users
 							?
-								<p>{ blueprint.users }</p>
+								<p>{ this.state.blueprint.users }</p>
 							:
 								this.state.editUsers
 								?
 									<div>
 										<textarea style={ styles.textArea }
-												  value={ blueprint.users }
+												  value={ this.state.blueprint.users }
 												  rows="3" />
 										<button key="saveUsers"
 												onClick={ this.editField.bind( this, `editUsers` ) }
@@ -108,7 +115,7 @@ class EditBlueprint extends PureComponent {
 									</div>
 								:
 									<button key="addUsers"
-											onClick={ this.editField.bind( this, `editUsers` ) }
+											onClick={ this.editField.bind( this, `editUsers`, null ) }
 											style={ addButtonStyle }>
 										<i className="fa fa-plus" />
 									</button>
@@ -117,19 +124,19 @@ class EditBlueprint extends PureComponent {
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Features" />
-					<PlanningItems item={ blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.features } />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.features } />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.features } />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />
-					<PlanningItems item={ blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.features } />
 				</div>
 			</div>
 		);

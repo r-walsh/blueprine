@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const Feature = Schema({
 	  name: { type: String, required: true  }
+	, feature: { type: String, required: true }
 	, mvp: { type: Boolean, required: true  }
 	, complete: { type: Boolean, default: false }
 });

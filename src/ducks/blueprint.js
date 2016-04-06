@@ -3,7 +3,7 @@ import { Map, List, fromJS } from 'immutable';
 const initialState = Map({
 	  ownedBlueprints: List()
 	, sharedBlueprints: List()
-	, selectedBlueprint: null
+	, selectedBlueprint: Map()
 });
 
 const SET_BLUEPRINTS = `blueprint/SET_BLUEPRINT`;
@@ -13,10 +13,8 @@ const SELECT_BLUEPRINT = `blueprint/SELECT_BLUEPRINT`;
 export default ( state = initialState, action ) => {
 	switch( action.type ) {
 		case SET_BLUEPRINTS:
-			return Map({
-				  ownedBlueprints: List.of( ...action.ownedBlueprints )
-				, sharedBlueprints: List.of( ...action.sharedBlueprints )
-			});
+			return state.set(`ownedBlueprints`, List.of( ...action.ownedBlueprints ))
+						.set(`sharedBlueprints`, List.of( ...action.sharedBlueprints ));
 		case ADD_BLUEPRINT:
 			return state.update(`ownedBlueprints`, blueprints => blueprints.push( action.blueprint ));
 		case SELECT_BLUEPRINT:

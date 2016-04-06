@@ -20,7 +20,8 @@ export default class BlueprintSrvc {
 				return console.error( err );
 			}
 
-			return store.dispatch( selectBlueprint( blueprint.body ) );
+			store.dispatch( selectBlueprint( blueprint.body ) );
+			return blueprint.body;
 		});
 	}
 
@@ -47,7 +48,7 @@ export default class BlueprintSrvc {
 	}
 
 	static updateTopLevel( changed, newValue, blueprintId ) {
-		request.post(`/api/blueprint/${ blueprintId }`)
+		request.put(`/api/blueprint/${ blueprintId }`)
 			.send({
 				  changed
 				, newValue

@@ -83814,6 +83814,8 @@
 	
 	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 240);
 	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83894,6 +83896,8 @@
 						return console.error(err);
 					}
 	
+					console.log(blueprint.body);
+					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
 					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
 				});
 			}

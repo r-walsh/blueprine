@@ -1,6 +1,7 @@
 import request from 'superagent';
 import store from '../store';
 import { setBlueprints, selectBlueprint } from '../ducks/blueprint';
+import { togglePlanningItemModal } from '../ducks/modal';
 
 export default class BlueprintSrvc {
 	static postBlueprint( blueprint, resolve, reject ) {
@@ -73,6 +74,8 @@ export default class BlueprintSrvc {
 					return console.error( err );
 				}
 
+				console.log(blueprint.body)
+				store.dispatch( togglePlanningItemModal( false, null, {} ) );
 				return store.dispatch( selectBlueprint( blueprint.body ) );
 			});
 	}

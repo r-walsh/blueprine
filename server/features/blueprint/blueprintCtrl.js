@@ -51,8 +51,9 @@ export function getBlueprintById( req, res ) {
 
 		const shitToPopulate = [
 			  `features`
-			, `views`
-			, `endpoints`
+			, `views.features`
+			, `views.endpoints`
+			, `endpoints.models`
 			, `models`
 		];
 
@@ -90,12 +91,27 @@ export function postFeature( req, res ) {
 				return res.status(500).send( err );
 			}
 
-			Blueprint.findByIdAndUpdate( req.body.blueprint._id , { $push: { features: feature } }, ( err, blueprint ) => {
+			Blueprint.findByIdAndUpdate( req.body.blueprint._id , { $push: { features: feature._id } }, ( err, blueprint ) => {
 				if ( err ) {
 					return res.status(500).send( err );
 				}
+				console.log(blueprint)
 
-				return res.send( blueprint );
+				const shitToPopulate = [
+					  `features`
+					, `views.features`
+					, `views.endpoints`
+					, `endpoints.models`
+					, `models`
+				];
+
+				blueprint.populate( `features`, ( err, populatedBlueprint ) => {
+					if ( err ) {
+						return res.status(500).send( err );
+					}
+					console.log(populatedBlueprint)
+					return res.send( populatedBlueprint );
+				});
 			});
 
 		});

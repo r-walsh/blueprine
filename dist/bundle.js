@@ -85177,6 +85177,8 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85197,11 +85199,64 @@
 		_createClass(FeatureModal, [{
 			key: 'render',
 			value: function render() {
+				var styles = this.getStyles();
+	
 				return _react2.default.createElement(
-					'h1',
-					null,
-					'FEATURE'
+					'div',
+					{ style: styles.wrapper },
+					_react2.default.createElement(
+						'label',
+						{ style: [styles.label, styles.labelFirst] },
+						'Feature name:'
+					),
+					_react2.default.createElement('input', { style: styles.textInput, type: 'text' }),
+					_react2.default.createElement(
+						'label',
+						{ style: styles.label },
+						'Feature:'
+					),
+					_react2.default.createElement('textarea', { rows: '4', style: styles.textArea }),
+					_react2.default.createElement(
+						'label',
+						{ style: styles.label, htmlFor: 'mvp' },
+						'MVP?'
+					),
+					_react2.default.createElement('input', { id: 'mvp', name: 'mvp', type: 'checkbox' }),
+					_react2.default.createElement(
+						'button',
+						{ style: [_styles.addButtonStyle, styles.saveButton] },
+						'Save Feature'
+					)
 				);
+			}
+		}, {
+			key: 'getStyles',
+			value: function getStyles() {
+				return {
+					wrapper: {
+						width: 350
+					},
+					label: {
+						display: 'inline-block',
+						margin: '10px 7px 3px 0'
+					},
+					labelFirst: {
+						margin: '0 7px 3px 0'
+					},
+					textInput: {
+						display: 'block',
+						width: '100%'
+					},
+					textArea: {
+						resize: 'none',
+						display: 'block',
+						width: '100%'
+					},
+					saveButton: {
+						margin: '12px 0 0 0',
+						display: 'block'
+					}
+				};
 			}
 		}]);
 	

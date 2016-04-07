@@ -2,6 +2,8 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 
+import { colors } from '../constants/styles';
+
 class PlanningItem extends PureComponent {
 	constructor( props ) {
 		super( props );
@@ -13,8 +15,12 @@ class PlanningItem extends PureComponent {
 		return (
 			<div style={ styles.itemWrapper }>
 				<div style={ styles.item }>{ this.props.name }</div>
-				<div style={ styles.item }>{ this.props.mvp ? <i style={ styles.check } className="fa fa-check" /> : <i style={ style.cross } className="fa fa-times" /> }</div>
-				<div style={ styles.item }>{ this.props.mvp ? <i style={ styles.check } className="fa fa-check" /> : <i style={ style.cross } className="fa fa-times" /> }</div>
+				<div style={ styles.item }>{ this.props.mvp ? <i style={ styles.check } className="fa fa-check" /> : null }</div>
+				<div style={ styles.item }>
+					<div key="complete" style={ styles.complete }>
+						{ this.props.complete ? <i style={ styles.check } className="fa fa-check" /> : <i style={ styles.cross } className="fa fa-times" /> }
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -24,17 +30,30 @@ class PlanningItem extends PureComponent {
 			itemWrapper: {
 				  display: `flex`
 				, justifyContent: `space-around`
+				, cursor: `pointer`
+				, borderBottom: `1px solid ${ colors.gray }`
+				, ':hover': {
+					outline: `1px solid ${ colors.lightBlue }`
+				}
 			}
 			, item: {
 				  display: `inline-block`
 				, width: `33%`
 				, textAlign: `center`
 			}
+			, complete: {
+				  borderRadius: 2
+				, width: `50%`
+				, margin: `0 auto`
+				, ':hover': {
+					boxShadow: `inset 0px 0px 2px 2px rgba(110,110,112,0.52)`
+				}
+			}
 			, check: {
-				color: `green`
+				color: `#56AF56`
 			}
 			, cross: {
-				color: `red`
+				color: `#D03939`
 			}
 		}
 	}

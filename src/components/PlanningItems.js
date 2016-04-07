@@ -25,7 +25,7 @@ class PlanningItems extends PureComponent {
 		if ( this.props.item ) {
 			items = this.props.item.map( item => {
 				return (
-					<PlanningItem name={ item.name } mvp={ item.mvp } complete={ item.complete } />
+					<PlanningItem { ...item } key={ item._id } />
 				);
 			});
 		}
@@ -63,6 +63,7 @@ class PlanningItems extends PureComponent {
 				, border: `1px solid rgba(44, 71, 112, 0.6)`
 				, borderRadius: 3
 				, padding: 3
+				, overflow: `hidden`
 			}
 			,  itemWrapper: {
 				  display: `flex`
@@ -78,7 +79,7 @@ class PlanningItems extends PureComponent {
 				fontSize: `.7em`
 			}
 			, currentItemsInnerWrapper: {
-				  height: `100%`
+				  height: `90%`
 				, width: `100%`
 				, overflow: `scroll`
 			}

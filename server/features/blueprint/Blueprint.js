@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import DeepPopulate from 'mongoose-deep-populate';
 const { Schema } = mongoose;
+
+const deepPopulate = DeepPopulate( mongoose );
 
 const Blueprint = Schema({
 	  title: { type: String, required: true }
@@ -12,6 +15,8 @@ const Blueprint = Schema({
 	, models: [{ type: Schema.Types.ObjectId, ref: `Model` }]
 	, editPermissions: [{ type: Schema.Types.ObjectId }]
 });
+
+Blueprint.plugin( deepPopulate );
 
 export default mongoose.model(`Blueprint`, Blueprint);
 

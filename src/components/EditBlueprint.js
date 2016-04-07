@@ -20,12 +20,6 @@ import ModelModal from './ModelModal';
 import BlueprintSrvc from '../services/blueprintSrvc';
 import LoginSrvc from '../services/loginSrvc';
 
-const modalItems = {
-	  feature: <FeatureModal />
-	, view: <ViewModal />
-	, endpoint: <EndpointModal />
-	, model: <ModelModal />
-};
 
 class EditBlueprint extends PureComponent {
 	constructor( props ) {
@@ -48,8 +42,11 @@ class EditBlueprint extends PureComponent {
 			new Promise( ( resolve, reject ) => {
 				BlueprintSrvc.getBlueprintById( this.props.params.blueprintId, resolve, reject );
 			})
-			.then( blueprint => this.setState({ blueprint }))
-			.catch( err => console.error( err ));
+			.then( ( blueprint, err ) => {
+				if ( err ) console.error( err );
+				this.setState({ blueprint })
+			})
+			// .catch( err => console.error( err ));
 		}
 	}
 
@@ -71,6 +68,12 @@ class EditBlueprint extends PureComponent {
 
 	render() {
 		const styles = this.getStyles();
+		const modalItems = {
+			  feature: <FeatureModal blueprint={ this.state.blueprint } />
+			, view: <ViewModal blueprint={ this.state.blueprint } />
+			, endpoint: <EndpointModal blueprint={ this.state.blueprint } />
+			, model: <ModelModal blueprint={ this.state.blueprint } />
+		};
 
 		return (
 			<div style={ styles.wrapper }>

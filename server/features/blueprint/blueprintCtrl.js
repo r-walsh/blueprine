@@ -27,12 +27,12 @@ export function getUserBlueprints( req, res ) {
 		  `blueprints.owned.features`
 		, `blueprints.owned.views.features`
 		, `blueprints.owned.views.endpoints`
-		, `blueprints.owned.schemas`
+		, `blueprints.owned.models`
 		, `blueprints.owned.endpoints`
 		, `blueprints.shared.features`
 		, `blueprints.shared.views.features`
 		, `blueprints.shared.views.endpoints`
-		, `blueprints.shared.schemas`
+		, `blueprints.shared.models`
 		, `blueprints.shared.endpoints`
 	];
 	req.user.deepPopulate(shitToPopulate, ( err, user ) => {
@@ -49,7 +49,20 @@ export function getBlueprintById( req, res ) {
 			return res.status(500).send( err );
 		}
 
-		return res.send(blueprint);
+		const shitToPopulate = [
+			  `features`
+			, `views`
+			, `endpoints`
+			, `models`
+		];
+
+		blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
+			if ( err ) {
+				return res.status(500).send( err );
+			}
+			return res.send( populatedBlueprint );
+		});
+
 	});
 }
 
@@ -77,13 +90,13 @@ export function postFeature( req, res ) {
 				return res.status(500).send( err );
 			}
 
-			req.body.blueprint.features.push( feature )
-				.save( ( err, blueprint ) => {
-					if ( err ) {
-						return res.status(500).send( err );
-					}
+			Blueprint.findByIdAndUpdate( req.body.blueprint._id , { $push: { features: feature } }, ( err, blueprint ) => {
+				if ( err ) {
+					return res.status(500).send( err );
+				}
 
-					return res.send( blueprint );
-				});
+				return res.send( blueprint );
+			});
+
 		});
 }

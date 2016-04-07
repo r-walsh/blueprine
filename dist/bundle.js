@@ -84501,13 +84501,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var modalItems = {
-		feature: _react2.default.createElement(_FeatureModal2.default, null),
-		view: _react2.default.createElement(_ViewModal2.default, null),
-		endpoint: _react2.default.createElement(_EndpointModal2.default, null),
-		model: _react2.default.createElement(_ModelModal2.default, null)
-	};
-	
 	var EditBlueprint = function (_PureComponent) {
 		_inherits(EditBlueprint, _PureComponent);
 	
@@ -84537,11 +84530,11 @@
 				if (this.props.blueprints.get('selectedBlueprint') == (0, _immutable.Map)() || this.props.blueprints.getIn(['selectedBlueprint', '_id']) !== this.props.params.blueprintId) {
 					new Promise(function (resolve, reject) {
 						_blueprintSrvc2.default.getBlueprintById(_this2.props.params.blueprintId, resolve, reject);
-					}).then(function (blueprint) {
-						return _this2.setState({ blueprint: blueprint });
-					}).catch(function (err) {
-						return console.error(err);
+					}).then(function (blueprint, err) {
+						if (err) console.error(err);
+						_this2.setState({ blueprint: blueprint });
 					});
+					// .catch( err => console.error( err ));
 				}
 			}
 		}, {
@@ -84567,6 +84560,12 @@
 			key: 'render',
 			value: function render() {
 				var styles = this.getStyles();
+				var modalItems = {
+					feature: _react2.default.createElement(_FeatureModal2.default, { blueprint: this.state.blueprint }),
+					view: _react2.default.createElement(_ViewModal2.default, { blueprint: this.state.blueprint }),
+					endpoint: _react2.default.createElement(_EndpointModal2.default, { blueprint: this.state.blueprint }),
+					model: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint })
+				};
 	
 				return _react2.default.createElement(
 					'div',
@@ -84903,6 +84902,8 @@
 		value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 2);
@@ -84959,7 +84960,7 @@
 				var items = void 0;
 				if (this.props.item) {
 					items = this.props.item.map(function (item) {
-						return _react2.default.createElement(_PlanningItem2.default, { name: item.name, mvp: item.mvp, complete: item.complete });
+						return _react2.default.createElement(_PlanningItem2.default, _extends({}, item, { key: item._id }));
 					});
 				}
 	
@@ -85016,7 +85017,8 @@
 						margin: '10px auto',
 						border: '1px solid rgba(44, 71, 112, 0.6)',
 						borderRadius: 3,
-						padding: 3
+						padding: 3,
+						overflow: 'hidden'
 					},
 					itemWrapper: {
 						display: 'flex',
@@ -85032,7 +85034,7 @@
 						fontSize: '.7em'
 					},
 					currentItemsInnerWrapper: {
-						height: '100%',
+						height: '90%',
 						width: '100%',
 						overflow: 'scroll'
 					}
@@ -85076,6 +85078,8 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85109,12 +85113,16 @@
 					_react2.default.createElement(
 						'div',
 						{ style: styles.item },
-						this.props.mvp ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: style.cross, className: 'fa fa-times' })
+						this.props.mvp ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : null
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.item },
-						this.props.mvp ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: style.cross, className: 'fa fa-times' })
+						_react2.default.createElement(
+							'div',
+							{ key: 'complete', style: styles.complete },
+							this.props.complete ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
+						)
 					)
 				);
 			}
@@ -85124,18 +85132,31 @@
 				return {
 					itemWrapper: {
 						display: 'flex',
-						justifyContent: 'space-around'
+						justifyContent: 'space-around',
+						cursor: 'pointer',
+						borderBottom: '1px solid ' + _styles.colors.gray,
+						':hover': {
+							outline: '1px solid ' + _styles.colors.lightBlue
+						}
 					},
 					item: {
 						display: 'inline-block',
 						width: '33%',
 						textAlign: 'center'
 					},
+					complete: {
+						borderRadius: 2,
+						width: '50%',
+						margin: '0 auto',
+						':hover': {
+							boxShadow: 'inset 0px 0px 2px 2px rgba(110,110,112,0.52)'
+						}
+					},
 					check: {
-						color: 'green'
+						color: '#56AF56'
 					},
 					cross: {
-						color: 'red'
+						color: '#D03939'
 					}
 				};
 			}
@@ -85179,7 +85200,13 @@
 	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	
+	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -85193,10 +85220,38 @@
 		function FeatureModal(props) {
 			_classCallCheck(this, FeatureModal);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(FeatureModal).call(this, props));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FeatureModal).call(this, props));
+	
+			_this.state = {
+				featureName: '',
+				feature: '',
+				mvp: false
+			};
+			return _this;
 		}
 	
 		_createClass(FeatureModal, [{
+			key: 'saveFeature',
+			value: function saveFeature() {
+				if (this.state.featureName && this.state.feature) {
+					_blueprintSrvc2.default.postFeature({
+						feature: this.state.feature,
+						name: this.state.featureName,
+						mvp: this.state.mvp
+					}, this.props.blueprint);
+				}
+			}
+		}, {
+			key: 'handleChange',
+			value: function handleChange(field, event) {
+				this.setState(_defineProperty({}, field, event.target.value));
+			}
+		}, {
+			key: 'handleCheckChange',
+			value: function handleCheckChange() {
+				this.setState({ mvp: !this.state.mvp });
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var styles = this.getStyles();
@@ -85209,22 +85264,35 @@
 						{ style: [styles.label, styles.labelFirst] },
 						'Feature name:'
 					),
-					_react2.default.createElement('input', { style: styles.textInput, type: 'text' }),
+					_react2.default.createElement('input', { style: [styles.textInput, styles.textBorders],
+						value: this.state.featureName,
+						onChange: this.handleChange.bind(this, 'featureName'),
+						key: 'featureName',
+						type: 'text' }),
 					_react2.default.createElement(
 						'label',
 						{ style: styles.label },
 						'Feature:'
 					),
-					_react2.default.createElement('textarea', { rows: '4', style: styles.textArea }),
+					_react2.default.createElement('textarea', { rows: '4',
+						key: 'feature',
+						value: this.state.feature,
+						onChange: this.handleChange.bind(this, 'feature'),
+						style: [styles.textArea, styles.textBorders] }),
 					_react2.default.createElement(
 						'label',
 						{ style: styles.label, htmlFor: 'mvp' },
 						'MVP?'
 					),
-					_react2.default.createElement('input', { id: 'mvp', name: 'mvp', type: 'checkbox' }),
+					_react2.default.createElement('input', { id: 'mvp',
+						name: 'mvp',
+						type: 'checkbox',
+						value: this.state.mvp,
+						onChange: this.handleCheckChange.bind(this) }),
 					_react2.default.createElement(
 						'button',
-						{ style: [_styles.addButtonStyle, styles.saveButton] },
+						{ style: [_styles.addButtonStyle, styles.saveButton],
+							onClick: this.saveFeature.bind(this) },
 						'Save Feature'
 					)
 				);
@@ -85245,7 +85313,8 @@
 					},
 					textInput: {
 						display: 'block',
-						width: '100%'
+						width: '100%',
+						height: '1.4em'
 					},
 					textArea: {
 						resize: 'none',
@@ -85255,6 +85324,13 @@
 					saveButton: {
 						margin: '12px 0 0 0',
 						display: 'block'
+					},
+					textBorders: {
+						border: '1px solid black',
+						borderRadius: 3,
+						':focus': {
+							outlineWidth: 2
+						}
 					}
 				};
 			}

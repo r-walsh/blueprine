@@ -7,6 +7,14 @@ import { colors } from '../constants/styles';
 class PlanningItem extends PureComponent {
 	constructor( props ) {
 		super( props );
+
+		this.state = {
+			hovering: false
+		};
+	}
+
+	crossToCheck() {
+		this.setState({ hovering: !this.state.hovering });
 	}
 
 	render() {
@@ -17,8 +25,10 @@ class PlanningItem extends PureComponent {
 				<div style={ styles.item }>{ this.props.name }</div>
 				<div style={ styles.item }>{ this.props.mvp ? <i style={ styles.check } className="fa fa-check" /> : null }</div>
 				<div style={ styles.item }>
-					<div key="complete" style={ styles.complete }>
-						{ this.props.complete ? <i style={ styles.check } className="fa fa-check" /> : <i style={ styles.cross } className="fa fa-times" /> }
+					<div style={ styles.complete }
+						 onMouseEnter={ this.crossToCheck.bind( this ) }
+						 onMouseLeave={ this.crossToCheck.bind( this ) }>
+						{ this.props.complete || this.state.hovering ? <i style={ styles.check } className="fa fa-check" /> : <i style={ styles.cross } className="fa fa-times" /> }
 					</div>
 				</div>
 			</div>
@@ -45,9 +55,6 @@ class PlanningItem extends PureComponent {
 				  borderRadius: 2
 				, width: `50%`
 				, margin: `0 auto`
-				, ':hover': {
-					boxShadow: `inset 0px 0px 2px 2px rgba(110,110,112,0.52)`
-				}
 			}
 			, check: {
 				color: `#56AF56`

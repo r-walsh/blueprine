@@ -85097,10 +85097,20 @@
 		function PlanningItem(props) {
 			_classCallCheck(this, PlanningItem);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(PlanningItem).call(this, props));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlanningItem).call(this, props));
+	
+			_this.state = {
+				hovering: false
+			};
+			return _this;
 		}
 	
 		_createClass(PlanningItem, [{
+			key: 'crossToCheck',
+			value: function crossToCheck() {
+				this.setState({ hovering: !this.state.hovering });
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var styles = this.getStyles();
@@ -85123,8 +85133,10 @@
 						{ style: styles.item },
 						_react2.default.createElement(
 							'div',
-							{ key: 'complete', style: styles.complete },
-							this.props.complete ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
+							{ style: styles.complete,
+								onMouseEnter: this.crossToCheck.bind(this),
+								onMouseLeave: this.crossToCheck.bind(this) },
+							this.props.complete || this.state.hovering ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
 						)
 					)
 				);
@@ -85150,10 +85162,7 @@
 					complete: {
 						borderRadius: 2,
 						width: '50%',
-						margin: '0 auto',
-						':hover': {
-							boxShadow: 'inset 0px 0px 2px 2px rgba(110,110,112,0.52)'
-						}
+						margin: '0 auto'
 					},
 					check: {
 						color: '#56AF56'

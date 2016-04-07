@@ -74,7 +74,6 @@ export default class BlueprintSrvc {
 					return console.error( err );
 				}
 
-				console.log(blueprint.body)
 				store.dispatch( togglePlanningItemModal( false, null, {} ) );
 				return store.dispatch( selectBlueprint( blueprint.body ) );
 			});

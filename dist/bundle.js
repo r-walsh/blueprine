@@ -83896,7 +83896,6 @@
 						return console.error(err);
 					}
 	
-					console.log(blueprint.body);
 					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
 					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
 				});

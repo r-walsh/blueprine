@@ -85,6 +85,14 @@ export function updateTopLevel( req, res ) {
 }
 
 export function postFeature( req, res ) {
+	const shitToPopulate = [
+		  `features`
+		, `views.features`
+		, `views.endpoints`
+		, `endpoints.models`
+		, `models`
+	];
+
 	new Feature( req.body.feature )
 		.save( ( err, feature ) => {
 			if ( err ) {
@@ -95,22 +103,21 @@ export function postFeature( req, res ) {
 				if ( err ) {
 					return res.status(500).send( err );
 				}
-				console.log(blueprint)
 
-				const shitToPopulate = [
-					  `features`
-					, `views.features`
-					, `views.endpoints`
-					, `endpoints.models`
-					, `models`
-				];
-
-				blueprint.populate( `features`, ( err, populatedBlueprint ) => {
+				blueprint.save( ( err, savedBlueprint ) => {
 					if ( err ) {
 						return res.status(500).send( err );
 					}
-					console.log(populatedBlueprint)
-					return res.send( populatedBlueprint );
+
+					Blueprint.findById( savedBlueprint._id, ( err, blueprint ) => {
+						blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
+							if ( err ) {
+								return res.status(500).send( err );
+							}
+
+							return res.send( populatedBlueprint );
+						});
+					});
 				});
 			});
 

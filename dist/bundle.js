@@ -31924,7 +31924,8 @@
 		blueprintModal: false,
 		planningItemModal: (0, _immutable.Map)({
 			toggled: false,
-			item: ''
+			type: '',
+			item: (0, _immutable.Map)()
 		})
 	});
 	
@@ -31948,10 +31949,10 @@
 		return { type: TOGGLE_BLUEPRINT_MODAL, status: status };
 	}
 	
-	function togglePlanningItemModal(toggled, item) {
+	function togglePlanningItemModal(toggled, type, item) {
 		return {
 			type: TOGGLE_PLANNING_ITEM_MODAL,
-			planningItem: (0, _immutable.fromJS)({ toggled: toggled, item: item })
+			planningItem: (0, _immutable.fromJS)({ toggled: toggled, type: type, item: item })
 		};
 	}
 
@@ -84576,7 +84577,7 @@
 						_react2.default.createElement(
 							_reactModalDialog.ModalDialog,
 							{ onClose: this.modalClose.bind(this) },
-							modalItems[this.props.modal.getIn(['planningItemModal', 'item'])]
+							modalItems[this.props.modal.getIn(['planningItemModal', 'type'])]
 						)
 					),
 					_react2.default.createElement(
@@ -84948,7 +84949,7 @@
 		_createClass(PlanningItems, [{
 			key: 'openModal',
 			value: function openModal() {
-				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, this.props.type));
+				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, this.props.type, {}));
 			}
 		}, {
 			key: 'render',

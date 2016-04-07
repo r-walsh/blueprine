@@ -79,7 +79,7 @@ class EditBlueprint extends PureComponent {
 					this.props.modal.getIn([`planningItemModal`, `toggled`]) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
-							{ modalItems[this.props.modal.getIn( [`planningItemModal`, `item`] )] }
+							{ modalItems[this.props.modal.getIn( [`planningItemModal`, `type`] )] }
 						</ModalDialog>
 					</ModalContainer>
 				}

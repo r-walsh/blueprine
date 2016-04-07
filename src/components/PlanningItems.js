@@ -15,7 +15,7 @@ class PlanningItems extends PureComponent {
 	}
 	
 	openModal() {
-		store.dispatch( togglePlanningItemModal( true, this.props.type ));
+		store.dispatch( togglePlanningItemModal( true, this.props.type, {} ));
 	}
 
 	render() {

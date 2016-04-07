@@ -4,7 +4,8 @@ const initialState = Map({
 	  blueprintModal: false
 	, planningItemModal: Map({
 		  toggled: false
-		, item: ``
+		, type: ``
+		, item: Map()
 	})
 });
 
@@ -25,9 +26,9 @@ export function toggleBlueprintModal( status ) {
 	return { type: TOGGLE_BLUEPRINT_MODAL, status }
 }
 
-export function togglePlanningItemModal( toggled, item ) {
+export function togglePlanningItemModal( toggled, type, item ) {
 	return {
 		  type: TOGGLE_PLANNING_ITEM_MODAL
-		, planningItem: fromJS({ toggled, item })
+		, planningItem: fromJS({ toggled, type, item })
 	}
 }

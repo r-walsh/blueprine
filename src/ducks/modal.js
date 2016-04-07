@@ -1,10 +1,10 @@
-import { Map } from 'immutable';
+import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
 	  blueprintModal: false
 	, planningItemModal: Map({
 		  toggled: false
-		, item: Map()
+		, item: ``
 	})
 });
 
@@ -25,9 +25,9 @@ export function toggleBlueprintModal( status ) {
 	return { type: TOGGLE_BLUEPRINT_MODAL, status }
 }
 
-export function togglePlanningItemModal( item, toggled ) {
+export function togglePlanningItemModal( toggled, item ) {
 	return {
 		  type: TOGGLE_PLANNING_ITEM_MODAL
-		, planningItem: Map({ toggled, item })
+		, planningItem: fromJS({ toggled, item })
 	}
 }

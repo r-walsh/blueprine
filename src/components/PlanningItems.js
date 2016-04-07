@@ -2,6 +2,9 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component'
 import Radium from 'radium';
 
+import store from '../store';
+import { togglePlanningItemModal } from '../ducks/modal';
+
 import { addButtonStyle } from '../constants/styles';
 
 import PlanningItem from './PlanningItem';
@@ -9,6 +12,10 @@ import PlanningItem from './PlanningItem';
 class PlanningItems extends PureComponent {
 	constructor( props ) {
 		super( props );
+	}
+	
+	openModal() {
+		store.dispatch( togglePlanningItemModal( true, this.props.type ));
 	}
 
 	render() {
@@ -25,7 +32,8 @@ class PlanningItems extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper }>
-				<button style={ [addButtonStyle, styles.buttonStyle] }>
+				<button onClick={ this.openModal.bind( this ) }
+						style={ [addButtonStyle, styles.buttonStyle] }>
 					<i className="fa fa-plus" />
 				</button>
 				<div style={ styles.currentItemsOuterWrapper }>

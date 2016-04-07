@@ -31924,7 +31924,7 @@
 		blueprintModal: false,
 		planningItemModal: (0, _immutable.Map)({
 			toggled: false,
-			item: (0, _immutable.Map)()
+			item: ''
 		})
 	});
 	
@@ -31948,10 +31948,10 @@
 		return { type: TOGGLE_BLUEPRINT_MODAL, status: status };
 	}
 	
-	function togglePlanningItemModal(item, toggled) {
+	function togglePlanningItemModal(toggled, item) {
 		return {
 			type: TOGGLE_PLANNING_ITEM_MODAL,
-			planningItem: (0, _immutable.Map)({ toggled: toggled, item: item })
+			planningItem: (0, _immutable.fromJS)({ toggled: toggled, item: item })
 		};
 	}
 
@@ -84450,6 +84450,12 @@
 	
 	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
 	
+	var _store = __webpack_require__(/*! ../store */ 235);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
 	var _ItemHeader = __webpack_require__(/*! ./ItemHeader */ 351);
@@ -84459,6 +84465,22 @@
 	var _PlanningItems = __webpack_require__(/*! ./PlanningItems */ 352);
 	
 	var _PlanningItems2 = _interopRequireDefault(_PlanningItems);
+	
+	var _FeatureModal = __webpack_require__(/*! ./FeatureModal */ 354);
+	
+	var _FeatureModal2 = _interopRequireDefault(_FeatureModal);
+	
+	var _ViewModal = __webpack_require__(/*! ./ViewModal */ 355);
+	
+	var _ViewModal2 = _interopRequireDefault(_ViewModal);
+	
+	var _EndpointModal = __webpack_require__(/*! ./EndpointModal */ 356);
+	
+	var _EndpointModal2 = _interopRequireDefault(_EndpointModal);
+	
+	var _ModelModal = __webpack_require__(/*! ./ModelModal */ 357);
+	
+	var _ModelModal2 = _interopRequireDefault(_ModelModal);
 	
 	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
 	
@@ -84477,6 +84499,13 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var modalItems = {
+		feature: _react2.default.createElement(_FeatureModal2.default, null),
+		view: _react2.default.createElement(_ViewModal2.default, null),
+		endpoint: _react2.default.createElement(_EndpointModal2.default, null),
+		model: _react2.default.createElement(_ModelModal2.default, null)
+	};
 	
 	var EditBlueprint = function (_PureComponent) {
 		_inherits(EditBlueprint, _PureComponent);
@@ -84515,8 +84544,10 @@
 				}
 			}
 		}, {
-			key: 'toggleModal',
-			value: function toggleModal(planningItem) {}
+			key: 'modalClose',
+			value: function modalClose() {
+				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, ''));
+			}
 		}, {
 			key: 'toggleEditField',
 			value: function toggleEditField(field, changed, newValue, blueprintId) {
@@ -84539,6 +84570,15 @@
 				return _react2.default.createElement(
 					'div',
 					{ style: styles.wrapper },
+					this.props.modal.getIn(['planningItemModal', 'toggled']) && _react2.default.createElement(
+						_reactModalDialog.ModalContainer,
+						{ onClose: this.modalClose.bind(this) },
+						_react2.default.createElement(
+							_reactModalDialog.ModalDialog,
+							{ onClose: this.modalClose.bind(this) },
+							modalItems[this.props.modal.getIn(['planningItemModal', 'item'])]
+						)
+					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
@@ -84663,25 +84703,25 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Features' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features, type: 'feature' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.views })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.views, type: 'view' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.endpoints })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.endpoints, type: 'endpoint' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.models })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.models, type: 'model' })
 					)
 				);
 			}
@@ -84876,6 +84916,12 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _store = __webpack_require__(/*! ../store */ 235);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
 	var _PlanningItem = __webpack_require__(/*! ./PlanningItem */ 353);
@@ -84900,6 +84946,11 @@
 		}
 	
 		_createClass(PlanningItems, [{
+			key: 'openModal',
+			value: function openModal() {
+				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, this.props.type));
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var styles = this.getStyles();
@@ -84916,7 +84967,8 @@
 					{ style: styles.wrapper },
 					_react2.default.createElement(
 						'button',
-						{ style: [_styles.addButtonStyle, styles.buttonStyle] },
+						{ onClick: this.openModal.bind(this),
+							style: [_styles.addButtonStyle, styles.buttonStyle] },
 						_react2.default.createElement('i', { className: 'fa fa-plus' })
 					),
 					_react2.default.createElement(
@@ -85094,6 +85146,262 @@
 	exports.default = (0, _radium2.default)(PlanningItem);
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "PlanningItem.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 354 */
+/*!****************************************!*\
+  !*** ./src/components/FeatureModal.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	var _radium = __webpack_require__(/*! radium */ 248);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var FeatureModal = function (_PureComponent) {
+		_inherits(FeatureModal, _PureComponent);
+	
+		function FeatureModal(props) {
+			_classCallCheck(this, FeatureModal);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(FeatureModal).call(this, props));
+		}
+	
+		_createClass(FeatureModal, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'h1',
+					null,
+					'FEATURE'
+				);
+			}
+		}]);
+	
+		return FeatureModal;
+	}(_component2.default);
+	
+	exports.default = (0, _radium2.default)(FeatureModal);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "FeatureModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 355 */
+/*!*************************************!*\
+  !*** ./src/components/ViewModal.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	var _radium = __webpack_require__(/*! radium */ 248);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ViewModal = function (_PureComponent) {
+		_inherits(ViewModal, _PureComponent);
+	
+		function ViewModal(props) {
+			_classCallCheck(this, ViewModal);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ViewModal).call(this, props));
+		}
+	
+		_createClass(ViewModal, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'h1',
+					null,
+					'VIEW'
+				);
+			}
+		}]);
+	
+		return ViewModal;
+	}(_component2.default);
+	
+	exports.default = (0, _radium2.default)(ViewModal);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ViewModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 356 */
+/*!*****************************************!*\
+  !*** ./src/components/EndpointModal.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	var _radium = __webpack_require__(/*! radium */ 248);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EndpointModal = function (_PureComponent) {
+		_inherits(EndpointModal, _PureComponent);
+	
+		function EndpointModal(props) {
+			_classCallCheck(this, EndpointModal);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(EndpointModal).call(this, props));
+		}
+	
+		_createClass(EndpointModal, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'h1',
+					null,
+					'ENDPOINT'
+				);
+			}
+		}]);
+	
+		return EndpointModal;
+	}(_component2.default);
+	
+	exports.default = (0, _radium2.default)(EndpointModal);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "EndpointModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 357 */
+/*!**************************************!*\
+  !*** ./src/components/ModelModal.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	var _radium = __webpack_require__(/*! radium */ 248);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ModelModal = function (_PureComponent) {
+		_inherits(ModelModal, _PureComponent);
+	
+		function ModelModal(props) {
+			_classCallCheck(this, ModelModal);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ModelModal).call(this, props));
+		}
+	
+		_createClass(ModelModal, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'h1',
+					null,
+					'MODEL'
+				);
+			}
+		}]);
+	
+		return ModelModal;
+	}(_component2.default);
+	
+	exports.default = (0, _radium2.default)(ModelModal);
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

@@ -5,13 +5,27 @@ import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import { ModalContainer, ModalDialog } from 'react-modal-dialog'
 
+import store from '../store';
+import { togglePlanningItemModal } from '../ducks/modal';
+
 import { colors, addButtonStyle } from '../constants/styles';
 
 import ItemHeader from './ItemHeader';
 import PlanningItems from './PlanningItems';
+import FeatureModal from './FeatureModal';
+import ViewModal from './ViewModal';
+import EndpointModal from './EndpointModal';
+import ModelModal from './ModelModal';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
 import LoginSrvc from '../services/loginSrvc';
+
+const modalItems = {
+	  feature: <FeatureModal />
+	, view: <ViewModal />
+	, endpoint: <EndpointModal />
+	, model: <ModelModal />
+};
 
 class EditBlueprint extends PureComponent {
 	constructor( props ) {
@@ -39,8 +53,8 @@ class EditBlueprint extends PureComponent {
 		}
 	}
 
-	toggleModal( planningItem ) {
-
+	modalClose() {
+		store.dispatch( togglePlanningItemModal( false, `` ) );
 	}
 
 	toggleEditField( field, changed, newValue, blueprintId ) {
@@ -61,14 +75,14 @@ class EditBlueprint extends PureComponent {
 		return (
 			<div style={ styles.wrapper }>
 
-				{ /*
-					this.props.modal.get(`planningItemModal`) &&
+				{
+					this.props.modal.getIn([`planningItemModal`, `toggled`]) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
-
+							{ modalItems[this.props.modal.getIn( [`planningItemModal`, `item`] )] }
 						</ModalDialog>
 					</ModalContainer>
-				*/ }
+				}
 
 				<div style={ styles.planningItemWrapper }>
 					<h2 style={ styles.title }>{ this.state.blueprint.title }</h2>
@@ -157,19 +171,19 @@ class EditBlueprint extends PureComponent {
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Features" />
-					<PlanningItems item={ this.state.blueprint.features } />
+					<PlanningItems item={ this.state.blueprint.features } type="feature" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ this.state.blueprint.views } />
+					<PlanningItems item={ this.state.blueprint.views } type="view" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ this.state.blueprint.endpoints } />
+					<PlanningItems item={ this.state.blueprint.endpoints } type="endpoint" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />
-					<PlanningItems item={ this.state.blueprint.models } />
+					<PlanningItems item={ this.state.blueprint.models } type="model" />
 				</div>
 			</div>
 		);

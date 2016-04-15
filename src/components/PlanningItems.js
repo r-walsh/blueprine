@@ -23,7 +23,7 @@ class PlanningItems extends PureComponent {
 
 		let items;
 		if ( this.props.item ) {
-			items = this.props.item.map( item => {
+			items = this.props.item.toJS().map( item => {
 				return (
 					<PlanningItem { ...item } key={ item._id } />
 				);

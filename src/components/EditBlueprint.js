@@ -42,11 +42,10 @@ class EditBlueprint extends PureComponent {
 			new Promise( ( resolve, reject ) => {
 				BlueprintSrvc.getBlueprintById( this.props.params.blueprintId, resolve, reject );
 			})
-			.then( ( blueprint, err ) => {
-				if ( err ) console.error( err );
+			.then( blueprint => {
 				this.setState({ blueprint })
 			})
-			// .catch( err => console.error( err ));
+			.catch( err => console.error( err ));
 		}
 	}
 
@@ -92,6 +91,7 @@ class EditBlueprint extends PureComponent {
 					<p style={ styles.description }><b>Description:</b> { this.state.blueprint.description }</p>
 					{ /* TODO Completion tracking component */ }
 				</div>
+
 				<div style={ styles.planningItemWrapper }>
 					<div style={ styles.ideaAndUsersWrapper }>
 						<ItemHeader itemName="Idea" />
@@ -132,6 +132,7 @@ class EditBlueprint extends PureComponent {
 									</button>
 						}
 					</div>
+
 					<div style={ styles.ideaAndUsersWrapper }>
 						<ItemHeader itemName="Users" />
 						{ this.state.blueprint.users && !this.state.editUsers
@@ -172,22 +173,24 @@ class EditBlueprint extends PureComponent {
 						}
 					</div>
 				</div>
+
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Features" />
-					<PlanningItems item={ this.state.blueprint.features } type="feature" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `features`]) } type="feature" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ this.state.blueprint.views } type="view" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `views`]) } type="view" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ this.state.blueprint.endpoints } type="endpoint" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `endpoints`]) } type="endpoint" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />
-					<PlanningItems item={ this.state.blueprint.models } type="model" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `models`]) } type="model" />
 				</div>
+
 			</div>
 		);
 	}

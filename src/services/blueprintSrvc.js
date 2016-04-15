@@ -64,6 +64,7 @@ export default class BlueprintSrvc {
 	}
 
 	static postFeature( feature, blueprint ) {
+
 		request.post(`/api/blueprint/features`)
 			.send({
 				  feature

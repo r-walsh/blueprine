@@ -8229,6 +8229,10 @@
 	  }
 	};
 	
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+	
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -8237,7 +8241,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -19194,7 +19198,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 148 */
@@ -83888,6 +83892,7 @@
 		}, {
 			key: 'postFeature',
 			value: function postFeature(feature, blueprint) {
+	
 				_superagent2.default.post('/api/blueprint/features').send({
 					feature: feature,
 					blueprint: blueprint
@@ -84533,11 +84538,11 @@
 				if (this.props.blueprints.get('selectedBlueprint') == (0, _immutable.Map)() || this.props.blueprints.getIn(['selectedBlueprint', '_id']) !== this.props.params.blueprintId) {
 					new Promise(function (resolve, reject) {
 						_blueprintSrvc2.default.getBlueprintById(_this2.props.params.blueprintId, resolve, reject);
-					}).then(function (blueprint, err) {
-						if (err) console.error(err);
+					}).then(function (blueprint) {
 						_this2.setState({ blueprint: blueprint });
+					}).catch(function (err) {
+						return console.error(err);
 					});
-					// .catch( err => console.error( err ));
 				}
 			}
 		}, {
@@ -84706,25 +84711,25 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Features' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.features, type: 'feature' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'features']), type: 'feature' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.views, type: 'view' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'views']), type: 'view' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.endpoints, type: 'endpoint' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'endpoints']), type: 'endpoint' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.state.blueprint.models, type: 'model' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'models']), type: 'model' })
 					)
 				);
 			}
@@ -84962,7 +84967,7 @@
 	
 				var items = void 0;
 				if (this.props.item) {
-					items = this.props.item.map(function (item) {
+					items = this.props.item.toJS().map(function (item) {
 						return _react2.default.createElement(_PlanningItem2.default, _extends({}, item, { key: item._id }));
 					});
 				}

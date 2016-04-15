@@ -85086,6 +85086,12 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _store = __webpack_require__(/*! ../store */ 235);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -85116,6 +85122,15 @@
 				this.setState({ hovering: !this.state.hovering });
 			}
 		}, {
+			key: 'openPlanningItemModal',
+			value: function openPlanningItemModal() {
+				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, 'feature', {
+					name: this.props.name,
+					feature: this.props.feature,
+					mvp: this.props.mvp
+				}));
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var styles = this.getStyles();
@@ -85125,20 +85140,32 @@
 					{ style: styles.itemWrapper },
 					_react2.default.createElement(
 						'div',
-						{ style: styles.item },
-						this.props.name
+						{ style: styles.item, onClick: this.openPlanningItemModal.bind(this) },
+						_react2.default.createElement(
+							'div',
+							{ style: styles.innerItem },
+							this.props.name
+						),
+						_react2.default.createElement(
+							'div',
+							{ style: styles.innerItem },
+							this.props.mvp ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : null
+						)
 					),
 					_react2.default.createElement(
 						'div',
-						{ style: styles.item },
-						this.props.mvp ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : null
-					),
-					_react2.default.createElement(
-						'div',
-						{ style: styles.item },
+						{
+							onClick: function onClick() {
+								return console.log('test');
+							},
+							style: styles.completeWrapper
+						},
 						_react2.default.createElement(
 							'div',
 							{ style: styles.complete,
+								onClick: function onClick() {
+									return console.log('test');
+								},
 								onMouseEnter: this.crossToCheck.bind(this),
 								onMouseLeave: this.crossToCheck.bind(this) },
 							this.props.complete || this.state.hovering ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
@@ -85161,13 +85188,20 @@
 					},
 					item: {
 						display: 'inline-block',
-						width: '33%',
+						width: '66%',
 						textAlign: 'center'
 					},
+					innerItem: {
+						display: 'inline-block',
+						width: '50%'
+					},
 					complete: {
-						borderRadius: 2,
 						width: '50%',
-						margin: '0 auto'
+						margin: '0 auto',
+						textAlign: 'center'
+					},
+					completeWrapper: {
+						width: '33%'
 					},
 					check: {
 						color: '#56AF56'

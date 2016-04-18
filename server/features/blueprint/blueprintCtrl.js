@@ -144,25 +144,7 @@ export function updatePlanningItem( req, res ) {
 			return res.status( 500 ).send( err );
 		}
 
-		item.save( err => {
-			if ( err ) {
-				return res.status( 500 ).send( err );
-			}
-
-			Blueprint.findById( req.body.blueprint._id, ( err, blueprint ) => {
-				if ( err ) {
-					return res.status( 500 ).send( err );
-				}
-
-				blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
-					if ( err ) {
-						return res.status( 500 ).send( err );
-					}
-
-					return res.send( populatedBlueprint );
-				});
-			} );
-		});
+		savePopulateAndSend( req, res, item );
 
 	});
 }
@@ -172,7 +154,6 @@ export function updateCompletion( req, res ) {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		}
-		console.log( item )
 		savePopulateAndSend( req, res, item );
 
 	} );

@@ -1,6 +1,7 @@
 import React from 'react';
 import PureComponent from 'react-pure-render/component'
 import Radium from 'radium';
+import _ from 'lodash';
 
 import store from '../store';
 import { togglePlanningItemModal } from '../ducks/modal';
@@ -23,11 +24,16 @@ class PlanningItems extends PureComponent {
 
 		let items;
 		if ( this.props.item ) {
-			items = this.props.item.toJS().map( item => {
+			items = _.sortBy(this.props.item.toJS().map( item => {
 				return (
-					<PlanningItem { ...item } key={ item._id } />
+					<PlanningItem
+						{ ...item }
+						type={ this.props.type }
+						blueprint={ this.props.blueprint }
+						key={ item._id }
+					/>
 				);
-			});
+			}), `_id`).reverse();
 		}
 
 		return (

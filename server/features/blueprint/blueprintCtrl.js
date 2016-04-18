@@ -4,6 +4,13 @@ import View from '../view/View';
 import Model from '../model/Model';
 import Endpoint from '../endpoint/Endpoint';
 
+const planningItems = {
+	  endpoints: Endpoint
+	, features: Feature
+	, models: Model
+	, views: View
+};
+
 export function postBlueprint( req, res ) {
 	new Blueprint( req.body )
 		.save( ( err, blueprint ) => {
@@ -84,7 +91,7 @@ export function updateTopLevel( req, res ) {
 	} );
 }
 
-export function postFeature( req, res ) {
+export function postPlanningItem( req, res ) {
 	const shitToPopulate = [
 		  `features`
 		, `views.features`
@@ -93,13 +100,13 @@ export function postFeature( req, res ) {
 		, `models`
 	];
 
-	new Feature( req.body.feature )
-		.save( ( err, feature ) => {
+	new planningItems[ req.body.itemType ]( req.body.feature )
+		.save( ( err, item ) => {
 			if ( err ) {
 				return res.status(500).send( err );
 			}
 
-			Blueprint.findByIdAndUpdate( req.body.blueprint._id , { $push: { features: feature._id } }, ( err, blueprint ) => {
+			Blueprint.findByIdAndUpdate( req.body.blueprint._id , { $push: { [ req.body.itemType ]: item._id } }, ( err, blueprint ) => {
 				if ( err ) {
 					return res.status(500).send( err );
 				}
@@ -121,4 +128,82 @@ export function postFeature( req, res ) {
 			});
 
 		});
+}
+
+export function updatePlanningItem( req, res ) {
+	const shitToPopulate = [
+		  `features`
+		, `views.features`
+		, `views.endpoints`
+		, `endpoints.models`
+		, `models`
+	];
+
+	planningItems[ req.body.itemType ].findByIdAndUpdate( req.body.item._id, req.body.item, ( err, item ) => {
+		if ( err ) {
+			return res.status( 500 ).send( err );
+		}
+
+		item.save( err => {
+			if ( err ) {
+				return res.status( 500 ).send( err );
+			}
+
+			Blueprint.findById( req.body.blueprint._id, ( err, blueprint ) => {
+				if ( err ) {
+					return res.status( 500 ).send( err );
+				}
+
+				blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
+					if ( err ) {
+						return res.status( 500 ).send( err );
+					}
+
+					return res.send( populatedBlueprint );
+				});
+			} );
+		});
+
+	});
+}
+
+export function updateCompletion( req, res ) {
+	planningItems[ req.body.itemType ].findByIdAndUpdate( req.body.id, { $set: { complete: req.body.completion } }, ( err, item ) => {
+		if ( err ) {
+			return res.status( 500 ).send( err );
+		}
+		console.log( item )
+		savePopulateAndSend( req, res, item );
+
+	} );
+}
+
+function savePopulateAndSend( req, res, item ) {
+	const shitToPopulate = [
+		`features`
+		, `views.features`
+		, `views.endpoints`
+		, `endpoints.models`
+		, `models`
+	];
+
+	item.save( err => {
+		if ( err ) {
+			return res.status( 500 ).send( err );
+		}
+
+		Blueprint.findById( req.body.blueprint._id, ( err, blueprint ) => {
+			if ( err ) {
+				return res.status( 500 ).send( err );
+			}
+
+			blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
+				if ( err ) {
+					return res.status( 500 ).send( err );
+				}
+
+				return res.send( populatedBlueprint );
+			});
+		} );
+	});
 }

@@ -83890,18 +83890,50 @@
 				});
 			}
 		}, {
-			key: 'postFeature',
-			value: function postFeature(feature, blueprint) {
-	
-				_superagent2.default.post('/api/blueprint/features').send({
+			key: 'postItem',
+			value: function postItem(feature, blueprint, itemType) {
+				_superagent2.default.post('/api/planningItems').send({
 					feature: feature,
-					blueprint: blueprint
+					blueprint: blueprint,
+					itemType: itemType
 				}).end(function (err, blueprint) {
 					if (err) {
 						return console.error(err);
 					}
 	
 					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
+					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
+				});
+			}
+		}, {
+			key: 'updateFeature',
+			value: function updateFeature(item, blueprint, itemType) {
+				_superagent2.default.put('/api/planningItems').send({
+					item: item,
+					blueprint: blueprint,
+					itemType: itemType
+				}).end(function (err, blueprint) {
+					if (err) {
+						return console.error(err);
+					}
+	
+					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
+					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
+				});
+			}
+		}, {
+			key: 'toggleCompletion',
+			value: function toggleCompletion(completion, itemType, id, blueprint) {
+				_superagent2.default.put('/api/planningItems/completion').send({
+					blueprint: blueprint,
+					completion: completion,
+					itemType: itemType,
+					id: id
+				}).end(function (err, blueprint) {
+					if (err) {
+						return console.error(err);
+					}
+	
 					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
 				});
 			}
@@ -84569,10 +84601,10 @@
 			value: function render() {
 				var styles = this.getStyles();
 				var modalItems = {
-					feature: _react2.default.createElement(_FeatureModal2.default, { blueprint: this.state.blueprint }),
-					view: _react2.default.createElement(_ViewModal2.default, { blueprint: this.state.blueprint }),
-					endpoint: _react2.default.createElement(_EndpointModal2.default, { blueprint: this.state.blueprint }),
-					model: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint })
+					features: _react2.default.createElement(_FeatureModal2.default, { blueprint: this.state.blueprint, feature: this.props.modal.getIn(['planningItemModal', 'item']) }),
+					views: _react2.default.createElement(_ViewModal2.default, { blueprint: this.state.blueprint }),
+					endpoints: _react2.default.createElement(_EndpointModal2.default, { blueprint: this.state.blueprint }),
+					models: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint })
 				};
 	
 				return _react2.default.createElement(
@@ -84711,25 +84743,29 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Features' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'features']), type: 'feature' })
+						_react2.default.createElement(_PlanningItems2.default, {
+							blueprint: this.state.blueprint,
+							item: this.props.blueprints.getIn(['selectedBlueprint', 'features']),
+							type: 'features'
+						})
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'views']), type: 'view' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'views']), type: 'views' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'endpoints']), type: 'endpoint' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'endpoints']), type: 'endpoints' })
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'models']), type: 'model' })
+						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'models']), type: 'models' })
 					)
 				);
 			}
@@ -84926,6 +84962,10 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _lodash = __webpack_require__(/*! lodash */ 345);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
 	var _store = __webpack_require__(/*! ../store */ 235);
 	
 	var _store2 = _interopRequireDefault(_store);
@@ -84963,13 +85003,19 @@
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this2 = this;
+	
 				var styles = this.getStyles();
 	
 				var items = void 0;
 				if (this.props.item) {
-					items = this.props.item.toJS().map(function (item) {
-						return _react2.default.createElement(_PlanningItem2.default, _extends({}, item, { key: item._id }));
-					});
+					items = _lodash2.default.sortBy(this.props.item.toJS().map(function (item) {
+						return _react2.default.createElement(_PlanningItem2.default, _extends({}, item, {
+							type: _this2.props.type,
+							blueprint: _this2.props.blueprint,
+							key: item._id
+						}));
+					}), '_id').reverse();
 				}
 	
 				return _react2.default.createElement(
@@ -85092,6 +85138,10 @@
 	
 	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
 	
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	
+	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
+	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -85124,11 +85174,12 @@
 		}, {
 			key: 'openPlanningItemModal',
 			value: function openPlanningItemModal() {
-				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, 'feature', {
-					name: this.props.name,
-					feature: this.props.feature,
-					mvp: this.props.mvp
-				}));
+				_store2.default.dispatch((0, _modal.togglePlanningItemModal)(true, this.props.type, this.props));
+			}
+		}, {
+			key: 'markAsComplete',
+			value: function markAsComplete() {
+				_blueprintSrvc2.default.toggleCompletion(!this.props.complete, this.props.type, this.props._id, this.props.blueprint);
 			}
 		}, {
 			key: 'render',
@@ -85155,17 +85206,12 @@
 					_react2.default.createElement(
 						'div',
 						{
-							onClick: function onClick() {
-								return console.log('test');
-							},
 							style: styles.completeWrapper
 						},
 						_react2.default.createElement(
 							'div',
 							{ style: styles.complete,
-								onClick: function onClick() {
-									return console.log('test');
-								},
+								onClick: this.markAsComplete.bind(this),
 								onMouseEnter: this.crossToCheck.bind(this),
 								onMouseLeave: this.crossToCheck.bind(this) },
 							this.props.complete || this.state.hovering ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
@@ -85273,11 +85319,22 @@
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FeatureModal).call(this, props));
 	
-			_this.state = {
-				featureName: '',
-				feature: '',
-				mvp: false
-			};
+			if (_this.props.feature.size === 0) {
+				_this.state = {
+					featureName: '',
+					feature: '',
+					mvp: false,
+					existing: false
+				};
+			} else {
+				_this.state = {
+					featureName: _this.props.feature.get('name'),
+					feature: _this.props.feature.get('feature'),
+					mvp: _this.props.feature.get('mvp'),
+					featureId: _this.props.feature.get('_id'),
+					existing: true
+				};
+			}
 			return _this;
 		}
 	
@@ -85285,11 +85342,18 @@
 			key: 'saveFeature',
 			value: function saveFeature() {
 				if (this.state.featureName && this.state.feature) {
-					_blueprintSrvc2.default.postFeature({
+					var feature = {
 						feature: this.state.feature,
 						name: this.state.featureName,
-						mvp: this.state.mvp
-					}, this.props.blueprint);
+						mvp: this.state.mvp,
+						_id: this.state.featureId
+					};
+	
+					if (this.state.existing) {
+						_blueprintSrvc2.default.updateFeature(feature, this.props.blueprint, 'features');
+					} else {
+						_blueprintSrvc2.default.postItem(feature, this.props.blueprint, 'features');
+					}
 				}
 			}
 		}, {

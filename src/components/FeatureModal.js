@@ -10,20 +10,38 @@ class FeatureModal extends PureComponent {
 	constructor( props ) {
 		super( props );
 
-		this.state = {
-			  featureName: ``
-			, feature: ``
-			, mvp: false
+		if ( this.props.feature.size === 0 ) {
+			this.state = {
+				  featureName: ``
+				, feature: ``
+				, mvp: false
+				, existing: false
+			};
+		} else {
+			this.state = {
+				  featureName: this.props.feature.get( `name` )
+				, feature: this.props.feature.get( `feature` )
+				, mvp: this.props.feature.get( `mvp` )
+				, featureId: this.props.feature.get( `_id` )
+				, existing: true
+			};
 		}
 	}
 	
 	saveFeature() {
 		if ( this.state.featureName && this.state.feature ) {
-			BlueprintSrvc.postFeature({
+			const feature = {
 				  feature: this.state.feature
 				, name: this.state.featureName
 				, mvp: this.state.mvp
-			}, this.props.blueprint );
+				, _id: this.state.featureId
+			};
+
+			if ( this.state.existing ) {
+				BlueprintSrvc.updateFeature( feature, this.props.blueprint, `features` );
+			} else {
+				BlueprintSrvc.postItem( feature, this.props.blueprint, `features` );
+			}
 		}
 	}
 

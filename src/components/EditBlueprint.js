@@ -68,10 +68,10 @@ class EditBlueprint extends PureComponent {
 	render() {
 		const styles = this.getStyles();
 		const modalItems = {
-			  feature: <FeatureModal blueprint={ this.state.blueprint } />
-			, view: <ViewModal blueprint={ this.state.blueprint } />
-			, endpoint: <EndpointModal blueprint={ this.state.blueprint } />
-			, model: <ModelModal blueprint={ this.state.blueprint } />
+			  features: <FeatureModal blueprint={ this.state.blueprint } feature={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) } />
+			, views: <ViewModal blueprint={ this.state.blueprint } />
+			, endpoints: <EndpointModal blueprint={ this.state.blueprint } />
+			, models: <ModelModal blueprint={ this.state.blueprint } />
 		};
 
 		return (
@@ -176,19 +176,23 @@ class EditBlueprint extends PureComponent {
 
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Features" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `features`]) } type="feature" />
+					<PlanningItems
+						blueprint={ this.state.blueprint }
+						item={ this.props.blueprints.getIn([`selectedBlueprint`, `features`]) }
+						type="features"
+					/>
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `views`]) } type="view" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `views`]) } type="views" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `endpoints`]) } type="endpoint" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `endpoints`]) } type="endpoints" />
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `models`]) } type="model" />
+					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `models`]) } type="models" />
 				</div>
 
 			</div>

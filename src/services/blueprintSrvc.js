@@ -62,13 +62,13 @@ export default class BlueprintSrvc {
 				return store.dispatch( selectBlueprint( blueprint ) );
 			});
 	}
-
-	static postFeature( feature, blueprint ) {
-
-		request.post(`/api/blueprint/features`)
+	
+	static postItem( feature, blueprint, itemType ) {
+		request.post(`/api/planningItems`)
 			.send({
 				  feature
 				, blueprint
+				, itemType
 			})
 			.end( ( err, blueprint ) => {
 				if ( err ) {
@@ -76,6 +76,40 @@ export default class BlueprintSrvc {
 				}
 
 				store.dispatch( togglePlanningItemModal( false, null, {} ) );
+				return store.dispatch( selectBlueprint( blueprint.body ) );
+			});
+	}
+
+	static updateFeature( item, blueprint, itemType ) {
+		request.put( `/api/planningItems` )
+			.send({
+				  item
+				, blueprint
+				, itemType
+			})
+			.end( ( err, blueprint ) => {
+				if ( err ) {
+					return console.error( err );
+				}
+
+				store.dispatch( togglePlanningItemModal( false, null, {} ) );
+				return store.dispatch( selectBlueprint( blueprint.body ) );
+			});
+	}
+	
+	static toggleCompletion( completion, itemType, id, blueprint ) {
+		request.put( `/api/planningItems/completion` )
+			.send({
+				  blueprint
+				, completion
+				, itemType
+				, id
+			})
+			.end( ( err, blueprint ) => {
+				if ( err ) {
+					return console.error( err );
+				}
+
 				return store.dispatch( selectBlueprint( blueprint.body ) );
 			});
 	}

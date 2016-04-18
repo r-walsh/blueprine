@@ -5,6 +5,8 @@ import Radium from 'radium';
 import store from '../store';
 import { togglePlanningItemModal } from '../ducks/modal';
 
+import BlueprintSrvc from '../services/blueprintSrvc';
+
 import { colors } from '../constants/styles';
 
 class PlanningItem extends PureComponent {
@@ -21,11 +23,11 @@ class PlanningItem extends PureComponent {
 	}
 
 	openPlanningItemModal() {
-		store.dispatch( togglePlanningItemModal( true, `feature`, {
-			  name: this.props.name
-			, feature: this.props.feature
-			, mvp: this.props.mvp
-		} ))
+		store.dispatch( togglePlanningItemModal( true, this.props.type, this.props ))
+	}
+	
+	markAsComplete() {
+		BlueprintSrvc.toggleCompletion( !this.props.complete, this.props.type, this.props._id, this.props.blueprint )
 	}
 
 	render() {
@@ -38,11 +40,10 @@ class PlanningItem extends PureComponent {
 					<div style={ styles.innerItem }>{ this.props.mvp ? <i style={ styles.check } className="fa fa-check" /> : null }</div>
 				</div>
 				<div
-					onClick={ () => console.log(`test`) }
 					style={ styles.completeWrapper }
 				>
 					<div style={ styles.complete }
-						 onClick={ () => console.log(`test`) }
+						 onClick={ this.markAsComplete.bind( this ) }
 						 onMouseEnter={ this.crossToCheck.bind( this ) }
 						 onMouseLeave={ this.crossToCheck.bind( this ) }>
 						{ this.props.complete || this.state.hovering ? <i style={ styles.check } className="fa fa-check" /> : <i style={ styles.cross } className="fa fa-times" /> }

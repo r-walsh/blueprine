@@ -9,6 +9,11 @@ export default app => {
 		.get( bp.getBlueprintById )
 		.put( bp.updateTopLevel );
 
-	app.route(`/api/blueprint/features`)
-		.post( bp.postFeature )
+	app.route(`/api/planningItems`)
+		.post( bp.postPlanningItem )
+		.put( bp.updatePlanningItem );
+	
+	app.route(`/api/planningItems/completion`)
+		.put( bp.updateCompletion );
+
 }

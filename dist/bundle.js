@@ -85403,6 +85403,7 @@
 						name: 'mvp',
 						type: 'checkbox',
 						value: this.state.mvp,
+						checked: this.state.mvp,
 						onChange: this.handleCheckChange.bind(this) }),
 					_react2.default.createElement(
 						'button',

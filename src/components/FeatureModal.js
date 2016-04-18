@@ -81,6 +81,7 @@ class FeatureModal extends PureComponent {
 					   name="mvp"
 					   type="checkbox"
 					   value={ this.state.mvp }
+					   checked={ this.state.mvp }
 					   onChange={ this.handleCheckChange.bind( this ) } />
 
 				<button style={ [addButtonStyle, styles.saveButton] }

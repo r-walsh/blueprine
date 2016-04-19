@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 import auth from './ducks/auth';
-import modal from './ducks/modal';
 import blueprint from './ducks/blueprint';
+import modal from './ducks/modal';
+import modelProps from './ducks/modelProps';
 
 export default combineReducers({
 	  auth
-	, modal
 	, blueprint
+	, modal
+	, modelProps
 });

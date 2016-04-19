@@ -26830,20 +26830,25 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
+	var _blueprint = __webpack_require__(/*! ./ducks/blueprint */ 240);
+	
+	var _blueprint2 = _interopRequireDefault(_blueprint);
+	
 	var _modal = __webpack_require__(/*! ./ducks/modal */ 239);
 	
 	var _modal2 = _interopRequireDefault(_modal);
 	
-	var _blueprint = __webpack_require__(/*! ./ducks/blueprint */ 240);
+	var _modelProps = __webpack_require__(/*! ./ducks/modelProps */ 360);
 	
-	var _blueprint2 = _interopRequireDefault(_blueprint);
+	var _modelProps2 = _interopRequireDefault(_modelProps);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _redux.combineReducers)({
 		auth: _auth2.default,
+		blueprint: _blueprint2.default,
 		modal: _modal2.default,
-		blueprint: _blueprint2.default
+		modelProps: _modelProps2.default
 	});
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "reducer.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -31921,6 +31926,7 @@
 	});
 	exports.toggleBlueprintModal = toggleBlueprintModal;
 	exports.togglePlanningItemModal = togglePlanningItemModal;
+	exports.toggleEditModelPropertyModal = toggleEditModelPropertyModal;
 	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
@@ -31930,11 +31936,16 @@
 			toggled: false,
 			type: '',
 			item: (0, _immutable.Map)()
+		}),
+		editModelPropertyModal: (0, _immutable.Map)({
+			toggled: false,
+			property: (0, _immutable.Map)()
 		})
 	});
 	
 	var TOGGLE_BLUEPRINT_MODAL = 'modals/OPEN_BLUEPRINT_MODAL';
 	var TOGGLE_PLANNING_ITEM_MODAL = 'modals/TOGGLE_PLANNING_ITEM_MODAL';
+	var TOGGLE_EDIT_MODEL_PROPERTY_MODAL = 'modals/TOGGLE_EDIT_MODEL_PROPERTY_MODAL';
 	
 	exports.default = function () {
 		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
@@ -31945,6 +31956,8 @@
 				return state.set('blueprintModal', action.status);
 			case TOGGLE_PLANNING_ITEM_MODAL:
 				return state.set('planningItemModal', action.planningItem);
+			case TOGGLE_EDIT_MODEL_PROPERTY_MODAL:
+				return state.set('editModelPropertyModal', action.property);
 		}
 		return state;
 	};
@@ -31958,6 +31971,12 @@
 			type: TOGGLE_PLANNING_ITEM_MODAL,
 			planningItem: (0, _immutable.fromJS)({ toggled: toggled, type: type, item: item })
 		};
+	}
+	
+	function toggleEditModelPropertyModal(toggled) {
+		var property = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+		return { type: TOGGLE_EDIT_MODEL_PROPERTY_MODAL, property: (0, _immutable.fromJS)({ toggled: toggled, property: property }) };
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -84765,7 +84784,10 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Models' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'models']), type: 'models' })
+						_react2.default.createElement(_PlanningItems2.default, {
+							blueprint: this.state.blueprint,
+							item: this.props.blueprints.getIn(['selectedBlueprint', 'models']),
+							type: 'models' })
 					)
 				);
 			}
@@ -85616,7 +85638,31 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
+	
+	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
+	
+	var _lodash = __webpack_require__(/*! lodash */ 345);
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	
+	var _store = __webpack_require__(/*! ../store */ 235);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	
+	var _ModelProp = __webpack_require__(/*! ./ModelProp */ 358);
+	
+	var _ModelProp2 = _interopRequireDefault(_ModelProp);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -85630,16 +85676,144 @@
 		function ModelModal(props) {
 			_classCallCheck(this, ModelModal);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(ModelModal).call(this, props));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModelModal).call(this, props));
+	
+			_this.state = {
+				name: '',
+				mvp: false,
+				complete: false,
+				modelProps: _this.props.modelProps.toJS(),
+				editModelName: true
+			};
+			return _this;
 		}
 	
 		_createClass(ModelModal, [{
+			key: 'formatPropForDisplay',
+			value: function formatPropForDisplay() {
+				// object extend for better formatting?
+				var propArray = this.state.modelProps.map(function (modelProp) {
+					if (!modelProp.propName) {
+						return {};
+					}
+	
+					var returnProp = _defineProperty({}, modelProp.propName, {
+						type: modelProp._type
+					});
+	
+					for (var key in modelProp.validators) {
+						// Check to see if validator is in use.
+						if (modelProp.validators[key].enabled) {
+							// Set the property on the display object. Slicing off the underscore
+							returnProp[modelProp.propName][key.slice(1, key.length)] = modelProp.validators[key].value;
+						}
+					}
+	
+					return returnProp;
+				});
+	
+				return _lodash2.default.assign.apply(_lodash2.default, [{}].concat(_toConsumableArray(propArray)));
+			}
+		}, {
+			key: 'handleChange',
+			value: function handleChange(field, event) {
+				this.setState(_defineProperty({}, field, event.target.value));
+			}
+		}, {
+			key: 'editName',
+			value: function editName() {
+				this.setState({ editModelName: true });
+			}
+		}, {
+			key: 'saveName',
+			value: function saveName() {
+				this.setState({ editModelName: false });
+			}
+		}, {
+			key: 'editProperty',
+			value: function editProperty() {
+				var property = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+				return _store2.default.dispatch((0, _modal.toggleEditModelPropertyModal)(true, property));
+			}
+		}, {
+			key: 'modalClose',
+			value: function modalClose() {
+				return _store2.default.dispatch((0, _modal.toggleEditModelPropertyModal)(false));
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				var formattedData = this.formatPropForDisplay();
+				var modelProps = this.state.modelProps.map(function (prop, index) {
+					return _react2.default.createElement(_ModelProp2.default, { key: index });
+				});
+	
 				return _react2.default.createElement(
-					'h1',
+					'div',
 					null,
-					'MODEL'
+					this.props.modal.getIn(['editModelPropertyModal', 'toggled']) && _react2.default.createElement(
+						_reactModalDialog.ModalContainer,
+						{ onClose: this.modalClose.bind(this) },
+						_react2.default.createElement(
+							_reactModalDialog.ModalDialog,
+							{ onClose: this.modalClose.bind(this) },
+							_react2.default.createElement(_ModelProp2.default, null)
+						)
+					),
+					!this.state.editModelName ? _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'h2',
+							null,
+							this.state.name
+						),
+						_react2.default.createElement(
+							'button',
+							{
+								key: 'editName',
+								onClick: this.editName.bind(this),
+								style: _styles.addButtonStyle
+							},
+							'Edit'
+						)
+					) : _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'h2',
+							null,
+							'Model Name:'
+						),
+						_react2.default.createElement('input', {
+							onChange: this.handleChange.bind(this, 'name'),
+							type: 'text',
+							value: this.state.name
+						}),
+						_react2.default.createElement(
+							'button',
+							{
+								key: 'saveName',
+								onClick: this.saveName.bind(this),
+								style: _styles.addButtonStyle
+							},
+							'Save'
+						)
+					),
+					_react2.default.createElement(
+						'pre',
+						null,
+						JSON.stringify(formattedData, null, 4)
+					),
+					_react2.default.createElement(
+						'button',
+						{
+							onClick: this.editProperty.bind(this),
+							style: _styles.addButtonStyle
+						},
+						'Add Property'
+					)
 				);
 			}
 		}]);
@@ -85647,9 +85821,244 @@
 		return ModelModal;
 	}(_component2.default);
 	
-	exports.default = (0, _radium2.default)(ModelModal);
+	exports.default = (0, _reactRedux.connect)(function (state) {
+		return { modelProps: state.modelProps, modal: state.modal };
+	})((0, _radium2.default)(ModelModal));
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 358 */
+/*!*************************************!*\
+  !*** ./src/components/ModelProp.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ModelProp = function (_PureComponent) {
+		_inherits(ModelProp, _PureComponent);
+	
+		function ModelProp(props) {
+			_classCallCheck(this, ModelProp);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModelProp).call(this, props));
+	
+			_this.state = {
+				type: ''
+			};
+			return _this;
+		}
+	
+		_createClass(ModelProp, [{
+			key: 'selectType',
+			value: function selectType(event) {
+				this.setState({ type: event.target.value });
+			}
+		}, {
+			key: 'renderStringValidators',
+			value: function renderStringValidators() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Enum'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' }),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Match'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' }),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Min Length'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' }),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Max Length'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' })
+				);
+			}
+		}, {
+			key: 'renderNumberValidators',
+			value: function renderNumberValidators() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Min'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' }),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Max'
+					),
+					_react2.default.createElement('input', { type: 'checkbox' })
+				);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var options = ['', 'String', 'Number', 'Date', 'Buffer', 'Boolean', 'Mixed', 'ObjectId', 'Array'].map(function (option, index) {
+					return _react2.default.createElement(
+						'option',
+						{ value: option, key: index },
+						option
+					);
+				});
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						null,
+						'Property Name'
+					),
+					_react2.default.createElement('input', { type: 'text' }),
+					_react2.default.createElement(
+						'label',
+						null,
+						'Type'
+					),
+					_react2.default.createElement(
+						'select',
+						{
+							onChange: this.selectType.bind(this),
+							value: this.state.type
+						},
+						options
+					)
+				);
+			}
+		}]);
+	
+		return ModelProp;
+	}(_component2.default);
+
+	exports.default = ModelProp;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelProp.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 359 */,
+/* 360 */
+/*!*********************************!*\
+  !*** ./src/ducks/modelProps.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = reducer;
+	exports.addProp = addProp;
+	
+	var _immutable = __webpack_require__(/*! immutable */ 238);
+	
+	var initialState = _immutable.List.of((0, _immutable.Map)({
+		propName: '',
+		_type: '',
+		validators: (0, _immutable.Map)({
+			_ref: (0, _immutable.Map)({
+				enabled: false,
+				value: ''
+			}),
+			_required: (0, _immutable.Map)({
+				enabled: false,
+				value: false
+			}),
+			_index: (0, _immutable.Map)({
+				enabled: false,
+				value: false
+			}),
+			_default: (0, _immutable.Map)({
+				enabled: false,
+				value: ''
+			}),
+			_enum: (0, _immutable.Map)({
+				enabled: false,
+				values: (0, _immutable.List)()
+			}),
+			_match: (0, _immutable.Map)({
+				enabled: false,
+				regex: ''
+			}),
+			_minLength: (0, _immutable.Map)({
+				enabled: false,
+				min: 0
+			}),
+			_maxLength: (0, _immutable.Map)({
+				enabled: false,
+				max: 0
+			}),
+			_min: (0, _immutable.Map)({
+				enabled: false,
+				min: 0
+			}),
+			_max: (0, _immutable.Map)({
+				enabled: false,
+				max: 0
+			})
+		})
+	}));
+	
+	var ADD_PROP = 'model/ADD_PROP';
+	
+	function reducer() {
+		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case ADD_PROP:
+				return state.push(action.prop);
+		}
+		return state;
+	}
+	
+	function addProp(prop) {
+		return { type: ADD_PROP, prop: prop };
+	}
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

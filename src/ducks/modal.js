@@ -7,10 +7,15 @@ const initialState = Map({
 		, type: ``
 		, item: Map()
 	})
+	, editModelPropertyModal: Map({
+		  toggled: false
+		, property: Map()
+	})
 });
 
 const TOGGLE_BLUEPRINT_MODAL = `modals/OPEN_BLUEPRINT_MODAL`;
 const TOGGLE_PLANNING_ITEM_MODAL = `modals/TOGGLE_PLANNING_ITEM_MODAL`;
+const TOGGLE_EDIT_MODEL_PROPERTY_MODAL = `modals/TOGGLE_EDIT_MODEL_PROPERTY_MODAL`;
 
 export default ( state = initialState, action ) => {
 	switch( action.type ) {
@@ -18,6 +23,8 @@ export default ( state = initialState, action ) => {
 			return state.set( `blueprintModal`, action.status );
 		case TOGGLE_PLANNING_ITEM_MODAL:
 			return state.set( `planningItemModal`, action.planningItem );
+		case TOGGLE_EDIT_MODEL_PROPERTY_MODAL:
+			return state.set(`editModelPropertyModal`, action.property );
 	}
 	return state;
 }
@@ -31,4 +38,8 @@ export function togglePlanningItemModal( toggled, type, item ) {
 		  type: TOGGLE_PLANNING_ITEM_MODAL
 		, planningItem: fromJS({ toggled, type, item })
 	}
+}
+
+export function toggleEditModelPropertyModal( toggled, property = {} ) {
+	return { type: TOGGLE_EDIT_MODEL_PROPERTY_MODAL, property: fromJS({ toggled, property }) }
 }

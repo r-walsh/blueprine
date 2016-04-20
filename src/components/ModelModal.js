@@ -22,11 +22,11 @@ class ModelModal extends PureComponent {
 			, complete: false
 			, modelProps: this.props.modelProps.toJS()
 			, editModelName: true
+			, existing: false
 		}
 	}
 
 	formatPropForDisplay() {
-		// object extend for better formatting?
 		let propArray = this.state.modelProps.map( modelProp => {
 			if ( !modelProp.propName ) {
 				return {};
@@ -61,7 +61,9 @@ class ModelModal extends PureComponent {
 	}
 
 	saveName() {
-		this.setState({ editModelName: false });
+		if ( this.state.name ) {
+			this.setState( { editModelName: false } );
+		}
 	}
 
 	editProperty( property = {} ) {
@@ -74,11 +76,6 @@ class ModelModal extends PureComponent {
 
 	render() {
 		let formattedData = this.formatPropForDisplay();
-		let modelProps = this.state.modelProps.map( ( prop, index ) => {
-			return (
-				<ModelProp key={ index } />
-			);
-		});
 
 		return (
 			<div>
@@ -115,10 +112,18 @@ class ModelModal extends PureComponent {
 								onClick={ this.saveName.bind( this ) }
 								style={ addButtonStyle }
 							>
-								Save
+								Done
 							</button>
 						</div>
 				}
+
+				<label htmlFor="model-mvp">MVP?</label>
+				<input
+					id="model-mvp"
+					onChange={ this.handleChange.bind( this, `mvp` ) }
+					type="checkbox"
+					value={ this.state.mvp }
+				/>
 
 				<pre>
 					{ JSON.stringify( formattedData, null, 4 ) }

@@ -26881,6 +26881,7 @@
 			email: null,
 			admin: false,
 			mentor: false,
+			blueprints: (0, _immutable.List)(),
 			_id: null
 		}),
 		errors: (0, _immutable.List)()
@@ -85683,7 +85684,8 @@
 				mvp: false,
 				complete: false,
 				modelProps: _this.props.modelProps.toJS(),
-				editModelName: true
+				editModelName: true,
+				existing: false
 			};
 			return _this;
 		}
@@ -85691,7 +85693,6 @@
 		_createClass(ModelModal, [{
 			key: 'formatPropForDisplay',
 			value: function formatPropForDisplay() {
-				// object extend for better formatting?
 				var propArray = this.state.modelProps.map(function (modelProp) {
 					if (!modelProp.propName) {
 						return {};
@@ -85727,7 +85728,9 @@
 		}, {
 			key: 'saveName',
 			value: function saveName() {
-				this.setState({ editModelName: false });
+				if (this.state.name) {
+					this.setState({ editModelName: false });
+				}
 			}
 		}, {
 			key: 'editProperty',
@@ -85745,9 +85748,6 @@
 			key: 'render',
 			value: function render() {
 				var formattedData = this.formatPropForDisplay();
-				var modelProps = this.state.modelProps.map(function (prop, index) {
-					return _react2.default.createElement(_ModelProp2.default, { key: index });
-				});
 	
 				return _react2.default.createElement(
 					'div',
@@ -85798,9 +85798,20 @@
 								onClick: this.saveName.bind(this),
 								style: _styles.addButtonStyle
 							},
-							'Save'
+							'Done'
 						)
 					),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: 'model-mvp' },
+						'MVP?'
+					),
+					_react2.default.createElement('input', {
+						id: 'model-mvp',
+						onChange: this.handleChange.bind(this, 'mvp'),
+						type: 'checkbox',
+						value: this.state.mvp
+					}),
 					_react2.default.createElement(
 						'pre',
 						null,
@@ -85852,6 +85863,10 @@
 	
 	var _component2 = _interopRequireDefault(_component);
 	
+	var _Validators = __webpack_require__(/*! ./Validators */ 362);
+	
+	var _Validators2 = _interopRequireDefault(_Validators);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85869,7 +85884,50 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModelProp).call(this, props));
 	
 			_this.state = {
-				type: ''
+				propName: '',
+				_type: '',
+				validators: {
+					_ref: {
+						enabled: false,
+						value: ''
+					},
+					_required: {
+						enabled: false,
+						value: false
+					},
+					_index: {
+						enabled: false,
+						value: false
+					},
+					_default: {
+						enabled: true,
+						value: ''
+					},
+					_enum: {
+						enabled: false,
+						values: []
+					},
+					_match: {
+						enabled: true,
+						regex: ''
+					},
+					_minLength: {
+						enabled: false,
+						min: 0
+					},
+					_maxLength: {
+						enabled: false,
+						max: 0
+					},
+					_min: {
+						enabled: false,
+						min: 0
+					},
+					_max: {
+						enabled: true,
+						max: 0
+					}
+				}
 			};
 			return _this;
 		}
@@ -85877,59 +85935,7 @@
 		_createClass(ModelProp, [{
 			key: 'selectType',
 			value: function selectType(event) {
-				this.setState({ type: event.target.value });
-			}
-		}, {
-			key: 'renderStringValidators',
-			value: function renderStringValidators() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Enum'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' }),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Match'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' }),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Min Length'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' }),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Max Length'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' })
-				);
-			}
-		}, {
-			key: 'renderNumberValidators',
-			value: function renderNumberValidators() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Min'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' }),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Max'
-					),
-					_react2.default.createElement('input', { type: 'checkbox' })
-				);
+				this.setState({ _type: event.target.value });
 			}
 		}, {
 			key: 'render',
@@ -85941,6 +85947,7 @@
 						option
 					);
 				});
+	
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -85959,10 +85966,11 @@
 						'select',
 						{
 							onChange: this.selectType.bind(this),
-							value: this.state.type
+							value: this.state._type
 						},
 						options
-					)
+					),
+					_react2.default.createElement(_Validators2.default, { type: this.state._type })
 				);
 			}
 		}]);
@@ -86059,6 +86067,167 @@
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 361 */,
+/* 362 */
+/*!**************************************!*\
+  !*** ./src/components/Validators.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	
+	var _component2 = _interopRequireDefault(_component);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Validators = function (_PureComponent) {
+		_inherits(Validators, _PureComponent);
+	
+		function Validators(props) {
+			_classCallCheck(this, Validators);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Validators).call(this, props));
+	
+			_this.state = { validators: {} };
+			return _this;
+		}
+	
+		_createClass(Validators, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Required'
+					),
+					_react2.default.createElement('input', {
+						checked: this.state.validators._required,
+						type: 'checkbox',
+						value: this.state.validators._required
+					}),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Default'
+					),
+					_react2.default.createElement('input', {
+						checked: this.state.validators._default,
+						type: 'checkbox',
+						value: this.state.validators._default
+					}),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
+						'Index'
+					),
+					_react2.default.createElement('input', {
+						checked: this.state.validators._index,
+						type: 'checkbox',
+						value: this.state.validators._index
+					}),
+					this.props.type === 'String' ? _react2.default.createElement(
+						'span',
+						null,
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Enum'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators._enum,
+							type: 'checkbox',
+							value: this.state.validators._enum
+						}),
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Match'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators._match,
+							type: 'checkbox',
+							value: this.state.validators._match
+						}),
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Min Length'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators.minLength,
+							type: 'checkbox',
+							value: this.state.validators.minLength
+						}),
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Max Length'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators._maxLength,
+							type: 'checkbox',
+							value: this.state.validators._maxLength
+						})
+					) : null,
+					this.props.type === 'Number' ? _react2.default.createElement(
+						'span',
+						null,
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Min'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators._min,
+							type: 'checkbox',
+							value: this.state.validators._min
+						}),
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: '' },
+							'Max'
+						),
+						_react2.default.createElement('input', {
+							checked: this.state.validators._max,
+							type: 'checkbox',
+							value: this.state.validators._max
+						})
+					) : null
+				);
+			}
+		}]);
+	
+		return Validators;
+	}(_component2.default);
+
+	exports.default = Validators;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Validators.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

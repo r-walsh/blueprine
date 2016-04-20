@@ -85643,10 +85643,6 @@
 	
 	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 345);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
 	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
 	
 	var _store = __webpack_require__(/*! ../store */ 235);
@@ -85660,8 +85656,6 @@
 	var _ModelProp2 = _interopRequireDefault(_ModelProp);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -85691,31 +85685,6 @@
 		}
 	
 		_createClass(ModelModal, [{
-			key: 'formatPropForDisplay',
-			value: function formatPropForDisplay() {
-				var propArray = this.state.modelProps.map(function (modelProp) {
-					if (!modelProp.propName) {
-						return {};
-					}
-	
-					var returnProp = _defineProperty({}, modelProp.propName, {
-						type: modelProp._type
-					});
-	
-					for (var key in modelProp.validators) {
-						// Check to see if validator is in use.
-						if (modelProp.validators[key].enabled) {
-							// Set the property on the display object. Slicing off the underscore
-							returnProp[modelProp.propName][key.slice(1, key.length)] = modelProp.validators[key].value;
-						}
-					}
-	
-					return returnProp;
-				});
-	
-				return _lodash2.default.assign.apply(_lodash2.default, [{}].concat(_toConsumableArray(propArray)));
-			}
-		}, {
 			key: 'handleChange',
 			value: function handleChange(field, event) {
 				this.setState(_defineProperty({}, field, event.target.value));
@@ -85747,11 +85716,11 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var formattedData = this.formatPropForDisplay();
+				var styles = this.getStyles();
 	
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ style: styles.wrapper },
 					this.props.modal.getIn(['editModelPropertyModal', 'toggled']) && _react2.default.createElement(
 						_reactModalDialog.ModalContainer,
 						{ onClose: this.modalClose.bind(this) },
@@ -85765,16 +85734,20 @@
 						'div',
 						null,
 						_react2.default.createElement(
-							'h2',
+							'div',
 							null,
-							this.state.name
+							_react2.default.createElement(
+								'h2',
+								{ style: styles.modelName },
+								this.state.name
+							)
 						),
 						_react2.default.createElement(
 							'button',
 							{
 								key: 'editName',
 								onClick: this.editName.bind(this),
-								style: _styles.addButtonStyle
+								style: [_styles.addButtonStyle, styles.editNameButton]
 							},
 							'Edit'
 						)
@@ -85783,11 +85756,12 @@
 						null,
 						_react2.default.createElement(
 							'h2',
-							null,
+							{ style: styles.namePlaceholder },
 							'Model Name:'
 						),
 						_react2.default.createElement('input', {
 							onChange: this.handleChange.bind(this, 'name'),
+							style: styles.nameInput,
 							type: 'text',
 							value: this.state.name
 						}),
@@ -85803,7 +85777,10 @@
 					),
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: 'model-mvp' },
+						{
+							htmlFor: 'model-mvp',
+							style: styles.mvpLabel
+						},
 						'MVP?'
 					),
 					_react2.default.createElement('input', {
@@ -85813,19 +85790,48 @@
 						value: this.state.mvp
 					}),
 					_react2.default.createElement(
-						'pre',
-						null,
-						JSON.stringify(formattedData, null, 4)
-					),
-					_react2.default.createElement(
 						'button',
 						{
 							onClick: this.editProperty.bind(this),
-							style: _styles.addButtonStyle
+							style: [_styles.addButtonStyle, styles.addPropertyButton]
 						},
 						'Add Property'
 					)
 				);
+			}
+		}, {
+			key: 'getStyles',
+			value: function getStyles() {
+				return {
+					addPropertyButton: {
+						margin: '15px 0 0 0',
+						display: 'block'
+					},
+					editNameButton: {
+						margin: 5
+					},
+					namePlaceholder: {
+						margin: '0 10px 10px 0',
+						display: 'inline-block'
+					},
+					modelName: {
+						margin: 0
+					},
+					nameInput: {
+						height: '1.4em',
+						padding: 2,
+						borderRadius: 4,
+						border: '1px solid ' + _styles.colors.gray
+					},
+					mvpLabel: {
+						marginRight: 5
+					},
+					wrapper: {
+						width: 500,
+						height: 500,
+						overflow: 'scroll'
+					}
+				};
 			}
 		}]);
 	
@@ -85862,10 +85868,6 @@
 	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
 	
 	var _component2 = _interopRequireDefault(_component);
-	
-	var _Validators = __webpack_require__(/*! ./Validators */ 362);
-	
-	var _Validators2 = _interopRequireDefault(_Validators);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -85970,7 +85972,12 @@
 						},
 						options
 					),
-					_react2.default.createElement(_Validators2.default, { type: this.state._type })
+					_react2.default.createElement(
+						'label',
+						null,
+						'Description'
+					),
+					_react2.default.createElement('textarea', { cols: '30', rows: '10' })
 				);
 			}
 		}]);
@@ -86005,48 +86012,7 @@
 	var initialState = _immutable.List.of((0, _immutable.Map)({
 		propName: '',
 		_type: '',
-		validators: (0, _immutable.Map)({
-			_ref: (0, _immutable.Map)({
-				enabled: false,
-				value: ''
-			}),
-			_required: (0, _immutable.Map)({
-				enabled: false,
-				value: false
-			}),
-			_index: (0, _immutable.Map)({
-				enabled: false,
-				value: false
-			}),
-			_default: (0, _immutable.Map)({
-				enabled: false,
-				value: ''
-			}),
-			_enum: (0, _immutable.Map)({
-				enabled: false,
-				values: (0, _immutable.List)()
-			}),
-			_match: (0, _immutable.Map)({
-				enabled: false,
-				regex: ''
-			}),
-			_minLength: (0, _immutable.Map)({
-				enabled: false,
-				min: 0
-			}),
-			_maxLength: (0, _immutable.Map)({
-				enabled: false,
-				max: 0
-			}),
-			_min: (0, _immutable.Map)({
-				enabled: false,
-				min: 0
-			}),
-			_max: (0, _immutable.Map)({
-				enabled: false,
-				max: 0
-			})
-		})
+		description: ''
 	}));
 	
 	var ADD_PROP = 'model/ADD_PROP';
@@ -86067,167 +86033,6 @@
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 361 */,
-/* 362 */
-/*!**************************************!*\
-  !*** ./src/components/Validators.js ***!
-  \**************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
-	
-	var _component2 = _interopRequireDefault(_component);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Validators = function (_PureComponent) {
-		_inherits(Validators, _PureComponent);
-	
-		function Validators(props) {
-			_classCallCheck(this, Validators);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Validators).call(this, props));
-	
-			_this.state = { validators: {} };
-			return _this;
-		}
-	
-		_createClass(Validators, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Required'
-					),
-					_react2.default.createElement('input', {
-						checked: this.state.validators._required,
-						type: 'checkbox',
-						value: this.state.validators._required
-					}),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Default'
-					),
-					_react2.default.createElement('input', {
-						checked: this.state.validators._default,
-						type: 'checkbox',
-						value: this.state.validators._default
-					}),
-					_react2.default.createElement(
-						'label',
-						{ htmlFor: '' },
-						'Index'
-					),
-					_react2.default.createElement('input', {
-						checked: this.state.validators._index,
-						type: 'checkbox',
-						value: this.state.validators._index
-					}),
-					this.props.type === 'String' ? _react2.default.createElement(
-						'span',
-						null,
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Enum'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators._enum,
-							type: 'checkbox',
-							value: this.state.validators._enum
-						}),
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Match'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators._match,
-							type: 'checkbox',
-							value: this.state.validators._match
-						}),
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Min Length'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators.minLength,
-							type: 'checkbox',
-							value: this.state.validators.minLength
-						}),
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Max Length'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators._maxLength,
-							type: 'checkbox',
-							value: this.state.validators._maxLength
-						})
-					) : null,
-					this.props.type === 'Number' ? _react2.default.createElement(
-						'span',
-						null,
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Min'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators._min,
-							type: 'checkbox',
-							value: this.state.validators._min
-						}),
-						_react2.default.createElement(
-							'label',
-							{ htmlFor: '' },
-							'Max'
-						),
-						_react2.default.createElement('input', {
-							checked: this.state.validators._max,
-							type: 'checkbox',
-							value: this.state.validators._max
-						})
-					) : null
-				);
-			}
-		}]);
-	
-		return Validators;
-	}(_component2.default);
-
-	exports.default = Validators;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Validators.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

@@ -3,9 +3,8 @@ import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
-import _ from 'lodash';
 
-import { addButtonStyle } from '../constants/styles';
+import { addButtonStyle, colors } from '../constants/styles';
 
 import store from '../store';
 import { toggleEditModelPropertyModal } from '../ducks/modal';
@@ -24,32 +23,6 @@ class ModelModal extends PureComponent {
 			, editModelName: true
 			, existing: false
 		}
-	}
-
-	formatPropForDisplay() {
-		let propArray = this.state.modelProps.map( modelProp => {
-			if ( !modelProp.propName ) {
-				return {};
-			}
-
-			let returnProp = {
-				[ modelProp.propName ]: {
-					type: modelProp._type
-				}
-			};
-
-			for ( let key in modelProp.validators ) {
-				// Check to see if validator is in use.
-				if ( modelProp.validators[ key ].enabled ) {
-					// Set the property on the display object. Slicing off the underscore
-					returnProp[ modelProp.propName ][ key.slice( 1, key.length ) ] = modelProp.validators[ key ].value;
-				}
-			}
-
-			return returnProp;
-		});
-
-		return _.assign( {}, ...propArray );
 	}
 
 	handleChange( field, event ) {
@@ -75,10 +48,10 @@ class ModelModal extends PureComponent {
 	}
 
 	render() {
-		let formattedData = this.formatPropForDisplay();
+		const styles = this.getStyles();
 
 		return (
-			<div>
+			<div style={ styles.wrapper }>
 				{ this.props.modal.getIn([`editModelPropertyModal`, `toggled`]) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
@@ -90,20 +63,23 @@ class ModelModal extends PureComponent {
 				{ !this.state.editModelName
 					?
 						<div>
-							<h2>{ this.state.name }</h2>
+							<div>
+								<h2 style={ styles.modelName }>{ this.state.name }</h2>
+							</div>
 							<button
 								key="editName"
 								onClick={ this.editName.bind( this ) }
-								style={ addButtonStyle }
+								style={ [addButtonStyle, styles.editNameButton] }
 							>
 								Edit
 							</button>
 						</div>
 					:
 						<div>
-							<h2>Model Name:</h2>
+							<h2 style={ styles.namePlaceholder }>Model Name:</h2>
 							<input
 								onChange={ this.handleChange.bind( this, `name` ) }
+								style={ styles.nameInput }
 								type="text"
 								value={ this.state.name }
 							/>
@@ -117,26 +93,59 @@ class ModelModal extends PureComponent {
 						</div>
 				}
 
-				<label htmlFor="model-mvp">MVP?</label>
+				<label
+					htmlFor="model-mvp"
+					style={ styles.mvpLabel }
+				>
+					MVP?
+				</label>
 				<input
 					id="model-mvp"
 					onChange={ this.handleChange.bind( this, `mvp` ) }
 					type="checkbox"
 					value={ this.state.mvp }
 				/>
-
-				<pre>
-					{ JSON.stringify( formattedData, null, 4 ) }
-				</pre>
-
 				<button
 					onClick={ this.editProperty.bind( this ) }
-					style={ addButtonStyle }
+					style={ [addButtonStyle, styles.addPropertyButton] }
 				>
 					Add Property
 				</button>
 			</div>
 		)
+	}
+
+	getStyles() {
+		return {
+			addPropertyButton: {
+				margin: `15px 0 0 0`
+			  , display: `block`
+		  	}
+			, editNameButton: {
+				margin: 5
+			}
+			, namePlaceholder: {
+				  margin: `0 10px 10px 0`
+				, display: `inline-block`
+			}
+			, modelName: {
+				margin: 0
+			}
+			, nameInput: {
+				height: `1.4em`
+				, padding: 2
+				, borderRadius: 4
+				, border: `1px solid ${ colors.gray }`
+			}
+			, mvpLabel: {
+				marginRight: 5
+			}
+			, wrapper: {
+				  width: 500
+				, height: 500
+				, overflow: `scroll`
+			}
+		}
 	}
 }
 

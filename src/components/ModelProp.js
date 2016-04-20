@@ -1,8 +1,6 @@
 import React from 'react';
 import PureComponent from 'react-pure-render/component';
 
-import Validators from './Validators';
-
 export default class ModelProp extends PureComponent {
 	constructor( props ) {
 		super( props );
@@ -75,8 +73,8 @@ export default class ModelProp extends PureComponent {
 					{ options }
 				</select>
 
-				<Validators type={ this.state._type} />
-
+				<label>Description</label>
+				<textarea cols="30" rows="10" />
 			</div>
 		);
 	}

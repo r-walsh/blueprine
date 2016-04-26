@@ -8,63 +8,22 @@ export default class ModelProp extends PureComponent {
 		this.state = {
 			  propName: ``
 			, _type: ``
-			, validators: {
-				_ref: {
-					enabled: false
-					, value: ``
-				}
-				, _required: {
-					enabled: false
-					, value: false
-				}
-				, _index: {
-					enabled: false
-					, value: false
-				}
-				, _default:  {
-					enabled: true
-					, value: ``
-				}
-				, _enum:  {
-					enabled: false
-					, values: []
-				}
-				, _match:  {
-					enabled: true
-					, regex: ``
-				}
-				, _minLength:  {
-					enabled: false
-					, min: 0
-				}
-				, _maxLength:  {
-					enabled: false
-					, max: 0
-				}
-				, _min:  {
-					enabled: false
-					, min: 0
-				}
-				, _max:  {
-					enabled: true
-					, max: 0
-				}
-			}
-		}
+			, description: ``
+		};
 	}
 
 	selectType( event ) {
-		this.setState({ _type: event.target.value })
+		this.setState( { _type: event.target.value } );
 	}
-	
+
 	render() {
-		let options = [ ``, `String`, `Number`, `Date`, `Buffer`, `Boolean`, `Mixed`, `ObjectId`, `Array` ]
-							.map( ( option, index ) => <option value={ option } key={ index }>{ option }</option>);
+		let options = [``, `String`, `Number`, `Date`, `Buffer`, `Boolean`, `Mixed`, `ObjectId`, `Array`]
+							.map( ( option, index ) => <option value={ option } key={ index }>{ option }</option> );
 
 		return (
 			<div>
 				<label>Property Name</label>
-				<input type="text"/>
+				<input type="text" />
 				<label>Type</label>
 				<select
 					onChange={ this.selectType.bind( this ) }
@@ -74,7 +33,10 @@ export default class ModelProp extends PureComponent {
 				</select>
 
 				<label>Description</label>
-				<textarea cols="30" rows="10" />
+				<textarea
+					cols="20"
+					rows="10"
+				/>
 			</div>
 		);
 	}

@@ -19,15 +19,15 @@ class PlanningItem extends PureComponent {
 	}
 
 	crossToCheck() {
-		this.setState({ hovering: !this.state.hovering });
+		this.setState( { hovering: !this.state.hovering } );
 	}
 
 	openPlanningItemModal() {
-		store.dispatch( togglePlanningItemModal( true, this.props.type, this.props ))
+		store.dispatch( togglePlanningItemModal( true, this.props.type, this.props ) );
 	}
-	
+
 	markAsComplete() {
-		BlueprintSrvc.toggleCompletion( !this.props.complete, this.props.type, this.props._id, this.props.blueprint )
+		BlueprintSrvc.toggleCompletion( !this.props.complete, this.props.type, this.props._id, this.props.blueprint );
 	}
 
 	render() {
@@ -45,7 +45,8 @@ class PlanningItem extends PureComponent {
 					<div style={ styles.complete }
 						 onClick={ this.markAsComplete.bind( this ) }
 						 onMouseEnter={ this.crossToCheck.bind( this ) }
-						 onMouseLeave={ this.crossToCheck.bind( this ) }>
+						 onMouseLeave={ this.crossToCheck.bind( this ) }
+  					>
 						{ this.props.complete || this.state.hovering ? <i style={ styles.check } className="fa fa-check" /> : <i style={ styles.cross } className="fa fa-times" /> }
 					</div>
 				</div>
@@ -87,7 +88,7 @@ class PlanningItem extends PureComponent {
 			, cross: {
 				color: `#D03939`
 			}
-		}
+		};
 	}
 }
 

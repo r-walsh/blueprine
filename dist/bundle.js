@@ -77,25 +77,25 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	__webpack_require__(/*! normalize-css */ 241);
+	__webpack_require__(/*! normalize-css */ 242);
 	
-	var _App = __webpack_require__(/*! ./components/App */ 244);
+	var _App = __webpack_require__(/*! ./components/App */ 245);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _Login = __webpack_require__(/*! ./components/Login */ 302);
+	var _Login = __webpack_require__(/*! ./components/Login */ 303);
 	
 	var _Login2 = _interopRequireDefault(_Login);
 	
-	var _Groups = __webpack_require__(/*! ./components/Groups */ 304);
+	var _Groups = __webpack_require__(/*! ./components/Groups */ 305);
 	
 	var _Groups2 = _interopRequireDefault(_Groups);
 	
-	var _Blueprints = __webpack_require__(/*! ./components/Blueprints */ 305);
+	var _Blueprints = __webpack_require__(/*! ./components/Blueprints */ 306);
 	
 	var _Blueprints2 = _interopRequireDefault(_Blueprints);
 	
-	var _EditBlueprint = __webpack_require__(/*! ./components/EditBlueprint */ 350);
+	var _EditBlueprint = __webpack_require__(/*! ./components/EditBlueprint */ 351);
 	
 	var _EditBlueprint2 = _interopRequireDefault(_EditBlueprint);
 	
@@ -26830,15 +26830,15 @@
 	
 	var _auth2 = _interopRequireDefault(_auth);
 	
-	var _blueprint = __webpack_require__(/*! ./ducks/blueprint */ 240);
+	var _blueprint = __webpack_require__(/*! ./ducks/blueprint */ 239);
 	
 	var _blueprint2 = _interopRequireDefault(_blueprint);
 	
-	var _modal = __webpack_require__(/*! ./ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ./ducks/modal */ 240);
 	
 	var _modal2 = _interopRequireDefault(_modal);
 	
-	var _modelProps = __webpack_require__(/*! ./ducks/modelProps */ 360);
+	var _modelProps = __webpack_require__(/*! ./ducks/modelProps */ 241);
 	
 	var _modelProps2 = _interopRequireDefault(_modelProps);
 	
@@ -26897,8 +26897,10 @@
 	
 		switch (action.type) {
 			case SET_USER:
-				var nextState = state.set('loggedIn', true);
-				return nextState.set('user', action.user);
+				{
+					var nextState = state.set('loggedIn', true);
+					return nextState.set('user', action.user);
+				}
 			case SET_ERRORS:
 				return state.set('errors', action.errors);
 			case LOGOUT:
@@ -31913,6 +31915,69 @@
 
 /***/ },
 /* 239 */
+/*!********************************!*\
+  !*** ./src/ducks/blueprint.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.setBlueprints = setBlueprints;
+	exports.addBlueprint = addBlueprint;
+	exports.selectBlueprint = selectBlueprint;
+	
+	var _immutable = __webpack_require__(/*! immutable */ 238);
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var initialState = (0, _immutable.Map)({
+		ownedBlueprints: (0, _immutable.List)(),
+		sharedBlueprints: (0, _immutable.List)(),
+		selectedBlueprint: (0, _immutable.Map)()
+	});
+	
+	var SET_BLUEPRINTS = 'blueprint/SET_BLUEPRINT';
+	var ADD_BLUEPRINT = 'blueprint/ADD_BLUEPRINT';
+	var SELECT_BLUEPRINT = 'blueprint/SELECT_BLUEPRINT';
+	
+	exports.default = function () {
+		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+		var action = arguments[1];
+	
+		switch (action.type) {
+			case SET_BLUEPRINTS:
+				return state.set('ownedBlueprints', _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.ownedBlueprints))).set('sharedBlueprints', _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.sharedBlueprints)));
+			case ADD_BLUEPRINT:
+				return state.update('ownedBlueprints', function (blueprints) {
+					return blueprints.push(action.blueprint);
+				});
+			case SELECT_BLUEPRINT:
+				return state.set('selectedBlueprint', (0, _immutable.fromJS)(action.blueprint));
+		}
+		return state;
+	};
+	
+	function setBlueprints(ownedBlueprints, sharedBlueprints) {
+		return { type: SET_BLUEPRINTS, ownedBlueprints: ownedBlueprints, sharedBlueprints: sharedBlueprints };
+	}
+	
+	function addBlueprint(blueprint) {
+		return { type: ADD_BLUEPRINT, blueprint: blueprint };
+	}
+	
+	function selectBlueprint(blueprint) {
+		return { type: SELECT_BLUEPRINT, blueprint: blueprint };
+	}
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "blueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 240 */
 /*!****************************!*\
   !*** ./src/ducks/modal.js ***!
   \****************************/
@@ -31983,10 +32048,10 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 240 */
-/*!********************************!*\
-  !*** ./src/ducks/blueprint.js ***!
-  \********************************/
+/* 241 */
+/*!*********************************!*\
+  !*** ./src/ducks/modelProps.js ***!
+  \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
@@ -31996,70 +32061,51 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.setBlueprints = setBlueprints;
-	exports.addBlueprint = addBlueprint;
-	exports.selectBlueprint = selectBlueprint;
+	exports.default = reducer;
+	exports.addProp = addProp;
 	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	var initialState = _immutable.List.of((0, _immutable.Map)({
+		propName: '',
+		_type: '',
+		description: ''
+	}));
 	
-	var initialState = (0, _immutable.Map)({
-		ownedBlueprints: (0, _immutable.List)(),
-		sharedBlueprints: (0, _immutable.List)(),
-		selectedBlueprint: (0, _immutable.Map)()
-	});
+	var ADD_PROP = 'model/ADD_PROP';
 	
-	var SET_BLUEPRINTS = 'blueprint/SET_BLUEPRINT';
-	var ADD_BLUEPRINT = 'blueprint/ADD_BLUEPRINT';
-	var SELECT_BLUEPRINT = 'blueprint/SELECT_BLUEPRINT';
-	
-	exports.default = function () {
+	function reducer() {
 		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 		var action = arguments[1];
 	
 		switch (action.type) {
-			case SET_BLUEPRINTS:
-				return state.set('ownedBlueprints', _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.ownedBlueprints))).set('sharedBlueprints', _immutable.List.of.apply(_immutable.List, _toConsumableArray(action.sharedBlueprints)));
-			case ADD_BLUEPRINT:
-				return state.update('ownedBlueprints', function (blueprints) {
-					return blueprints.push(action.blueprint);
-				});
-			case SELECT_BLUEPRINT:
-				return state.set('selectedBlueprint', (0, _immutable.fromJS)(action.blueprint));
+			case ADD_PROP:
+				return state.push(action.prop);
 		}
 		return state;
-	};
-	
-	function setBlueprints(ownedBlueprints, sharedBlueprints) {
-		return { type: SET_BLUEPRINTS, ownedBlueprints: ownedBlueprints, sharedBlueprints: sharedBlueprints };
 	}
 	
-	function addBlueprint(blueprint) {
-		return { type: ADD_BLUEPRINT, blueprint: blueprint };
-	}
-	
-	function selectBlueprint(blueprint) {
-		return { type: SELECT_BLUEPRINT, blueprint: blueprint };
+	function addProp(prop) {
+		return { type: ADD_PROP, prop: prop };
 	}
 
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "blueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 241 */
+/* 242 */
 /*!**********************************!*\
   !*** ./~/normalize-css/index.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var insert = __webpack_require__(/*! insert-css */ 242);
-	var normalize = __webpack_require__(/*! ./normalize */ 243);
+	var insert = __webpack_require__(/*! insert-css */ 243);
+	var normalize = __webpack_require__(/*! ./normalize */ 244);
 	
 	insert(normalize);
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /*!*******************************!*\
   !*** ./~/insert-css/index.js ***!
   \*******************************/
@@ -32085,7 +32131,7 @@
 
 
 /***/ },
-/* 243 */
+/* 244 */
 /*!**************************************!*\
   !*** ./~/normalize-css/normalize.js ***!
   \**************************************/
@@ -32095,7 +32141,7 @@
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /*!*******************************!*\
   !*** ./src/components/App.js ***!
   \*******************************/
@@ -32115,15 +32161,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! ../../~/react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! ../../~/react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
-	var _NavBar = __webpack_require__(/*! ./NavBar */ 295);
+	var _NavBar = __webpack_require__(/*! ./NavBar */ 296);
 	
 	var _NavBar2 = _interopRequireDefault(_NavBar);
 	
@@ -32152,7 +32198,8 @@
 				return _react2.default.createElement(
 					'div',
 					{ className: 'main-wrapper',
-						style: styles.mainWrapper },
+						style: styles.mainWrapper
+					},
 					_react2.default.createElement(
 						_radium.StyleRoot,
 						null,
@@ -32181,7 +32228,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "App.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 245 */
+/* 246 */
 /*!******************************************!*\
   !*** ./~/react-pure-render/component.js ***!
   \******************************************/
@@ -32197,7 +32244,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 	
-	var _function = __webpack_require__(/*! ./function */ 246);
+	var _function = __webpack_require__(/*! ./function */ 247);
 	
 	var _function2 = _interopRequireDefault(_function);
 	
@@ -32223,7 +32270,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 246 */
+/* 247 */
 /*!*****************************************!*\
   !*** ./~/react-pure-render/function.js ***!
   \*****************************************/
@@ -32236,7 +32283,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _shallowEqual = __webpack_require__(/*! ./shallowEqual */ 247);
+	var _shallowEqual = __webpack_require__(/*! ./shallowEqual */ 248);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
@@ -32247,7 +32294,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 247 */
+/* 248 */
 /*!*********************************************!*\
   !*** ./~/react-pure-render/shallowEqual.js ***!
   \*********************************************/
@@ -32288,7 +32335,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 248 */
+/* 249 */
 /*!*******************************!*\
   !*** ./~/radium/lib/index.js ***!
   \*******************************/
@@ -32300,31 +32347,31 @@
 	  value: true
 	});
 	
-	var _enhancer = __webpack_require__(/*! ./enhancer */ 249);
+	var _enhancer = __webpack_require__(/*! ./enhancer */ 250);
 	
 	var _enhancer2 = _interopRequireDefault(_enhancer);
 	
-	var _plugins = __webpack_require__(/*! ./plugins */ 280);
+	var _plugins = __webpack_require__(/*! ./plugins */ 281);
 	
 	var _plugins2 = _interopRequireDefault(_plugins);
 	
-	var _style = __webpack_require__(/*! ./components/style */ 290);
+	var _style = __webpack_require__(/*! ./components/style */ 291);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _styleRoot = __webpack_require__(/*! ./components/style-root */ 291);
+	var _styleRoot = __webpack_require__(/*! ./components/style-root */ 292);
 	
 	var _styleRoot2 = _interopRequireDefault(_styleRoot);
 	
-	var _getState = __webpack_require__(/*! ./get-state */ 276);
+	var _getState = __webpack_require__(/*! ./get-state */ 277);
 	
 	var _getState2 = _interopRequireDefault(_getState);
 	
-	var _keyframes = __webpack_require__(/*! ./keyframes */ 293);
+	var _keyframes = __webpack_require__(/*! ./keyframes */ 294);
 	
 	var _keyframes2 = _interopRequireDefault(_keyframes);
 	
-	var _resolveStyles = __webpack_require__(/*! ./resolve-styles */ 251);
+	var _resolveStyles = __webpack_require__(/*! ./resolve-styles */ 252);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32343,7 +32390,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 249 */
+/* 250 */
 /*!**********************************!*\
   !*** ./~/radium/lib/enhancer.js ***!
   \**********************************/
@@ -32363,11 +32410,11 @@
 	
 	var _react = __webpack_require__(/*! react */ 2);
 	
-	var _styleKeeper = __webpack_require__(/*! ./style-keeper.js */ 250);
+	var _styleKeeper = __webpack_require__(/*! ./style-keeper.js */ 251);
 	
 	var _styleKeeper2 = _interopRequireDefault(_styleKeeper);
 	
-	var _resolveStyles = __webpack_require__(/*! ./resolve-styles.js */ 251);
+	var _resolveStyles = __webpack_require__(/*! ./resolve-styles.js */ 252);
 	
 	var _resolveStyles2 = _interopRequireDefault(_resolveStyles);
 	
@@ -32531,7 +32578,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 5)))
 
 /***/ },
-/* 250 */
+/* 251 */
 /*!**************************************!*\
   !*** ./~/radium/lib/style-keeper.js ***!
   \**************************************/
@@ -32606,7 +32653,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 251 */
+/* 252 */
 /*!****************************************!*\
   !*** ./~/radium/lib/resolve-styles.js ***!
   \****************************************/
@@ -32622,33 +32669,33 @@
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	var _appendImportantToEachValue = __webpack_require__(/*! ./append-important-to-each-value */ 252);
+	var _appendImportantToEachValue = __webpack_require__(/*! ./append-important-to-each-value */ 253);
 	
 	var _appendImportantToEachValue2 = _interopRequireDefault(_appendImportantToEachValue);
 	
-	var _cssRuleSetToString = __webpack_require__(/*! ./css-rule-set-to-string */ 255);
+	var _cssRuleSetToString = __webpack_require__(/*! ./css-rule-set-to-string */ 256);
 	
 	var _cssRuleSetToString2 = _interopRequireDefault(_cssRuleSetToString);
 	
-	var _getState = __webpack_require__(/*! ./get-state */ 276);
+	var _getState = __webpack_require__(/*! ./get-state */ 277);
 	
 	var _getState2 = _interopRequireDefault(_getState);
 	
-	var _getStateKey = __webpack_require__(/*! ./get-state-key */ 277);
+	var _getStateKey = __webpack_require__(/*! ./get-state-key */ 278);
 	
 	var _getStateKey2 = _interopRequireDefault(_getStateKey);
 	
-	var _hash = __webpack_require__(/*! ./hash */ 278);
+	var _hash = __webpack_require__(/*! ./hash */ 279);
 	
 	var _hash2 = _interopRequireDefault(_hash);
 	
-	var _mergeStyles = __webpack_require__(/*! ./merge-styles */ 279);
+	var _mergeStyles = __webpack_require__(/*! ./merge-styles */ 280);
 	
-	var _plugins = __webpack_require__(/*! ./plugins/ */ 280);
+	var _plugins = __webpack_require__(/*! ./plugins/ */ 281);
 	
 	var _plugins2 = _interopRequireDefault(_plugins);
 	
-	var _exenv = __webpack_require__(/*! exenv */ 289);
+	var _exenv = __webpack_require__(/*! exenv */ 290);
 	
 	var _exenv2 = _interopRequireDefault(_exenv);
 	
@@ -32959,7 +33006,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 252 */
+/* 253 */
 /*!********************************************************!*\
   !*** ./~/radium/lib/append-important-to-each-value.js ***!
   \********************************************************/
@@ -32972,11 +33019,11 @@
 	});
 	exports.default = appendImportantToEachValue;
 	
-	var _appendPxIfNeeded = __webpack_require__(/*! ./append-px-if-needed */ 253);
+	var _appendPxIfNeeded = __webpack_require__(/*! ./append-px-if-needed */ 254);
 	
 	var _appendPxIfNeeded2 = _interopRequireDefault(_appendPxIfNeeded);
 	
-	var _mapObject = __webpack_require__(/*! ./map-object */ 254);
+	var _mapObject = __webpack_require__(/*! ./map-object */ 255);
 	
 	var _mapObject2 = _interopRequireDefault(_mapObject);
 	
@@ -32990,7 +33037,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 253 */
+/* 254 */
 /*!*********************************************!*\
   !*** ./~/radium/lib/append-px-if-needed.js ***!
   \*********************************************/
@@ -33047,7 +33094,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 254 */
+/* 255 */
 /*!************************************!*\
   !*** ./~/radium/lib/map-object.js ***!
   \************************************/
@@ -33068,7 +33115,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 255 */
+/* 256 */
 /*!************************************************!*\
   !*** ./~/radium/lib/css-rule-set-to-string.js ***!
   \************************************************/
@@ -33081,19 +33128,19 @@
 	});
 	exports.default = cssRuleSetToString;
 	
-	var _appendPxIfNeeded = __webpack_require__(/*! ./append-px-if-needed */ 253);
+	var _appendPxIfNeeded = __webpack_require__(/*! ./append-px-if-needed */ 254);
 	
 	var _appendPxIfNeeded2 = _interopRequireDefault(_appendPxIfNeeded);
 	
-	var _camelCasePropsToDashCase = __webpack_require__(/*! ./camel-case-props-to-dash-case */ 256);
+	var _camelCasePropsToDashCase = __webpack_require__(/*! ./camel-case-props-to-dash-case */ 257);
 	
 	var _camelCasePropsToDashCase2 = _interopRequireDefault(_camelCasePropsToDashCase);
 	
-	var _mapObject = __webpack_require__(/*! ./map-object */ 254);
+	var _mapObject = __webpack_require__(/*! ./map-object */ 255);
 	
 	var _mapObject2 = _interopRequireDefault(_mapObject);
 	
-	var _prefixer = __webpack_require__(/*! ./prefixer */ 257);
+	var _prefixer = __webpack_require__(/*! ./prefixer */ 258);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -33120,7 +33167,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 256 */
+/* 257 */
 /*!*******************************************************!*\
   !*** ./~/radium/lib/camel-case-props-to-dash-case.js ***!
   \*******************************************************/
@@ -33163,7 +33210,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 257 */
+/* 258 */
 /*!**********************************!*\
   !*** ./~/radium/lib/prefixer.js ***!
   \**********************************/
@@ -33185,7 +33232,7 @@
 	exports.getPrefixedKeyframes = getPrefixedKeyframes;
 	exports.getPrefixedStyle = getPrefixedStyle;
 	
-	var _inlineStylePrefixer = __webpack_require__(/*! inline-style-prefixer */ 258);
+	var _inlineStylePrefixer = __webpack_require__(/*! inline-style-prefixer */ 259);
 	
 	var _inlineStylePrefixer2 = _interopRequireDefault(_inlineStylePrefixer);
 	
@@ -33250,7 +33297,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./~/process/browser.js */ 5)))
 
 /***/ },
-/* 258 */
+/* 259 */
 /*!*************************************************!*\
   !*** ./~/inline-style-prefixer/lib/Prefixer.js ***!
   \*************************************************/
@@ -33272,31 +33319,31 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _utilsGetBrowserInformation = __webpack_require__(/*! ./utils/getBrowserInformation */ 259);
+	var _utilsGetBrowserInformation = __webpack_require__(/*! ./utils/getBrowserInformation */ 260);
 	
 	var _utilsGetBrowserInformation2 = _interopRequireDefault(_utilsGetBrowserInformation);
 	
-	var _utilsGetPrefixedKeyframes = __webpack_require__(/*! ./utils/getPrefixedKeyframes */ 261);
+	var _utilsGetPrefixedKeyframes = __webpack_require__(/*! ./utils/getPrefixedKeyframes */ 262);
 	
 	var _utilsGetPrefixedKeyframes2 = _interopRequireDefault(_utilsGetPrefixedKeyframes);
 	
-	var _utilsCapitalizeString = __webpack_require__(/*! ./utils/capitalizeString */ 262);
+	var _utilsCapitalizeString = __webpack_require__(/*! ./utils/capitalizeString */ 263);
 	
 	var _utilsCapitalizeString2 = _interopRequireDefault(_utilsCapitalizeString);
 	
-	var _utilsAssign = __webpack_require__(/*! ./utils/assign */ 263);
+	var _utilsAssign = __webpack_require__(/*! ./utils/assign */ 264);
 	
 	var _utilsAssign2 = _interopRequireDefault(_utilsAssign);
 	
-	var _utilsWarn = __webpack_require__(/*! ./utils/warn */ 264);
+	var _utilsWarn = __webpack_require__(/*! ./utils/warn */ 265);
 	
 	var _utilsWarn2 = _interopRequireDefault(_utilsWarn);
 	
-	var _caniuseData = __webpack_require__(/*! ./caniuseData */ 265);
+	var _caniuseData = __webpack_require__(/*! ./caniuseData */ 266);
 	
 	var _caniuseData2 = _interopRequireDefault(_caniuseData);
 	
-	var _Plugins = __webpack_require__(/*! ./Plugins */ 266);
+	var _Plugins = __webpack_require__(/*! ./Plugins */ 267);
 	
 	var _Plugins2 = _interopRequireDefault(_Plugins);
 	
@@ -33490,7 +33537,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 259 */
+/* 260 */
 /*!********************************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/getBrowserInformation.js ***!
   \********************************************************************/
@@ -33504,7 +33551,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _bowser = __webpack_require__(/*! bowser */ 260);
+	var _bowser = __webpack_require__(/*! bowser */ 261);
 	
 	var _bowser2 = _interopRequireDefault(_bowser);
 	
@@ -33653,7 +33700,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 260 */
+/* 261 */
 /*!****************************!*\
   !*** ./~/bowser/bowser.js ***!
   \****************************/
@@ -33953,7 +34000,7 @@
 
 
 /***/ },
-/* 261 */
+/* 262 */
 /*!*******************************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/getPrefixedKeyframes.js ***!
   \*******************************************************************/
@@ -33981,7 +34028,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 262 */
+/* 263 */
 /*!***************************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/capitalizeString.js ***!
   \***************************************************************/
@@ -34001,7 +34048,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 263 */
+/* 264 */
 /*!*****************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/assign.js ***!
   \*****************************************************/
@@ -34026,7 +34073,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 264 */
+/* 265 */
 /*!***************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/warn.js ***!
   \***************************************************/
@@ -34049,7 +34096,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 5)))
 
 /***/ },
-/* 265 */
+/* 266 */
 /*!****************************************************!*\
   !*** ./~/inline-style-prefixer/lib/caniuseData.js ***!
   \****************************************************/
@@ -34058,7 +34105,7 @@
 	var caniuseData = {"chrome":{"transform":35,"transformOrigin":35,"transformOriginX":35,"transformOriginY":35,"backfaceVisibility":35,"perspective":35,"perspectiveOrigin":35,"transformStyle":35,"transformOriginZ":35,"animation":42,"animationDelay":42,"animationDirection":42,"animationFillMode":42,"animationDuration":42,"animationIterationCount":42,"animationName":42,"animationPlayState":42,"animationTimingFunction":42,"appearance":50,"userSelect":50,"fontKerning":32,"textEmphasisPosition":50,"textEmphasis":50,"textEmphasisStyle":50,"textEmphasisColor":50,"boxDecorationBreak":50,"clipPath":50,"maskImage":50,"maskMode":50,"maskRepeat":50,"maskPosition":50,"maskClip":50,"maskOrigin":50,"maskSize":50,"maskComposite":50,"mask":50,"maskBorderSource":50,"maskBorderMode":50,"maskBorderSlice":50,"maskBorderWidth":50,"maskBorderOutset":50,"maskBorderRepeat":50,"maskBorder":50,"maskType":50,"textDecorationStyle":50,"textDecorationSkip":50,"textDecorationLine":50,"textDecorationColor":50,"filter":50,"fontFeatureSettings":47,"breakAfter":50,"breakBefore":50,"breakInside":50,"columnCount":50,"columnFill":50,"columnGap":50,"columnRule":50,"columnRuleColor":50,"columnRuleStyle":50,"columnRuleWidth":50,"columns":50,"columnSpan":50,"columnWidth":50},"safari":{"flex":8,"flexBasis":8,"flexDirection":8,"flexGrow":8,"flexFlow":8,"flexShrink":8,"flexWrap":8,"alignContent":8,"alignItems":8,"alignSelf":8,"justifyContent":8,"order":8,"transition":6,"transitionDelay":6,"transitionDuration":6,"transitionProperty":6,"transitionTimingFunction":6,"transform":8,"transformOrigin":8,"transformOriginX":8,"transformOriginY":8,"backfaceVisibility":8,"perspective":8,"perspectiveOrigin":8,"transformStyle":8,"transformOriginZ":8,"animation":8,"animationDelay":8,"animationDirection":8,"animationFillMode":8,"animationDuration":8,"animationIterationCount":8,"animationName":8,"animationPlayState":8,"animationTimingFunction":8,"appearance":9.1,"userSelect":9.1,"backdropFilter":9.1,"fontKerning":9.1,"scrollSnapType":9.1,"scrollSnapPointsX":9.1,"scrollSnapPointsY":9.1,"scrollSnapDestination":9.1,"scrollSnapCoordinate":9.1,"textEmphasisPosition":7,"textEmphasis":7,"textEmphasisStyle":7,"textEmphasisColor":7,"boxDecorationBreak":9.1,"clipPath":9.1,"maskImage":9.1,"maskMode":9.1,"maskRepeat":9.1,"maskPosition":9.1,"maskClip":9.1,"maskOrigin":9.1,"maskSize":9.1,"maskComposite":9.1,"mask":9.1,"maskBorderSource":9.1,"maskBorderMode":9.1,"maskBorderSlice":9.1,"maskBorderWidth":9.1,"maskBorderOutset":9.1,"maskBorderRepeat":9.1,"maskBorder":9.1,"maskType":9.1,"textDecorationStyle":9.1,"textDecorationSkip":9.1,"textDecorationLine":9.1,"textDecorationColor":9.1,"shapeImageThreshold":9.1,"shapeImageMargin":9.1,"shapeImageOutside":9.1,"filter":9,"hyphens":9.1,"flowInto":9.1,"flowFrom":9.1,"breakBefore":8,"breakAfter":8,"breakInside":8,"regionFragment":9.1,"columnCount":8,"columnFill":8,"columnGap":8,"columnRule":8,"columnRuleColor":8,"columnRuleStyle":8,"columnRuleWidth":8,"columns":8,"columnSpan":8,"columnWidth":8},"firefox":{"appearance":46,"userSelect":46,"boxSizing":28,"textAlignLast":46,"textDecorationStyle":35,"textDecorationSkip":35,"textDecorationLine":35,"textDecorationColor":35,"tabSize":46,"hyphens":42,"fontFeatureSettings":33,"breakAfter":46,"breakBefore":46,"breakInside":46,"columnCount":46,"columnFill":46,"columnGap":46,"columnRule":46,"columnRuleColor":46,"columnRuleStyle":46,"columnRuleWidth":46,"columns":46,"columnSpan":46,"columnWidth":46},"opera":{"flex":16,"flexBasis":16,"flexDirection":16,"flexGrow":16,"flexFlow":16,"flexShrink":16,"flexWrap":16,"alignContent":16,"alignItems":16,"alignSelf":16,"justifyContent":16,"order":16,"transform":22,"transformOrigin":22,"transformOriginX":22,"transformOriginY":22,"backfaceVisibility":22,"perspective":22,"perspectiveOrigin":22,"transformStyle":22,"transformOriginZ":22,"animation":29,"animationDelay":29,"animationDirection":29,"animationFillMode":29,"animationDuration":29,"animationIterationCount":29,"animationName":29,"animationPlayState":29,"animationTimingFunction":29,"appearance":36,"userSelect":36,"fontKerning":19,"textEmphasisPosition":36,"textEmphasis":36,"textEmphasisStyle":36,"textEmphasisColor":36,"boxDecorationBreak":36,"clipPath":36,"maskImage":36,"maskMode":36,"maskRepeat":36,"maskPosition":36,"maskClip":36,"maskOrigin":36,"maskSize":36,"maskComposite":36,"mask":36,"maskBorderSource":36,"maskBorderMode":36,"maskBorderSlice":36,"maskBorderWidth":36,"maskBorderOutset":36,"maskBorderRepeat":36,"maskBorder":36,"maskType":36,"filter":36,"fontFeatureSettings":36,"breakAfter":36,"breakBefore":36,"breakInside":36,"columnCount":36,"columnFill":36,"columnGap":36,"columnRule":36,"columnRuleColor":36,"columnRuleStyle":36,"columnRuleWidth":36,"columns":36,"columnSpan":36,"columnWidth":36},"ie":{"gridArea":11,"gridGap":11,"gridColumnStart":11,"userSelect":11,"grid":11,"breakInside":11,"hyphens":11,"gridTemplateAreas":11,"breakAfter":11,"scrollSnapCoordinate":11,"gridRowStart":11,"gridAutoFlow":11,"scrollSnapDestination":11,"gridTemplate":11,"gridTemplateColumns":11,"transformOrigin":9,"gridAutoRows":11,"gridColumnEnd":11,"transformOriginY":9,"scrollSnapPointsY":11,"breakBefore":11,"gridRowGap":11,"scrollSnapPointsX":11,"regionFragment":11,"flexWrap":10,"wrapFlow":11,"gridRowEnd":11,"flex":10,"flexDirection":10,"flowInto":11,"touchAction":10,"gridColumn":11,"transform":9,"gridTemplateRows":11,"flexFlow":10,"transformOriginX":9,"flowFrom":11,"scrollSnapType":11,"wrapMargin":11,"gridColumnGap":11,"gridRow":11,"wrapThrough":11,"gridAutoColumns":11,"textSizeAdjust":11},"edge":{"userSelect":14,"wrapFlow":14,"wrapThrough":14,"wrapMargin":14,"scrollSnapType":14,"scrollSnapPointsX":14,"scrollSnapPointsY":14,"scrollSnapDestination":14,"scrollSnapCoordinate":14,"hyphens":14,"flowInto":14,"flowFrom":14,"breakBefore":14,"breakAfter":14,"breakInside":14,"regionFragment":14,"gridTemplateColumns":14,"gridTemplateRows":14,"gridTemplateAreas":14,"gridTemplate":14,"gridAutoColumns":14,"gridAutoRows":14,"gridAutoFlow":14,"grid":14,"gridRowStart":14,"gridColumnStart":14,"gridRowEnd":14,"gridRow":14,"gridColumn":14,"gridColumnEnd":14,"gridColumnGap":14,"gridRowGap":14,"gridArea":14,"gridGap":14},"ios_saf":{"flex":8.1,"flexBasis":8.1,"flexDirection":8.1,"flexGrow":8.1,"flexFlow":8.1,"flexShrink":8.1,"flexWrap":8.1,"alignContent":8.1,"alignItems":8.1,"alignSelf":8.1,"justifyContent":8.1,"order":8.1,"transition":6,"transitionDelay":6,"transitionDuration":6,"transitionProperty":6,"transitionTimingFunction":6,"transform":8.1,"transformOrigin":8.1,"transformOriginX":8.1,"transformOriginY":8.1,"backfaceVisibility":8.1,"perspective":8.1,"perspectiveOrigin":8.1,"transformStyle":8.1,"transformOriginZ":8.1,"animation":8.1,"animationDelay":8.1,"animationDirection":8.1,"animationFillMode":8.1,"animationDuration":8.1,"animationIterationCount":8.1,"animationName":8.1,"animationPlayState":8.1,"animationTimingFunction":8.1,"appearance":9.3,"userSelect":9.3,"backdropFilter":9.3,"fontKerning":9.3,"scrollSnapType":9.3,"scrollSnapPointsX":9.3,"scrollSnapPointsY":9.3,"scrollSnapDestination":9.3,"scrollSnapCoordinate":9.3,"boxDecorationBreak":9.3,"clipPath":9.3,"maskImage":9.3,"maskMode":9.3,"maskRepeat":9.3,"maskPosition":9.3,"maskClip":9.3,"maskOrigin":9.3,"maskSize":9.3,"maskComposite":9.3,"mask":9.3,"maskBorderSource":9.3,"maskBorderMode":9.3,"maskBorderSlice":9.3,"maskBorderWidth":9.3,"maskBorderOutset":9.3,"maskBorderRepeat":9.3,"maskBorder":9.3,"maskType":9.3,"textSizeAdjust":9.3,"textDecorationStyle":9.3,"textDecorationSkip":9.3,"textDecorationLine":9.3,"textDecorationColor":9.3,"shapeImageThreshold":9.3,"shapeImageMargin":9.3,"shapeImageOutside":9.3,"filter":9,"hyphens":9.3,"flowInto":9.3,"flowFrom":9.3,"breakBefore":8.1,"breakAfter":8.1,"breakInside":8.1,"regionFragment":9.3,"columnCount":8.1,"columnFill":8.1,"columnGap":8.1,"columnRule":8.1,"columnRuleColor":8.1,"columnRuleStyle":8.1,"columnRuleWidth":8.1,"columns":8.1,"columnSpan":8.1,"columnWidth":8.1},"android":{"borderImage":4.2,"borderImageOutset":4.2,"borderImageRepeat":4.2,"borderImageSlice":4.2,"borderImageSource":4.2,"borderImageWidth":4.2,"flex":4.2,"flexBasis":4.2,"flexDirection":4.2,"flexGrow":4.2,"flexFlow":4.2,"flexShrink":4.2,"flexWrap":4.2,"alignContent":4.2,"alignItems":4.2,"alignSelf":4.2,"justifyContent":4.2,"order":4.2,"transition":4.2,"transitionDelay":4.2,"transitionDuration":4.2,"transitionProperty":4.2,"transitionTimingFunction":4.2,"transform":4.4,"transformOrigin":4.4,"transformOriginX":4.4,"transformOriginY":4.4,"backfaceVisibility":4.4,"perspective":4.4,"perspectiveOrigin":4.4,"transformStyle":4.4,"transformOriginZ":4.4,"animation":4.4,"animationDelay":4.4,"animationDirection":4.4,"animationFillMode":4.4,"animationDuration":4.4,"animationIterationCount":4.4,"animationName":4.4,"animationPlayState":4.4,"animationTimingFunction":4.4,"appearance":46,"userSelect":46,"fontKerning":4.4,"textEmphasisPosition":46,"textEmphasis":46,"textEmphasisStyle":46,"textEmphasisColor":46,"boxDecorationBreak":46,"clipPath":46,"maskImage":46,"maskMode":46,"maskRepeat":46,"maskPosition":46,"maskClip":46,"maskOrigin":46,"maskSize":46,"maskComposite":46,"mask":46,"maskBorderSource":46,"maskBorderMode":46,"maskBorderSlice":46,"maskBorderWidth":46,"maskBorderOutset":46,"maskBorderRepeat":46,"maskBorder":46,"maskType":46,"filter":46,"fontFeatureSettings":46,"breakAfter":46,"breakBefore":46,"breakInside":46,"columnCount":46,"columnFill":46,"columnGap":46,"columnRule":46,"columnRuleColor":46,"columnRuleStyle":46,"columnRuleWidth":46,"columns":46,"columnSpan":46,"columnWidth":46},"and_chr":{"appearance":47,"userSelect":47,"textEmphasisPosition":47,"textEmphasis":47,"textEmphasisStyle":47,"textEmphasisColor":47,"boxDecorationBreak":47,"clipPath":47,"maskImage":47,"maskMode":47,"maskRepeat":47,"maskPosition":47,"maskClip":47,"maskOrigin":47,"maskSize":47,"maskComposite":47,"mask":47,"maskBorderSource":47,"maskBorderMode":47,"maskBorderSlice":47,"maskBorderWidth":47,"maskBorderOutset":47,"maskBorderRepeat":47,"maskBorder":47,"maskType":47,"textDecorationStyle":47,"textDecorationSkip":47,"textDecorationLine":47,"textDecorationColor":47,"filter":47,"fontFeatureSettings":47,"breakAfter":47,"breakBefore":47,"breakInside":47,"columnCount":47,"columnFill":47,"columnGap":47,"columnRule":47,"columnRuleColor":47,"columnRuleStyle":47,"columnRuleWidth":47,"columns":47,"columnSpan":47,"columnWidth":47},"and_uc":{"flex":9.9,"flexBasis":9.9,"flexDirection":9.9,"flexGrow":9.9,"flexFlow":9.9,"flexShrink":9.9,"flexWrap":9.9,"alignContent":9.9,"alignItems":9.9,"alignSelf":9.9,"justifyContent":9.9,"order":9.9,"transition":9.9,"transitionDelay":9.9,"transitionDuration":9.9,"transitionProperty":9.9,"transitionTimingFunction":9.9,"transform":9.9,"transformOrigin":9.9,"transformOriginX":9.9,"transformOriginY":9.9,"backfaceVisibility":9.9,"perspective":9.9,"perspectiveOrigin":9.9,"transformStyle":9.9,"transformOriginZ":9.9,"animation":9.9,"animationDelay":9.9,"animationDirection":9.9,"animationFillMode":9.9,"animationDuration":9.9,"animationIterationCount":9.9,"animationName":9.9,"animationPlayState":9.9,"animationTimingFunction":9.9,"appearance":9.9,"userSelect":9.9,"fontKerning":9.9,"textEmphasisPosition":9.9,"textEmphasis":9.9,"textEmphasisStyle":9.9,"textEmphasisColor":9.9,"maskImage":9.9,"maskMode":9.9,"maskRepeat":9.9,"maskPosition":9.9,"maskClip":9.9,"maskOrigin":9.9,"maskSize":9.9,"maskComposite":9.9,"mask":9.9,"maskBorderSource":9.9,"maskBorderMode":9.9,"maskBorderSlice":9.9,"maskBorderWidth":9.9,"maskBorderOutset":9.9,"maskBorderRepeat":9.9,"maskBorder":9.9,"maskType":9.9,"textSizeAdjust":9.9,"filter":9.9,"hyphens":9.9,"flowInto":9.9,"flowFrom":9.9,"breakBefore":9.9,"breakAfter":9.9,"breakInside":9.9,"regionFragment":9.9,"fontFeatureSettings":9.9,"columnCount":9.9,"columnFill":9.9,"columnGap":9.9,"columnRule":9.9,"columnRuleColor":9.9,"columnRuleStyle":9.9,"columnRuleWidth":9.9,"columns":9.9,"columnSpan":9.9,"columnWidth":9.9},"op_mini":{"borderImage":5,"borderImageOutset":5,"borderImageRepeat":5,"borderImageSlice":5,"borderImageSource":5,"borderImageWidth":5,"tabSize":5,"objectFit":5,"objectPosition":5}}; module.exports = caniuseData
 
 /***/ },
-/* 266 */
+/* 267 */
 /*!************************************************!*\
   !*** ./~/inline-style-prefixer/lib/Plugins.js ***!
   \************************************************/
@@ -34072,37 +34119,37 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _pluginsCalc = __webpack_require__(/*! ./plugins/calc */ 267);
+	var _pluginsCalc = __webpack_require__(/*! ./plugins/calc */ 268);
 	
 	var _pluginsCalc2 = _interopRequireDefault(_pluginsCalc);
 	
-	var _pluginsCursor = __webpack_require__(/*! ./plugins/cursor */ 268);
+	var _pluginsCursor = __webpack_require__(/*! ./plugins/cursor */ 269);
 	
 	var _pluginsCursor2 = _interopRequireDefault(_pluginsCursor);
 	
-	var _pluginsFlex = __webpack_require__(/*! ./plugins/flex */ 269);
+	var _pluginsFlex = __webpack_require__(/*! ./plugins/flex */ 270);
 	
 	var _pluginsFlex2 = _interopRequireDefault(_pluginsFlex);
 	
-	var _pluginsSizing = __webpack_require__(/*! ./plugins/sizing */ 270);
+	var _pluginsSizing = __webpack_require__(/*! ./plugins/sizing */ 271);
 	
 	var _pluginsSizing2 = _interopRequireDefault(_pluginsSizing);
 	
-	var _pluginsGradient = __webpack_require__(/*! ./plugins/gradient */ 271);
+	var _pluginsGradient = __webpack_require__(/*! ./plugins/gradient */ 272);
 	
 	var _pluginsGradient2 = _interopRequireDefault(_pluginsGradient);
 	
-	var _pluginsTransition = __webpack_require__(/*! ./plugins/transition */ 272);
+	var _pluginsTransition = __webpack_require__(/*! ./plugins/transition */ 273);
 	
 	var _pluginsTransition2 = _interopRequireDefault(_pluginsTransition);
 	
 	// special flexbox specifications
 	
-	var _pluginsFlexboxIE = __webpack_require__(/*! ./plugins/flexboxIE */ 274);
+	var _pluginsFlexboxIE = __webpack_require__(/*! ./plugins/flexboxIE */ 275);
 	
 	var _pluginsFlexboxIE2 = _interopRequireDefault(_pluginsFlexboxIE);
 	
-	var _pluginsFlexboxOld = __webpack_require__(/*! ./plugins/flexboxOld */ 275);
+	var _pluginsFlexboxOld = __webpack_require__(/*! ./plugins/flexboxOld */ 276);
 	
 	var _pluginsFlexboxOld2 = _interopRequireDefault(_pluginsFlexboxOld);
 	
@@ -34112,7 +34159,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 267 */
+/* 268 */
 /*!*****************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/calc.js ***!
   \*****************************************************/
@@ -34152,7 +34199,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 268 */
+/* 269 */
 /*!*******************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/cursor.js ***!
   \*******************************************************/
@@ -34198,7 +34245,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 269 */
+/* 270 */
 /*!*****************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/flex.js ***!
   \*****************************************************/
@@ -34237,7 +34284,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 270 */
+/* 271 */
 /*!*******************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/sizing.js ***!
   \*******************************************************/
@@ -34296,7 +34343,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 271 */
+/* 272 */
 /*!*********************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/gradient.js ***!
   \*********************************************************/
@@ -34338,7 +34385,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 272 */
+/* 273 */
 /*!***********************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/transition.js ***!
   \***********************************************************/
@@ -34355,11 +34402,11 @@
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var _utilsCamelToDashCase = __webpack_require__(/*! ../utils/camelToDashCase */ 273);
+	var _utilsCamelToDashCase = __webpack_require__(/*! ../utils/camelToDashCase */ 274);
 	
 	var _utilsCamelToDashCase2 = _interopRequireDefault(_utilsCamelToDashCase);
 	
-	var _utilsCapitalizeString = __webpack_require__(/*! ../utils/capitalizeString */ 262);
+	var _utilsCapitalizeString = __webpack_require__(/*! ../utils/capitalizeString */ 263);
 	
 	var _utilsCapitalizeString2 = _interopRequireDefault(_utilsCapitalizeString);
 	
@@ -34420,7 +34467,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 273 */
+/* 274 */
 /*!**************************************************************!*\
   !*** ./~/inline-style-prefixer/lib/utils/camelToDashCase.js ***!
   \**************************************************************/
@@ -34445,7 +34492,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 274 */
+/* 275 */
 /*!**********************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/flexboxIE.js ***!
   \**********************************************************/
@@ -34514,7 +34561,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 275 */
+/* 276 */
 /*!***********************************************************!*\
   !*** ./~/inline-style-prefixer/lib/plugins/flexboxOld.js ***!
   \***********************************************************/
@@ -34591,7 +34638,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 276 */
+/* 277 */
 /*!***********************************!*\
   !*** ./~/radium/lib/get-state.js ***!
   \***********************************/
@@ -34603,7 +34650,7 @@
 	  value: true
 	});
 	
-	var _getStateKey = __webpack_require__(/*! ./get-state-key */ 277);
+	var _getStateKey = __webpack_require__(/*! ./get-state-key */ 278);
 	
 	var _getStateKey2 = _interopRequireDefault(_getStateKey);
 	
@@ -34619,7 +34666,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 277 */
+/* 278 */
 /*!***************************************!*\
   !*** ./~/radium/lib/get-state-key.js ***!
   \***************************************/
@@ -34640,7 +34687,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 278 */
+/* 279 */
 /*!******************************!*\
   !*** ./~/radium/lib/hash.js ***!
   \******************************/
@@ -34675,7 +34722,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 279 */
+/* 280 */
 /*!**************************************!*\
   !*** ./~/radium/lib/merge-styles.js ***!
   \**************************************/
@@ -34742,7 +34789,7 @@
 	}
 
 /***/ },
-/* 280 */
+/* 281 */
 /*!***************************************!*\
   !*** ./~/radium/lib/plugins/index.js ***!
   \***************************************/
@@ -34754,31 +34801,31 @@
 	  value: true
 	});
 	
-	var _checkPropsPlugin = __webpack_require__(/*! ./check-props-plugin */ 281);
+	var _checkPropsPlugin = __webpack_require__(/*! ./check-props-plugin */ 282);
 	
 	var _checkPropsPlugin2 = _interopRequireDefault(_checkPropsPlugin);
 	
-	var _keyframesPlugin = __webpack_require__(/*! ./keyframes-plugin */ 282);
+	var _keyframesPlugin = __webpack_require__(/*! ./keyframes-plugin */ 283);
 	
 	var _keyframesPlugin2 = _interopRequireDefault(_keyframesPlugin);
 	
-	var _mergeStyleArrayPlugin = __webpack_require__(/*! ./merge-style-array-plugin */ 283);
+	var _mergeStyleArrayPlugin = __webpack_require__(/*! ./merge-style-array-plugin */ 284);
 	
 	var _mergeStyleArrayPlugin2 = _interopRequireDefault(_mergeStyleArrayPlugin);
 	
-	var _prefixPlugin = __webpack_require__(/*! ./prefix-plugin */ 284);
+	var _prefixPlugin = __webpack_require__(/*! ./prefix-plugin */ 285);
 	
 	var _prefixPlugin2 = _interopRequireDefault(_prefixPlugin);
 	
-	var _resolveInteractionStylesPlugin = __webpack_require__(/*! ./resolve-interaction-styles-plugin */ 285);
+	var _resolveInteractionStylesPlugin = __webpack_require__(/*! ./resolve-interaction-styles-plugin */ 286);
 	
 	var _resolveInteractionStylesPlugin2 = _interopRequireDefault(_resolveInteractionStylesPlugin);
 	
-	var _resolveMediaQueriesPlugin = __webpack_require__(/*! ./resolve-media-queries-plugin */ 287);
+	var _resolveMediaQueriesPlugin = __webpack_require__(/*! ./resolve-media-queries-plugin */ 288);
 	
 	var _resolveMediaQueriesPlugin2 = _interopRequireDefault(_resolveMediaQueriesPlugin);
 	
-	var _visitedPlugin = __webpack_require__(/*! ./visited-plugin */ 288);
+	var _visitedPlugin = __webpack_require__(/*! ./visited-plugin */ 289);
 	
 	var _visitedPlugin2 = _interopRequireDefault(_visitedPlugin);
 	
@@ -34798,7 +34845,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 281 */
+/* 282 */
 /*!****************************************************!*\
   !*** ./~/radium/lib/plugins/check-props-plugin.js ***!
   \****************************************************/
@@ -34868,7 +34915,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 5)))
 
 /***/ },
-/* 282 */
+/* 283 */
 /*!**************************************************!*\
   !*** ./~/radium/lib/plugins/keyframes-plugin.js ***!
   \**************************************************/
@@ -34908,7 +34955,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 283 */
+/* 284 */
 /*!**********************************************************!*\
   !*** ./~/radium/lib/plugins/merge-style-array-plugin.js ***!
   \**********************************************************/
@@ -34935,7 +34982,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 284 */
+/* 285 */
 /*!***********************************************!*\
   !*** ./~/radium/lib/plugins/prefix-plugin.js ***!
   \***********************************************/
@@ -34948,7 +34995,7 @@
 	});
 	exports.default = prefixPlugin;
 	
-	var _prefixer = __webpack_require__(/*! ../prefixer */ 257);
+	var _prefixer = __webpack_require__(/*! ../prefixer */ 258);
 	
 	function prefixPlugin(_ref // eslint-disable-line no-shadow
 	) {
@@ -34961,7 +35008,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 285 */
+/* 286 */
 /*!*******************************************************************!*\
   !*** ./~/radium/lib/plugins/resolve-interaction-styles-plugin.js ***!
   \*******************************************************************/
@@ -34973,7 +35020,7 @@
 	  value: true
 	});
 	
-	var _mouseUpListener = __webpack_require__(/*! ./mouse-up-listener */ 286);
+	var _mouseUpListener = __webpack_require__(/*! ./mouse-up-listener */ 287);
 	
 	var _mouseUpListener2 = _interopRequireDefault(_mouseUpListener);
 	
@@ -35097,7 +35144,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 286 */
+/* 287 */
 /*!***************************************************!*\
   !*** ./~/radium/lib/plugins/mouse-up-listener.js ***!
   \***************************************************/
@@ -35149,7 +35196,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 287 */
+/* 288 */
 /*!**************************************************************!*\
   !*** ./~/radium/lib/plugins/resolve-media-queries-plugin.js ***!
   \**************************************************************/
@@ -35333,7 +35380,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 288 */
+/* 289 */
 /*!************************************************!*\
   !*** ./~/radium/lib/plugins/visited-plugin.js ***!
   \************************************************/
@@ -35381,7 +35428,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 289 */
+/* 290 */
 /*!**************************!*\
   !*** ./~/exenv/index.js ***!
   \**************************/
@@ -35429,7 +35476,7 @@
 
 
 /***/ },
-/* 290 */
+/* 291 */
 /*!******************************************!*\
   !*** ./~/radium/lib/components/style.js ***!
   \******************************************/
@@ -35441,7 +35488,7 @@
 	  value: true
 	});
 	
-	var _cssRuleSetToString = __webpack_require__(/*! ../css-rule-set-to-string */ 255);
+	var _cssRuleSetToString = __webpack_require__(/*! ../css-rule-set-to-string */ 256);
 	
 	var _cssRuleSetToString2 = _interopRequireDefault(_cssRuleSetToString);
 	
@@ -35532,7 +35579,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 291 */
+/* 292 */
 /*!***********************************************!*\
   !*** ./~/radium/lib/components/style-root.js ***!
   \***********************************************/
@@ -35548,15 +35595,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _enhancer = __webpack_require__(/*! ../enhancer */ 249);
+	var _enhancer = __webpack_require__(/*! ../enhancer */ 250);
 	
 	var _enhancer2 = _interopRequireDefault(_enhancer);
 	
-	var _styleKeeper = __webpack_require__(/*! ../style-keeper */ 250);
+	var _styleKeeper = __webpack_require__(/*! ../style-keeper */ 251);
 	
 	var _styleKeeper2 = _interopRequireDefault(_styleKeeper);
 	
-	var _styleSheet = __webpack_require__(/*! ./style-sheet */ 292);
+	var _styleSheet = __webpack_require__(/*! ./style-sheet */ 293);
 	
 	var _styleSheet2 = _interopRequireDefault(_styleSheet);
 	
@@ -35620,7 +35667,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 292 */
+/* 293 */
 /*!************************************************!*\
   !*** ./~/radium/lib/components/style-sheet.js ***!
   \************************************************/
@@ -35639,7 +35686,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _styleKeeper = __webpack_require__(/*! ../style-keeper */ 250);
+	var _styleKeeper = __webpack_require__(/*! ../style-keeper */ 251);
 	
 	var _styleKeeper2 = _interopRequireDefault(_styleKeeper);
 	
@@ -35702,7 +35749,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 293 */
+/* 294 */
 /*!***********************************!*\
   !*** ./~/radium/lib/keyframes.js ***!
   \***********************************/
@@ -35715,15 +35762,15 @@
 	});
 	exports.default = keyframes;
 	
-	var _cssRuleSetToString = __webpack_require__(/*! ./css-rule-set-to-string */ 255);
+	var _cssRuleSetToString = __webpack_require__(/*! ./css-rule-set-to-string */ 256);
 	
 	var _cssRuleSetToString2 = _interopRequireDefault(_cssRuleSetToString);
 	
-	var _hash = __webpack_require__(/*! ./hash */ 278);
+	var _hash = __webpack_require__(/*! ./hash */ 279);
 	
 	var _hash2 = _interopRequireDefault(_hash);
 	
-	var _prefixer = __webpack_require__(/*! ./prefixer */ 257);
+	var _prefixer = __webpack_require__(/*! ./prefixer */ 258);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -35744,7 +35791,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 294 */
+/* 295 */
 /*!*********************************!*\
   !*** ./src/constants/styles.js ***!
   \*********************************/
@@ -35784,7 +35831,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "styles.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 295 */
+/* 296 */
 /*!**********************************!*\
   !*** ./src/components/NavBar.js ***!
   \**********************************/
@@ -35804,23 +35851,19 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! ../../~/react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! ../../~/react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 160);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
 	
-	var _superagent = __webpack_require__(/*! superagent */ 296);
-	
-	var _superagent2 = _interopRequireDefault(_superagent);
-	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -35847,7 +35890,8 @@
 					'nav',
 					{ className: 'nav-bar', style: styles.navWrapper },
 					_react2.default.createElement(_radium.Style, { scopeSelector: '.nav-bar',
-						rules: styles.navLink }),
+						rules: styles.navLink
+					}),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.logoWrapper },
@@ -35954,7 +35998,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "NavBar.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 296 */
+/* 297 */
 /*!************************************!*\
   !*** ./~/superagent/lib/client.js ***!
   \************************************/
@@ -35964,10 +36008,10 @@
 	 * Module dependencies.
 	 */
 	
-	var Emitter = __webpack_require__(/*! emitter */ 297);
-	var reduce = __webpack_require__(/*! reduce */ 298);
-	var requestBase = __webpack_require__(/*! ./request-base */ 299);
-	var isObject = __webpack_require__(/*! ./is-object */ 300);
+	var Emitter = __webpack_require__(/*! emitter */ 298);
+	var reduce = __webpack_require__(/*! reduce */ 299);
+	var requestBase = __webpack_require__(/*! ./request-base */ 300);
+	var isObject = __webpack_require__(/*! ./is-object */ 301);
 	
 	/**
 	 * Root reference for iframes.
@@ -36016,7 +36060,7 @@
 	 * Expose `request`.
 	 */
 	
-	var request = module.exports = __webpack_require__(/*! ./request */ 301).bind(null, Request);
+	var request = module.exports = __webpack_require__(/*! ./request */ 302).bind(null, Request);
 	
 	/**
 	 * Determine XHR.
@@ -37040,7 +37084,7 @@
 
 
 /***/ },
-/* 297 */
+/* 298 */
 /*!**************************************!*\
   !*** ./~/component-emitter/index.js ***!
   \**************************************/
@@ -37210,7 +37254,7 @@
 
 
 /***/ },
-/* 298 */
+/* 299 */
 /*!*************************************!*\
   !*** ./~/reduce-component/index.js ***!
   \*************************************/
@@ -37242,7 +37286,7 @@
 	};
 
 /***/ },
-/* 299 */
+/* 300 */
 /*!******************************************!*\
   !*** ./~/superagent/lib/request-base.js ***!
   \******************************************/
@@ -37251,7 +37295,7 @@
 	/**
 	 * Module of mixed-in functions shared between node and client code
 	 */
-	var isObject = __webpack_require__(/*! ./is-object */ 300);
+	var isObject = __webpack_require__(/*! ./is-object */ 301);
 	
 	/**
 	 * Clear previous timeout.
@@ -37417,7 +37461,7 @@
 
 
 /***/ },
-/* 300 */
+/* 301 */
 /*!***************************************!*\
   !*** ./~/superagent/lib/is-object.js ***!
   \***************************************/
@@ -37439,7 +37483,7 @@
 
 
 /***/ },
-/* 301 */
+/* 302 */
 /*!*************************************!*\
   !*** ./~/superagent/lib/request.js ***!
   \*************************************/
@@ -37480,7 +37524,7 @@
 
 
 /***/ },
-/* 302 */
+/* 303 */
 /*!*********************************!*\
   !*** ./src/components/Login.js ***!
   \*********************************/
@@ -37500,21 +37544,21 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
 	
-	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 303);
+	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 304);
 	
 	var _loginSrvc2 = _interopRequireDefault(_loginSrvc);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -37560,7 +37604,8 @@
 				return _react2.default.createElement(
 					'div',
 					{ className: 'login-wrapper',
-						style: styles.loginWrapper },
+						style: styles.loginWrapper
+					},
 					errors.length !== 0 ? _react2.default.createElement(
 						'ul',
 						{ style: styles.errorList },
@@ -37584,7 +37629,8 @@
 							onChange: this.handleChange.bind(this, 'email'),
 							value: this.state.email,
 							key: 'email',
-							type: 'email' })
+							type: 'email'
+						})
 					),
 					_react2.default.createElement(
 						'div',
@@ -37598,12 +37644,14 @@
 							onChange: this.handleChange.bind(this, 'password'),
 							value: this.state.password,
 							key: 'password',
-							type: 'password' })
+							type: 'password'
+						})
 					),
 					_react2.default.createElement(
 						'button',
 						{ style: styles.button,
-							onClick: this.login.bind(this) },
+							onClick: this.login.bind(this)
+						},
 						'Login'
 					)
 				);
@@ -37668,7 +37716,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Login.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 303 */
+/* 304 */
 /*!***********************************!*\
   !*** ./src/services/loginSrvc.js ***!
   \***********************************/
@@ -37684,7 +37732,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _superagent = __webpack_require__(/*! superagent */ 296);
+	var _superagent = __webpack_require__(/*! superagent */ 297);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
@@ -37723,7 +37771,7 @@
 					return this.getUser(email, password);
 				}
 	
-				_store2.default.dispatch((0, _auth.setErrors)(errors));
+				return _store2.default.dispatch((0, _auth.setErrors)(errors));
 			}
 		}, {
 			key: 'getUser',
@@ -37736,9 +37784,9 @@
 					if (res.body.authenticated) {
 						_store2.default.dispatch((0, _auth.setUser)(res.body.user));
 						return _reactRouter.browserHistory.push('/blueprints');
-					} else {
-						return _store2.default.dispatch((0, _auth.setErrors)(['Unknown Error Logging in, please try again']));
 					}
+	
+					return _store2.default.dispatch((0, _auth.setErrors)(['Unknown Error Logging in, please try again']));
 				});
 			}
 		}, {
@@ -37748,12 +37796,14 @@
 					args[_key - 1] = arguments[_key];
 				}
 	
-				_superagent2.default.get('/api/verify-auth', function (err, res) {
+				return _superagent2.default.get('/api/verify-auth', function (err, res) {
 					if (err) {
 						return _reactRouter.browserHistory.push('/login');
 					}
 	
-					callback ? callback.apply(undefined, args) : null;
+					if (callback) {
+						callback.apply(undefined, args);
+					}
 					_store2.default.dispatch((0, _auth.setUser)(res.body));
 				});
 			}
@@ -37767,7 +37817,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "loginSrvc.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 304 */
+/* 305 */
 /*!**********************************!*\
   !*** ./src/components/Groups.js ***!
   \**********************************/
@@ -37787,11 +37837,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -37808,10 +37858,10 @@
 	var Settings = function (_PureComponent) {
 		_inherits(Settings, _PureComponent);
 	
-		function Settings(props) {
+		function Settings() {
 			_classCallCheck(this, Settings);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(Settings).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Settings).apply(this, arguments));
 		}
 	
 		_createClass(Settings, [{
@@ -37835,7 +37885,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Groups.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 305 */
+/* 306 */
 /*!**************************************!*\
   !*** ./src/components/Blueprints.js ***!
   \**************************************/
@@ -37857,11 +37907,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -37869,9 +37919,9 @@
 	
 	var _reactRouter = __webpack_require__(/*! react-router */ 160);
 	
-	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
+	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 307);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 345);
+	var _lodash = __webpack_require__(/*! lodash */ 346);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -37879,29 +37929,29 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 303);
+	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 304);
 	
 	var _loginSrvc2 = _interopRequireDefault(_loginSrvc);
 	
-	var _BlueprintRecent = __webpack_require__(/*! ./BlueprintRecent */ 347);
+	var _BlueprintRecent = __webpack_require__(/*! ./BlueprintRecent */ 348);
 	
 	var _BlueprintRecent2 = _interopRequireDefault(_BlueprintRecent);
 	
-	var _BlueprintThumbnail = __webpack_require__(/*! ./BlueprintThumbnail */ 348);
+	var _BlueprintThumbnail = __webpack_require__(/*! ./BlueprintThumbnail */ 349);
 	
 	var _BlueprintThumbnail2 = _interopRequireDefault(_BlueprintThumbnail);
 	
-	var _NewBlueprint = __webpack_require__(/*! ./NewBlueprint */ 349);
+	var _NewBlueprint = __webpack_require__(/*! ./NewBlueprint */ 350);
 	
 	var _NewBlueprint2 = _interopRequireDefault(_NewBlueprint);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -37940,7 +37990,7 @@
 				}
 	
 				if (this.props.blueprints.get('ownedBlueprints').count() === 0 || this.props.blueprints.get('sharedBlueprints').count() === 0) {
-					_blueprintSrvc2.default.getBlueprints();
+					return _blueprintSrvc2.default.getBlueprints();
 				}
 			}
 		}, {
@@ -37966,7 +38016,8 @@
 						_reactRouter.Link,
 						{ key: blueprint._id,
 							style: styles.listLink,
-							to: '/blueprint/' + blueprint._id },
+							to: '/blueprint/' + blueprint._id
+						},
 						_react2.default.createElement(
 							'div',
 							{ key: blueprint._id, style: styles.listItemContainer },
@@ -38043,7 +38094,8 @@
 						_react2.default.createElement(
 							'button',
 							{ style: styles.newProject,
-								onClick: this.modalOpen.bind(this) },
+								onClick: this.modalOpen.bind(this)
+							},
 							'New Project'
 						),
 						recent ? recent : _react2.default.createElement(
@@ -38059,10 +38111,12 @@
 							value: this.state.searchText,
 							ref: 'searchBar',
 							onChange: this.handleChange.bind(this, 'searchText'),
-							type: 'text' }),
+							type: 'text'
+						}),
 						_react2.default.createElement('i', { style: styles.closeSearch,
 							onClick: this.toggleSearch.bind(this),
-							className: 'fa fa-times-circle' })
+							className: 'fa fa-times-circle'
+						})
 					) : _react2.default.createElement(
 						'div',
 						{ style: styles.listButtonContainer },
@@ -38070,21 +38124,26 @@
 							'button',
 							{ onClick: this.toggleOwnedOrShared.bind(this, 'ownedBlueprints'),
 								key: 'ownedBlueprints',
-								style: [styles.listButton, this.state.showOwnedOrShared === 'ownedBlueprints' ? styles.selectedButton : null] },
+								style: [styles.listButton, this.state.showOwnedOrShared === 'ownedBlueprints' ? styles.selectedButton : null]
+							},
 							'Mine'
 						),
 						_react2.default.createElement(
 							'button',
-							{ onClick: this.toggleOwnedOrShared.bind(this, 'sharedBlueprints'),
+							{
+								onClick: this.toggleOwnedOrShared.bind(this, 'sharedBlueprints'),
 								key: 'sharedBlueprints',
-								style: [styles.listButton, this.state.showOwnedOrShared === 'sharedBlueprints' ? styles.selectedButton : null] },
+								style: [styles.listButton, this.state.showOwnedOrShared === 'sharedBlueprints' ? styles.selectedButton : null]
+							},
 							'Shared'
 						),
 						_react2.default.createElement(
 							'button',
-							{ onClick: this.toggleSearch.bind(this),
+							{
+								onClick: this.toggleSearch.bind(this),
 								key: 'search',
-								style: styles.listButton },
+								style: styles.listButton
+							},
 							'Search All'
 						)
 					),
@@ -38193,7 +38252,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "Blueprints.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 306 */
+/* 307 */
 /*!*******************************************!*\
   !*** ./~/react-modal-dialog/lib/index.js ***!
   \*******************************************/
@@ -38207,19 +38266,19 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _ModalPortal = __webpack_require__(/*! ./ModalPortal */ 307);
+	var _ModalPortal = __webpack_require__(/*! ./ModalPortal */ 308);
 	
 	var _ModalPortal2 = _interopRequireDefault(_ModalPortal);
 	
-	var _ModalBackground = __webpack_require__(/*! ./ModalBackground */ 308);
+	var _ModalBackground = __webpack_require__(/*! ./ModalBackground */ 309);
 	
 	var _ModalBackground2 = _interopRequireDefault(_ModalBackground);
 	
-	var _ModalContainer = __webpack_require__(/*! ./ModalContainer */ 309);
+	var _ModalContainer = __webpack_require__(/*! ./ModalContainer */ 310);
 	
 	var _ModalContainer2 = _interopRequireDefault(_ModalContainer);
 	
-	var _ModalDialog = __webpack_require__(/*! ./ModalDialog */ 310);
+	var _ModalDialog = __webpack_require__(/*! ./ModalDialog */ 311);
 	
 	var _ModalDialog2 = _interopRequireDefault(_ModalDialog);
 	
@@ -38232,7 +38291,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 307 */
+/* 308 */
 /*!*************************************************!*\
   !*** ./~/react-modal-dialog/lib/ModalPortal.js ***!
   \*************************************************/
@@ -38342,7 +38401,7 @@
 	// This doesn't actually return anything to render
 
 /***/ },
-/* 308 */
+/* 309 */
 /*!*****************************************************!*\
   !*** ./~/react-modal-dialog/lib/ModalBackground.js ***!
   \*****************************************************/
@@ -38492,7 +38551,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 309 */
+/* 310 */
 /*!****************************************************!*\
   !*** ./~/react-modal-dialog/lib/ModalContainer.js ***!
   \****************************************************/
@@ -38520,11 +38579,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ModalPortal = __webpack_require__(/*! ./ModalPortal */ 307);
+	var _ModalPortal = __webpack_require__(/*! ./ModalPortal */ 308);
 	
 	var _ModalPortal2 = _interopRequireDefault(_ModalPortal);
 	
-	var _ModalBackground = __webpack_require__(/*! ./ModalBackground */ 308);
+	var _ModalBackground = __webpack_require__(/*! ./ModalBackground */ 309);
 	
 	var _ModalBackground2 = _interopRequireDefault(_ModalBackground);
 	
@@ -38578,7 +38637,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 310 */
+/* 311 */
 /*!*************************************************!*\
   !*** ./~/react-modal-dialog/lib/ModalDialog.js ***!
   \*************************************************/
@@ -38612,31 +38671,31 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _classnames = __webpack_require__(/*! classnames */ 311);
+	var _classnames = __webpack_require__(/*! classnames */ 312);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _dynamicsJs = __webpack_require__(/*! dynamics.js */ 312);
+	var _dynamicsJs = __webpack_require__(/*! dynamics.js */ 313);
 	
 	var _dynamicsJs2 = _interopRequireDefault(_dynamicsJs);
 	
-	var _reactCenterComponent = __webpack_require__(/*! react-center-component */ 313);
+	var _reactCenterComponent = __webpack_require__(/*! react-center-component */ 314);
 	
 	var _reactCenterComponent2 = _interopRequireDefault(_reactCenterComponent);
 	
-	var _useSheet = __webpack_require__(/*! ./useSheet */ 316);
+	var _useSheet = __webpack_require__(/*! ./useSheet */ 317);
 	
 	var _useSheet2 = _interopRequireDefault(_useSheet);
 	
-	var _CloseCircle = __webpack_require__(/*! ./CloseCircle */ 341);
+	var _CloseCircle = __webpack_require__(/*! ./CloseCircle */ 342);
 	
 	var _CloseCircle2 = _interopRequireDefault(_CloseCircle);
 	
-	var _activeEventStack = __webpack_require__(/*! active-event-stack */ 342);
+	var _activeEventStack = __webpack_require__(/*! active-event-stack */ 343);
 	
 	var _activeEventStack2 = _interopRequireDefault(_activeEventStack);
 	
-	var _keycode = __webpack_require__(/*! keycode */ 344);
+	var _keycode = __webpack_require__(/*! keycode */ 345);
 	
 	var _keycode2 = _interopRequireDefault(_keycode);
 	
@@ -38826,7 +38885,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 311 */
+/* 312 */
 /*!*******************************!*\
   !*** ./~/classnames/index.js ***!
   \*******************************/
@@ -38883,7 +38942,7 @@
 
 
 /***/ },
-/* 312 */
+/* 313 */
 /*!***************************************!*\
   !*** ./~/dynamics.js/lib/dynamics.js ***!
   \***************************************/
@@ -40879,7 +40938,7 @@
 
 
 /***/ },
-/* 313 */
+/* 314 */
 /*!***********************************************!*\
   !*** ./~/react-center-component/lib/index.js ***!
   \***********************************************/
@@ -40915,7 +40974,7 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 314);
+	var _lodash = __webpack_require__(/*! lodash */ 315);
 	
 	/**
 	 * This is a higher order component decorator
@@ -41022,7 +41081,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 314 */
+/* 315 */
 /*!****************************************************!*\
   !*** ./~/react-center-component/~/lodash/index.js ***!
   \****************************************************/
@@ -53380,10 +53439,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ 315)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ 316)(module), (function() { return this; }())))
 
 /***/ },
-/* 315 */
+/* 316 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -53402,7 +53461,7 @@
 
 
 /***/ },
-/* 316 */
+/* 317 */
 /*!**********************************************!*\
   !*** ./~/react-modal-dialog/lib/useSheet.js ***!
   \**********************************************/
@@ -53416,25 +53475,25 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _jss = __webpack_require__(/*! jss */ 317);
+	var _jss = __webpack_require__(/*! jss */ 318);
 	
-	var _reactJss = __webpack_require__(/*! react-jss */ 331);
+	var _reactJss = __webpack_require__(/*! react-jss */ 332);
 	
 	var _reactJss2 = _interopRequireDefault(_reactJss);
 	
-	var _jssVendorPrefixer = __webpack_require__(/*! jss-vendor-prefixer */ 332);
+	var _jssVendorPrefixer = __webpack_require__(/*! jss-vendor-prefixer */ 333);
 	
 	var _jssVendorPrefixer2 = _interopRequireDefault(_jssVendorPrefixer);
 	
-	var _jssPx = __webpack_require__(/*! jss-px */ 338);
+	var _jssPx = __webpack_require__(/*! jss-px */ 339);
 	
 	var _jssPx2 = _interopRequireDefault(_jssPx);
 	
-	var _jssCamelCase = __webpack_require__(/*! jss-camel-case */ 339);
+	var _jssCamelCase = __webpack_require__(/*! jss-camel-case */ 340);
 	
 	var _jssCamelCase2 = _interopRequireDefault(_jssCamelCase);
 	
-	var _jssNested = __webpack_require__(/*! jss-nested */ 340);
+	var _jssNested = __webpack_require__(/*! jss-nested */ 341);
 	
 	var _jssNested2 = _interopRequireDefault(_jssNested);
 	
@@ -53448,7 +53507,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 317 */
+/* 318 */
 /*!****************************!*\
   !*** ./~/jss/lib/index.js ***!
   \****************************/
@@ -53468,7 +53527,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Jss = __webpack_require__(/*! ./Jss */ 318);
+	var _Jss = __webpack_require__(/*! ./Jss */ 319);
 	
 	var _Jss2 = _interopRequireDefault(_Jss);
 	
@@ -53476,7 +53535,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 318 */
+/* 319 */
 /*!**************************!*\
   !*** ./~/jss/lib/Jss.js ***!
   \**************************/
@@ -53494,23 +53553,23 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _StyleSheet = __webpack_require__(/*! ./StyleSheet */ 319);
+	var _StyleSheet = __webpack_require__(/*! ./StyleSheet */ 320);
 	
 	var _StyleSheet2 = _interopRequireDefault(_StyleSheet);
 	
-	var _PluginsRegistry = __webpack_require__(/*! ./PluginsRegistry */ 330);
+	var _PluginsRegistry = __webpack_require__(/*! ./PluginsRegistry */ 331);
 	
 	var _PluginsRegistry2 = _interopRequireDefault(_PluginsRegistry);
 	
-	var _uid = __webpack_require__(/*! ./uid */ 323);
+	var _uid = __webpack_require__(/*! ./uid */ 324);
 	
 	var uid = _interopRequireWildcard(_uid);
 	
-	var _createRule2 = __webpack_require__(/*! ./createRule */ 321);
+	var _createRule2 = __webpack_require__(/*! ./createRule */ 322);
 	
 	var _createRule3 = _interopRequireDefault(_createRule2);
 	
-	var _findRenderer = __webpack_require__(/*! ./findRenderer */ 327);
+	var _findRenderer = __webpack_require__(/*! ./findRenderer */ 328);
 	
 	var _findRenderer2 = _interopRequireDefault(_findRenderer);
 	
@@ -53599,7 +53658,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 319 */
+/* 320 */
 /*!*********************************!*\
   !*** ./~/jss/lib/StyleSheet.js ***!
   \*********************************/
@@ -53615,13 +53674,13 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _utils = __webpack_require__(/*! ./utils */ 320);
+	var _utils = __webpack_require__(/*! ./utils */ 321);
 	
-	var _createRule2 = __webpack_require__(/*! ./createRule */ 321);
+	var _createRule2 = __webpack_require__(/*! ./createRule */ 322);
 	
 	var _createRule3 = _interopRequireDefault(_createRule2);
 	
-	var _findRenderer = __webpack_require__(/*! ./findRenderer */ 327);
+	var _findRenderer = __webpack_require__(/*! ./findRenderer */ 328);
 	
 	var _findRenderer2 = _interopRequireDefault(_findRenderer);
 	
@@ -53856,7 +53915,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 320 */
+/* 321 */
 /*!****************************!*\
   !*** ./~/jss/lib/utils.js ***!
   \****************************/
@@ -53898,7 +53957,7 @@
 	}
 
 /***/ },
-/* 321 */
+/* 322 */
 /*!*********************************!*\
   !*** ./~/jss/lib/createRule.js ***!
   \*********************************/
@@ -53914,19 +53973,19 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _Rule = __webpack_require__(/*! ./Rule */ 322);
+	var _Rule = __webpack_require__(/*! ./Rule */ 323);
 	
 	var _Rule2 = _interopRequireDefault(_Rule);
 	
-	var _SimpleRule = __webpack_require__(/*! ./SimpleRule */ 324);
+	var _SimpleRule = __webpack_require__(/*! ./SimpleRule */ 325);
 	
 	var _SimpleRule2 = _interopRequireDefault(_SimpleRule);
 	
-	var _KeyframeRule = __webpack_require__(/*! ./KeyframeRule */ 325);
+	var _KeyframeRule = __webpack_require__(/*! ./KeyframeRule */ 326);
 	
 	var _KeyframeRule2 = _interopRequireDefault(_KeyframeRule);
 	
-	var _ConditionalRule = __webpack_require__(/*! ./ConditionalRule */ 326);
+	var _ConditionalRule = __webpack_require__(/*! ./ConditionalRule */ 327);
 	
 	var _ConditionalRule2 = _interopRequireDefault(_ConditionalRule);
 	
@@ -53979,7 +54038,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 322 */
+/* 323 */
 /*!***************************!*\
   !*** ./~/jss/lib/Rule.js ***!
   \***************************/
@@ -53993,11 +54052,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _uid = __webpack_require__(/*! ./uid */ 323);
+	var _uid = __webpack_require__(/*! ./uid */ 324);
 	
 	var uid = _interopRequireWildcard(_uid);
 	
-	var _utils = __webpack_require__(/*! ./utils */ 320);
+	var _utils = __webpack_require__(/*! ./utils */ 321);
 	
 	/**
 	 * Regular rules and font-face.
@@ -54149,7 +54208,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 323 */
+/* 324 */
 /*!**************************!*\
   !*** ./~/jss/lib/uid.js ***!
   \**************************/
@@ -54192,7 +54251,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 324 */
+/* 325 */
 /*!*********************************!*\
   !*** ./~/jss/lib/SimpleRule.js ***!
   \*********************************/
@@ -54206,7 +54265,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _uid = __webpack_require__(/*! ./uid */ 323);
+	var _uid = __webpack_require__(/*! ./uid */ 324);
 	
 	var uid = _interopRequireWildcard(_uid);
 	
@@ -54245,7 +54304,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 325 */
+/* 326 */
 /*!***********************************!*\
   !*** ./~/jss/lib/KeyframeRule.js ***!
   \***********************************/
@@ -54261,7 +54320,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _uid = __webpack_require__(/*! ./uid */ 323);
+	var _uid = __webpack_require__(/*! ./uid */ 324);
 	
 	var uid = _interopRequireWildcard(_uid);
 	
@@ -54321,7 +54380,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 326 */
+/* 327 */
 /*!**************************************!*\
   !*** ./~/jss/lib/ConditionalRule.js ***!
   \**************************************/
@@ -54337,9 +54396,9 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _utils = __webpack_require__(/*! ./utils */ 320);
+	var _utils = __webpack_require__(/*! ./utils */ 321);
 	
-	var _uid = __webpack_require__(/*! ./uid */ 323);
+	var _uid = __webpack_require__(/*! ./uid */ 324);
 	
 	var uid = _interopRequireWildcard(_uid);
 	
@@ -54418,7 +54477,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 327 */
+/* 328 */
 /*!***********************************!*\
   !*** ./~/jss/lib/findRenderer.js ***!
   \***********************************/
@@ -54431,11 +54490,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _DomRenderer = __webpack_require__(/*! ./DomRenderer */ 328);
+	var _DomRenderer = __webpack_require__(/*! ./DomRenderer */ 329);
 	
 	var _DomRenderer2 = _interopRequireDefault(_DomRenderer);
 	
-	var _VirtualRenderer = __webpack_require__(/*! ./VirtualRenderer */ 329);
+	var _VirtualRenderer = __webpack_require__(/*! ./VirtualRenderer */ 330);
 	
 	var _VirtualRenderer2 = _interopRequireDefault(_VirtualRenderer);
 	
@@ -54459,7 +54518,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 328 */
+/* 329 */
 /*!**********************************!*\
   !*** ./~/jss/lib/DomRenderer.js ***!
   \**********************************/
@@ -54575,7 +54634,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 329 */
+/* 330 */
 /*!**************************************!*\
   !*** ./~/jss/lib/VirtualRenderer.js ***!
   \**************************************/
@@ -54616,7 +54675,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 330 */
+/* 331 */
 /*!**************************************!*\
   !*** ./~/jss/lib/PluginsRegistry.js ***!
   \**************************************/
@@ -54669,7 +54728,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 331 */
+/* 332 */
 /*!**********************************!*\
   !*** ./~/react-jss/lib/index.js ***!
   \**********************************/
@@ -54691,7 +54750,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _jss = __webpack_require__(/*! jss */ 317);
+	var _jss = __webpack_require__(/*! jss */ 318);
 	
 	var _jss2 = _interopRequireDefault(_jss);
 	
@@ -54803,7 +54862,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 5)))
 
 /***/ },
-/* 332 */
+/* 333 */
 /*!********************************************!*\
   !*** ./~/jss-vendor-prefixer/lib/index.js ***!
   \********************************************/
@@ -54816,7 +54875,7 @@
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _cssVendor = __webpack_require__(/*! css-vendor */ 333);
+	var _cssVendor = __webpack_require__(/*! css-vendor */ 334);
 	
 	var vendor = _interopRequireWildcard(_cssVendor);
 	
@@ -54858,7 +54917,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 333 */
+/* 334 */
 /*!***********************************!*\
   !*** ./~/css-vendor/lib/index.js ***!
   \***********************************/
@@ -54871,15 +54930,15 @@
 	});
 	exports.supportedValue = exports.supportedProperty = exports.prefix = undefined;
 	
-	var _prefix = __webpack_require__(/*! ./prefix */ 334);
+	var _prefix = __webpack_require__(/*! ./prefix */ 335);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
-	var _supportedProperty = __webpack_require__(/*! ./supported-property */ 335);
+	var _supportedProperty = __webpack_require__(/*! ./supported-property */ 336);
 	
 	var _supportedProperty2 = _interopRequireDefault(_supportedProperty);
 	
-	var _supportedValue = __webpack_require__(/*! ./supported-value */ 337);
+	var _supportedValue = __webpack_require__(/*! ./supported-value */ 338);
 	
 	var _supportedValue2 = _interopRequireDefault(_supportedValue);
 	
@@ -54902,7 +54961,7 @@
 	exports.supportedValue = _supportedValue2.default;
 
 /***/ },
-/* 334 */
+/* 335 */
 /*!************************************!*\
   !*** ./~/css-vendor/lib/prefix.js ***!
   \************************************/
@@ -54951,7 +55010,7 @@
 	exports.default = { js: js, css: css };
 
 /***/ },
-/* 335 */
+/* 336 */
 /*!************************************************!*\
   !*** ./~/css-vendor/lib/supported-property.js ***!
   \************************************************/
@@ -54964,11 +55023,11 @@
 	});
 	exports.default = supportedProperty;
 	
-	var _prefix = __webpack_require__(/*! ./prefix */ 334);
+	var _prefix = __webpack_require__(/*! ./prefix */ 335);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
-	var _camelize = __webpack_require__(/*! ./camelize */ 336);
+	var _camelize = __webpack_require__(/*! ./camelize */ 337);
 	
 	var _camelize2 = _interopRequireDefault(_camelize);
 	
@@ -55023,7 +55082,7 @@
 	}
 
 /***/ },
-/* 336 */
+/* 337 */
 /*!**************************************!*\
   !*** ./~/css-vendor/lib/camelize.js ***!
   \**************************************/
@@ -55052,7 +55111,7 @@
 	}
 
 /***/ },
-/* 337 */
+/* 338 */
 /*!*********************************************!*\
   !*** ./~/css-vendor/lib/supported-value.js ***!
   \*********************************************/
@@ -55065,7 +55124,7 @@
 	});
 	exports.default = supportedValue;
 	
-	var _prefix = __webpack_require__(/*! ./prefix */ 334);
+	var _prefix = __webpack_require__(/*! ./prefix */ 335);
 	
 	var _prefix2 = _interopRequireDefault(_prefix);
 	
@@ -55116,7 +55175,7 @@
 	}
 
 /***/ },
-/* 338 */
+/* 339 */
 /*!*******************************!*\
   !*** ./~/jss-px/lib/index.js ***!
   \*******************************/
@@ -55172,7 +55231,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 339 */
+/* 340 */
 /*!***************************************!*\
   !*** ./~/jss-camel-case/lib/index.js ***!
   \***************************************/
@@ -55211,7 +55270,7 @@
 	}
 
 /***/ },
-/* 340 */
+/* 341 */
 /*!***********************************!*\
   !*** ./~/jss-nested/lib/index.js ***!
   \***********************************/
@@ -55261,7 +55320,7 @@
 	}
 
 /***/ },
-/* 341 */
+/* 342 */
 /*!*************************************************!*\
   !*** ./~/react-modal-dialog/lib/CloseCircle.js ***!
   \*************************************************/
@@ -55321,7 +55380,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 342 */
+/* 343 */
 /*!*******************************************!*\
   !*** ./~/active-event-stack/lib/index.js ***!
   \*******************************************/
@@ -55335,7 +55394,7 @@
 	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 343);
+	var _lodash = __webpack_require__(/*! lodash */ 344);
 	
 	var uniqueEventId = _lodash.uniqueId.bind(null, 'active_event_');
 	
@@ -55374,7 +55433,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 343 */
+/* 344 */
 /*!************************************************!*\
   !*** ./~/active-event-stack/~/lodash/index.js ***!
   \************************************************/
@@ -67732,10 +67791,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ 315)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ 316)(module), (function() { return this; }())))
 
 /***/ },
-/* 344 */
+/* 345 */
 /*!****************************!*\
   !*** ./~/keycode/index.js ***!
   \****************************/
@@ -67889,7 +67948,7 @@
 
 
 /***/ },
-/* 345 */
+/* 346 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -83809,10 +83868,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 315)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 316)(module), (function() { return this; }())))
 
 /***/ },
-/* 346 */
+/* 347 */
 /*!***************************************!*\
   !*** ./src/services/blueprintSrvc.js ***!
   \***************************************/
@@ -83828,7 +83887,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _superagent = __webpack_require__(/*! superagent */ 296);
+	var _superagent = __webpack_require__(/*! superagent */ 297);
 	
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
@@ -83836,9 +83895,9 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 240);
+	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 239);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -83852,11 +83911,11 @@
 		_createClass(BlueprintSrvc, null, [{
 			key: 'postBlueprint',
 			value: function postBlueprint(blueprint, resolve, reject) {
-				return _superagent2.default.post('/api/blueprints').send(blueprint).end(function (err, blueprint) {
+				return _superagent2.default.post('/api/blueprints').send(blueprint).end(function (err, savedBlueprint) {
 					if (err) {
 						return reject(err);
 					}
-					return resolve(blueprint.body);
+					return resolve(savedBlueprint.body);
 				});
 			}
 		}, {
@@ -83916,13 +83975,13 @@
 					feature: feature,
 					blueprint: blueprint,
 					itemType: itemType
-				}).end(function (err, blueprint) {
+				}).end(function (err, savedBlueprint) {
 					if (err) {
 						return console.error(err);
 					}
 	
 					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
-					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
+					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(savedBlueprint.body));
 				});
 			}
 		}, {
@@ -83932,13 +83991,13 @@
 					item: item,
 					blueprint: blueprint,
 					itemType: itemType
-				}).end(function (err, blueprint) {
+				}).end(function (err, savedBlueprint) {
 					if (err) {
 						return console.error(err);
 					}
 	
 					_store2.default.dispatch((0, _modal.togglePlanningItemModal)(false, null, {}));
-					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
+					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(savedBlueprint.body));
 				});
 			}
 		}, {
@@ -83949,12 +84008,12 @@
 					completion: completion,
 					itemType: itemType,
 					id: id
-				}).end(function (err, blueprint) {
+				}).end(function (err, savedBlueprint) {
 					if (err) {
 						return console.error(err);
 					}
 	
-					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(blueprint.body));
+					return _store2.default.dispatch((0, _blueprint.selectBlueprint)(savedBlueprint.body));
 				});
 			}
 		}]);
@@ -83967,7 +84026,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "blueprintSrvc.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 347 */
+/* 348 */
 /*!*******************************************!*\
   !*** ./src/components/BlueprintRecent.js ***!
   \*******************************************/
@@ -83987,19 +84046,19 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84184,7 +84243,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "BlueprintRecent.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 348 */
+/* 349 */
 /*!**********************************************!*\
   !*** ./src/components/BlueprintThumbnail.js ***!
   \**********************************************/
@@ -84204,15 +84263,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84225,10 +84284,10 @@
 	var BlueprintThumbnail = function (_PureComponent) {
 		_inherits(BlueprintThumbnail, _PureComponent);
 	
-		function BlueprintThumbnail(props) {
+		function BlueprintThumbnail() {
 			_classCallCheck(this, BlueprintThumbnail);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(BlueprintThumbnail).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(BlueprintThumbnail).apply(this, arguments));
 		}
 	
 		_createClass(BlueprintThumbnail, [{
@@ -84285,7 +84344,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "BlueprintThumbnail.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 349 */
+/* 350 */
 /*!****************************************!*\
   !*** ./src/components/NewBlueprint.js ***!
   \****************************************/
@@ -84305,11 +84364,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -84319,15 +84378,15 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 240);
+	var _blueprint = __webpack_require__(/*! ../ducks/blueprint */ 239);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84375,7 +84434,7 @@
 					_blueprintSrvc2.default.postBlueprint({ title: title, description: description }, resolve, reject);
 				});
 	
-				dfd.then(function (res) {
+				return dfd.then(function (res) {
 					_this2.setState(initialState);
 					_store2.default.dispatch((0, _modal.toggleBlueprintModal)(false));
 					_store2.default.dispatch((0, _blueprint.addBlueprint)(res));
@@ -84403,7 +84462,8 @@
 						_react2.default.createElement('input', { value: this.state.title,
 							onChange: this.handleChange.bind(this, 'title'),
 							style: styles.input,
-							type: 'text' })
+							type: 'text'
+						})
 					),
 					_react2.default.createElement(
 						'div',
@@ -84416,7 +84476,8 @@
 						_react2.default.createElement('textarea', { value: this.state.description,
 							onChange: this.handleChange.bind(this, 'description'),
 							style: styles.textArea,
-							rows: '10' })
+							rows: '10'
+						})
 					),
 					_react2.default.createElement(
 						'button',
@@ -84475,7 +84536,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "NewBlueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 350 */
+/* 351 */
 /*!*****************************************!*\
   !*** ./src/components/EditBlueprint.js ***!
   \*****************************************/
@@ -84497,11 +84558,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -84509,45 +84570,45 @@
 	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
-	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
+	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 307);
 	
 	var _store = __webpack_require__(/*! ../store */ 235);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
-	var _ItemHeader = __webpack_require__(/*! ./ItemHeader */ 351);
+	var _ItemHeader = __webpack_require__(/*! ./ItemHeader */ 352);
 	
 	var _ItemHeader2 = _interopRequireDefault(_ItemHeader);
 	
-	var _PlanningItems = __webpack_require__(/*! ./PlanningItems */ 352);
+	var _PlanningItems = __webpack_require__(/*! ./PlanningItems */ 353);
 	
 	var _PlanningItems2 = _interopRequireDefault(_PlanningItems);
 	
-	var _FeatureModal = __webpack_require__(/*! ./FeatureModal */ 354);
+	var _FeatureModal = __webpack_require__(/*! ./FeatureModal */ 355);
 	
 	var _FeatureModal2 = _interopRequireDefault(_FeatureModal);
 	
-	var _ViewModal = __webpack_require__(/*! ./ViewModal */ 355);
+	var _ViewModal = __webpack_require__(/*! ./ViewModal */ 356);
 	
 	var _ViewModal2 = _interopRequireDefault(_ViewModal);
 	
-	var _EndpointModal = __webpack_require__(/*! ./EndpointModal */ 356);
+	var _EndpointModal = __webpack_require__(/*! ./EndpointModal */ 357);
 	
 	var _EndpointModal2 = _interopRequireDefault(_EndpointModal);
 	
-	var _ModelModal = __webpack_require__(/*! ./ModelModal */ 357);
+	var _ModelModal = __webpack_require__(/*! ./ModelModal */ 358);
 	
 	var _ModelModal2 = _interopRequireDefault(_ModelModal);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 303);
+	var _loginSrvc = __webpack_require__(/*! ../services/loginSrvc */ 304);
 	
 	var _loginSrvc2 = _interopRequireDefault(_loginSrvc);
 	
@@ -84867,7 +84928,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "EditBlueprint.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 351 */
+/* 352 */
 /*!**************************************!*\
   !*** ./src/components/ItemHeader.js ***!
   \**************************************/
@@ -84887,15 +84948,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84908,10 +84969,10 @@
 	var ItemHeader = function (_PureComponent) {
 		_inherits(ItemHeader, _PureComponent);
 	
-		function ItemHeader(props) {
+		function ItemHeader() {
 			_classCallCheck(this, ItemHeader);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemHeader).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemHeader).apply(this, arguments));
 		}
 	
 		_createClass(ItemHeader, [{
@@ -84955,7 +85016,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ItemHeader.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 352 */
+/* 353 */
 /*!*****************************************!*\
   !*** ./src/components/PlanningItems.js ***!
   \*****************************************/
@@ -84977,15 +85038,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
-	var _lodash = __webpack_require__(/*! lodash */ 345);
+	var _lodash = __webpack_require__(/*! lodash */ 346);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
@@ -84993,11 +85054,11 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
-	var _PlanningItem = __webpack_require__(/*! ./PlanningItem */ 353);
+	var _PlanningItem = __webpack_require__(/*! ./PlanningItem */ 354);
 	
 	var _PlanningItem2 = _interopRequireDefault(_PlanningItem);
 	
@@ -85012,10 +85073,10 @@
 	var PlanningItems = function (_PureComponent) {
 		_inherits(PlanningItems, _PureComponent);
 	
-		function PlanningItems(props) {
+		function PlanningItems() {
 			_classCallCheck(this, PlanningItems);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(PlanningItems).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(PlanningItems).apply(this, arguments));
 		}
 	
 		_createClass(PlanningItems, [{
@@ -85047,7 +85108,8 @@
 					_react2.default.createElement(
 						'button',
 						{ onClick: this.openModal.bind(this),
-							style: [_styles.addButtonStyle, styles.buttonStyle] },
+							style: [_styles.addButtonStyle, styles.buttonStyle]
+						},
 						_react2.default.createElement('i', { className: 'fa fa-plus' })
 					),
 					_react2.default.createElement(
@@ -85127,7 +85189,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "PlanningItems.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 353 */
+/* 354 */
 /*!****************************************!*\
   !*** ./src/components/PlanningItem.js ***!
   \****************************************/
@@ -85147,11 +85209,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -85159,13 +85221,13 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -85236,7 +85298,8 @@
 							{ style: styles.complete,
 								onClick: this.markAsComplete.bind(this),
 								onMouseEnter: this.crossToCheck.bind(this),
-								onMouseLeave: this.crossToCheck.bind(this) },
+								onMouseLeave: this.crossToCheck.bind(this)
+							},
 							this.props.complete || this.state.hovering ? _react2.default.createElement('i', { style: styles.check, className: 'fa fa-check' }) : _react2.default.createElement('i', { style: styles.cross, className: 'fa fa-times' })
 						)
 					)
@@ -85290,7 +85353,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "PlanningItem.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 354 */
+/* 355 */
 /*!****************************************!*\
   !*** ./src/components/FeatureModal.js ***!
   \****************************************/
@@ -85310,17 +85373,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
-	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 346);
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
 	
@@ -85406,7 +85469,8 @@
 						value: this.state.featureName,
 						onChange: this.handleChange.bind(this, 'featureName'),
 						key: 'featureName',
-						type: 'text' }),
+						type: 'text'
+					}),
 					_react2.default.createElement(
 						'label',
 						{ style: styles.label },
@@ -85416,7 +85480,8 @@
 						key: 'feature',
 						value: this.state.feature,
 						onChange: this.handleChange.bind(this, 'feature'),
-						style: [styles.textArea, styles.textBorders] }),
+						style: [styles.textArea, styles.textBorders]
+					}),
 					_react2.default.createElement(
 						'label',
 						{ style: styles.label, htmlFor: 'mvp' },
@@ -85427,11 +85492,13 @@
 						type: 'checkbox',
 						value: this.state.mvp,
 						checked: this.state.mvp,
-						onChange: this.handleCheckChange.bind(this) }),
+						onChange: this.handleCheckChange.bind(this)
+					}),
 					_react2.default.createElement(
 						'button',
 						{ style: [_styles.addButtonStyle, styles.saveButton],
-							onClick: this.saveFeature.bind(this) },
+							onClick: this.saveFeature.bind(this)
+						},
 						'Save Feature'
 					)
 				);
@@ -85483,7 +85550,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "FeatureModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 355 */
+/* 356 */
 /*!*************************************!*\
   !*** ./src/components/ViewModal.js ***!
   \*************************************/
@@ -85503,11 +85570,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -85522,10 +85589,10 @@
 	var ViewModal = function (_PureComponent) {
 		_inherits(ViewModal, _PureComponent);
 	
-		function ViewModal(props) {
+		function ViewModal() {
 			_classCallCheck(this, ViewModal);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(ViewModal).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ViewModal).apply(this, arguments));
 		}
 	
 		_createClass(ViewModal, [{
@@ -85547,7 +85614,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ViewModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 356 */
+/* 357 */
 /*!*****************************************!*\
   !*** ./src/components/EndpointModal.js ***!
   \*****************************************/
@@ -85567,11 +85634,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
@@ -85586,10 +85653,10 @@
 	var EndpointModal = function (_PureComponent) {
 		_inherits(EndpointModal, _PureComponent);
 	
-		function EndpointModal(props) {
+		function EndpointModal() {
 			_classCallCheck(this, EndpointModal);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(EndpointModal).call(this, props));
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(EndpointModal).apply(this, arguments));
 		}
 	
 		_createClass(EndpointModal, [{
@@ -85611,7 +85678,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "EndpointModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 357 */
+/* 358 */
 /*!**************************************!*\
   !*** ./src/components/ModelModal.js ***!
   \**************************************/
@@ -85631,27 +85698,27 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
-	var _radium = __webpack_require__(/*! radium */ 248);
+	var _radium = __webpack_require__(/*! radium */ 249);
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 217);
 	
-	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 306);
+	var _reactModalDialog = __webpack_require__(/*! react-modal-dialog */ 307);
 	
-	var _styles = __webpack_require__(/*! ../constants/styles */ 294);
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
 	
 	var _store = __webpack_require__(/*! ../store */ 235);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _modal = __webpack_require__(/*! ../ducks/modal */ 239);
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
-	var _ModelProp = __webpack_require__(/*! ./ModelProp */ 358);
+	var _ModelProp = __webpack_require__(/*! ./ModelProp */ 359);
 	
 	var _ModelProp2 = _interopRequireDefault(_ModelProp);
 	
@@ -85845,7 +85912,7 @@
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelModal.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
-/* 358 */
+/* 359 */
 /*!*************************************!*\
   !*** ./src/components/ModelProp.js ***!
   \*************************************/
@@ -85865,7 +85932,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _component = __webpack_require__(/*! react-pure-render/component */ 245);
+	var _component = __webpack_require__(/*! react-pure-render/component */ 246);
 	
 	var _component2 = _interopRequireDefault(_component);
 	
@@ -85888,48 +85955,7 @@
 			_this.state = {
 				propName: '',
 				_type: '',
-				validators: {
-					_ref: {
-						enabled: false,
-						value: ''
-					},
-					_required: {
-						enabled: false,
-						value: false
-					},
-					_index: {
-						enabled: false,
-						value: false
-					},
-					_default: {
-						enabled: true,
-						value: ''
-					},
-					_enum: {
-						enabled: false,
-						values: []
-					},
-					_match: {
-						enabled: true,
-						regex: ''
-					},
-					_minLength: {
-						enabled: false,
-						min: 0
-					},
-					_maxLength: {
-						enabled: false,
-						max: 0
-					},
-					_min: {
-						enabled: false,
-						min: 0
-					},
-					_max: {
-						enabled: true,
-						max: 0
-					}
-				}
+				description: ''
 			};
 			return _this;
 		}
@@ -85977,7 +86003,10 @@
 						null,
 						'Description'
 					),
-					_react2.default.createElement('textarea', { cols: '30', rows: '10' })
+					_react2.default.createElement('textarea', {
+						cols: '20',
+						rows: '10'
+					})
 				);
 			}
 		}]);
@@ -85988,51 +86017,6 @@
 	exports.default = ModelProp;
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelProp.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
-
-/***/ },
-/* 359 */,
-/* 360 */
-/*!*********************************!*\
-  !*** ./src/ducks/modelProps.js ***!
-  \*********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
-	
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = reducer;
-	exports.addProp = addProp;
-	
-	var _immutable = __webpack_require__(/*! immutable */ 238);
-	
-	var initialState = _immutable.List.of((0, _immutable.Map)({
-		propName: '',
-		_type: '',
-		description: ''
-	}));
-	
-	var ADD_PROP = 'model/ADD_PROP';
-	
-	function reducer() {
-		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
-		var action = arguments[1];
-	
-		switch (action.type) {
-			case ADD_PROP:
-				return state.push(action.prop);
-		}
-		return state;
-	}
-	
-	function addProp(prop) {
-		return { type: ADD_PROP, prop: prop };
-	}
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);

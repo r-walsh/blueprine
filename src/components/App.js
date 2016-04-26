@@ -12,7 +12,8 @@ export default class App extends PureComponent {
 
 		return (
 			<div className="main-wrapper"
-				 style={ styles.mainWrapper }>
+				 style={ styles.mainWrapper }
+			>
 				<StyleRoot>
 					<NavBar />
 					{ this.props.children }
@@ -27,6 +28,6 @@ export default class App extends PureComponent {
 				  width: `100%`
 				, backgroundColor: colors.white
 			}
-		}
+		};
 	}
 }

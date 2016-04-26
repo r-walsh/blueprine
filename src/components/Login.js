@@ -10,16 +10,16 @@ import { colors } from '../constants/styles';
 
 class Login extends PureComponent {
 	constructor( props ) {
-		super(props);
+		super( props );
 
 		this.state = {
 			  email: `test@test.com`
 			, password: `guest`
-		}
+		};
 	}
 
 	handleChange( type, event ) {
-		this.setState({ [ type ]: event.target.value });
+		this.setState( { [type]: event.target.value } );
 	}
 
 	login() {
@@ -28,16 +28,17 @@ class Login extends PureComponent {
 
 	render() {
 		const styles = this.getStyles();
-		let errors = this.props.user.get(`errors`).toArray();
+		const errors = this.props.user.get( `errors` ).toArray();
 
 		return (
 			<div className="login-wrapper"
-				 style={ styles.loginWrapper }>
+				 style={ styles.loginWrapper }
+  			>
 
 				{ errors.length !== 0
 					?
 						<ul style={ styles.errorList }>
-							{ errors.map( err => <li style={ styles.error } key={ err }>{ err }</li>)}
+							{ errors.map( err => <li style={ styles.error } key={ err }>{ err }</li> )}
 						</ul>
 					:
 						null
@@ -45,21 +46,24 @@ class Login extends PureComponent {
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.labels }>Email</label>
 					<input style={ styles.inputs }
-						   onChange={ this.handleChange.bind(this, `email`) }
+						   onChange={ this.handleChange.bind( this, `email` ) }
 						   value={ this.state.email }
 						   key="email"
-						   type="email"/>
+						   type="email"
+  					/>
 				</div>
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.labels }>Password</label>
 					<input style={ styles.inputs }
-						   onChange={ this.handleChange.bind(this, `password`) }
+						   onChange={ this.handleChange.bind( this, `password` ) }
 						   value={ this.state.password }
 						   key="password"
-						   type="password"/>
+						   type="password"
+  					/>
 				</div>
 				<button style={ styles.button }
-						onClick={ this.login.bind(this) }>
+					onClick={ this.login.bind( this ) }
+  				>
 					Login
 				</button>
 
@@ -116,4 +120,4 @@ class Login extends PureComponent {
 	}
 }
 
-export default connect( state => ({ user: state.auth }))( Radium(Login) );
+export default connect( state => ( { user: state.auth } ) )( Radium( Login ) );

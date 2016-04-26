@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 import _ from 'lodash';
 
@@ -26,42 +26,42 @@ class Blueprints extends PureComponent {
 			, search: false
 			, searchText: ``
 			, showOwnedOrShared: `ownedBlueprints`
-		}
+		};
 	}
 
 	componentWillMount() {
-		if ( !this.props.user.get(`loggedIn`) ) {
+		if ( !this.props.user.get( `loggedIn` ) ) {
 			return LoginSrvc.verifyAuth( BlueprintSrvc.getBlueprints );
 		}
 
-		if ( this.props.blueprints.get(`ownedBlueprints`).count() === 0 || this.props.blueprints.get(`sharedBlueprints`).count() === 0 ) {
-			BlueprintSrvc.getBlueprints()
+		if ( this.props.blueprints.get( `ownedBlueprints` ).count() === 0 || this.props.blueprints.get( `sharedBlueprints` ).count() === 0 ) {
+			return BlueprintSrvc.getBlueprints();
 		}
 	}
 
 	handleChange( field, event ) {
-		this.setState({ [field]: event.target.value })
+		this.setState( { [field]: event.target.value } );
 	}
 
 	toggleOwnedOrShared( showOwnedOrShared ) {
-		this.setState({ showOwnedOrShared });
+		this.setState( { showOwnedOrShared } );
 	}
 
 	constructBlueprints( owned, shared, styles ) {
-		let all = [...owned, ...shared];
-		return _.sortBy(all.filter( blueprint => blueprint.title.toLowerCase().indexOf(this.state.searchText.toLowerCase()) !== -1), `_id`)
+		const all = [...owned, ...shared];
+		return _.sortBy( all.filter( blueprint => blueprint.title.toLowerCase().indexOf( this.state.searchText.toLowerCase() ) !== -1 ), `_id` )
 					.reverse()
-					.map( blueprint => {
-						return (
+					.map( blueprint => (
 							<Link key={ blueprint._id }
 								  style={ styles.listLink }
-								  to={ `/blueprint/${ blueprint._id }` }>
+								  to={ `/blueprint/${ blueprint._id }` }
+							>
 								<div key={ blueprint._id } style={ styles.listItemContainer }>
 									<BlueprintThumbnail key={ blueprint._id } { ...blueprint } />
 								</div>
 							</Link>
 						)
-					});
+					);
 	}
 
 	toggleSearch() {
@@ -69,10 +69,10 @@ class Blueprints extends PureComponent {
 			setTimeout( () => this.refs.searchBar.focus(), 20 );
 		}
 
-		this.setState({
+		this.setState( {
 			  search: !this.state.search
 			, searchText: ``
-		});
+		} );
 	}
 
 	modalClose() {
@@ -87,31 +87,31 @@ class Blueprints extends PureComponent {
 		const styles = this.getStyles();
 
 		let recent, blueprints;
-		if ( this.props.blueprints.get(`ownedBlueprints`).count() > 0 || this.props.blueprints.get(`sharedBlueprints`).count() > 0 ) {
-			recent = _.sortBy([...this.props.blueprints.get(`ownedBlueprints`).toJS(), ...this.props.blueprints.get(`sharedBlueprints`).toJS()], `_id`)
+		if ( this.props.blueprints.get( `ownedBlueprints` ).count() > 0 || this.props.blueprints.get( `sharedBlueprints` ).count() > 0 ) {
+			recent = _.sortBy( [...this.props.blueprints.get( `ownedBlueprints` ).toJS(), ...this.props.blueprints.get( `sharedBlueprints` ).toJS()], `_id` )
 						.reverse()
-						.splice(0, 2)
+						.splice( 0, 2 )
 						.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );
 
 			if ( this.state.search ) {
 				blueprints = this.constructBlueprints(
-					  this.props.blueprints.get(`ownedBlueprints`).toJS()
-					, this.props.blueprints.get(`sharedBlueprints`).toJS()
+					  this.props.blueprints.get( `ownedBlueprints` ).toJS()
+					, this.props.blueprints.get( `sharedBlueprints` ).toJS()
 					, styles
-				)
+				);
 			} else {
 				blueprints = this.constructBlueprints(
 					  this.props.blueprints.get( this.state.showOwnedOrShared ).toJS()
 					, []
 					, styles
-				)
+				);
 			}
 		}
 
 		return (
 			<div className="blueprints-wrapper">
 				{
-					this.props.modal.get(`blueprintModal`) &&
+					this.props.modal.get( `blueprintModal` ) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
 							<NewBlueprint />
@@ -121,7 +121,8 @@ class Blueprints extends PureComponent {
 				<div style={ styles.mostRecent } className="most-recent">
 					<h2 style={ styles.header }>Most Recent Projects:</h2>
 					<button style={ styles.newProject }
-							onClick={ this.modalOpen.bind( this ) }>
+						onClick={ this.modalOpen.bind( this ) }
+					>
 						New Project
 					</button>
 					{ recent ? recent : <h3 style={ styles.header }>You have no projects!</h3> }
@@ -133,40 +134,47 @@ class Blueprints extends PureComponent {
 								<input style={ styles.search }
 									   value={ this.state.searchText }
 									   ref="searchBar"
-									   onChange={ this.handleChange.bind(this, `searchText`) }
-									   type="text"/>
+									   onChange={ this.handleChange.bind( this, `searchText` ) }
+									   type="text"
+  								/>
 								<i style={ styles.closeSearch }
-								   onClick={ this.toggleSearch.bind(this) }
-								   className="fa fa-times-circle">
+									onClick={ this.toggleSearch.bind( this ) }
+									className="fa fa-times-circle"
+  								>
 								</i>
 							</div>
 						:
 							<div style={ styles.listButtonContainer }>
 								<button onClick={ this.toggleOwnedOrShared.bind( this, `ownedBlueprints` ) }
-										key="ownedBlueprints"
-										style={[
-											  styles.listButton
+									key="ownedBlueprints"
+									style={[
+										styles.listButton
 											, this.state.showOwnedOrShared === `ownedBlueprints`
 											?
 												styles.selectedButton
 											:	null
-											]}>
+									]}
+								>
 									Mine
 								</button>
-								<button onClick={ this.toggleOwnedOrShared.bind( this, `sharedBlueprints` ) }
-										key="sharedBlueprints"
-										style={[
-											  styles.listButton
+								<button
+									onClick={ this.toggleOwnedOrShared.bind( this, `sharedBlueprints` ) }
+									key="sharedBlueprints"
+									style={[
+										styles.listButton
 											, this.state.showOwnedOrShared === `sharedBlueprints`
 											?
 												styles.selectedButton
 											:	null
-											]}>
+									]}
+  								>
 									Shared
 								</button>
-								<button onClick={ this.toggleSearch.bind(this) }
-										key="search"
-										style={ styles.listButton }>
+								<button
+									onClick={ this.toggleSearch.bind( this ) }
+									key="search"
+									style={ styles.listButton }
+  								>
 									Search All
 								</button>
 							</div>
@@ -178,17 +186,17 @@ class Blueprints extends PureComponent {
 					</div>
 				</aside>
 			</div>
-		)
+		);
 	}
 
 	getStyles() {
 		return {
 			header: {
-				  marginLeft: 20
+				marginLeft: 20
 				, display: `inline-block`
 			}
 			, newProject: {
-				  float: `right`
+				float: `right`
 				, margin: `10px 10px 0 0`
 				, backgroundColor: colors.lightBlue
 				, color: colors.white
@@ -200,7 +208,7 @@ class Blueprints extends PureComponent {
 				}
 			}
 			, mostRecent: {
-				  boxSizing: `border-box`
+				boxSizing: `border-box`
 				, width: `70%`
 				, height: window.innerHeight - 70
 				, borderRight: `2px solid #D4D5D6`
@@ -209,14 +217,14 @@ class Blueprints extends PureComponent {
 				, marginRight: `.5%`
 			}
 			, list: {
-				  float: `left`
+				float: `left`
 				, boxSizing: `border-box`
 				, height: window.innerHeight - 105
 				, width: `29%`
 				, overflow: `scroll`
 			}
 			, listLink: {
-				  textDecoration: `none`
+				textDecoration: `none`
 				, color: `black`
 			}
 			, listItemContainer: {
@@ -225,7 +233,7 @@ class Blueprints extends PureComponent {
 				}
 			}
 			, search: {
-				  width: `87%`
+				width: `87%`
 				, margin: `0 5px 0 0`
 				, boxSizing: `border-box`
 				, borderRadius: 3
@@ -235,17 +243,17 @@ class Blueprints extends PureComponent {
 				}
 			}
 			, closeSearch: {
-				  cursor: `pointer`
+				cursor: `pointer`
 				, fontSize: `1.1em`
 			}
 			, listButtonContainer: {
-				  width: `29%`
+				width: `29%`
 				, margin: `8px 0`
 				, height: 20
 				, float: `left`
 			}
 			, listButton: {
-				  width: `32%`
+				width: `32%`
 				, boxSizing: `border-box`
 				, backgroundColor: colors.lightBlue
 				, color: colors.white
@@ -259,8 +267,8 @@ class Blueprints extends PureComponent {
 			, selectedButton: {
 				boxShadow: `inset 0 0 14px ${ colors.blue }`
 			}
-		}
+		};
 	}
 }
 
-export default connect( state => ({ user: state.auth, modal: state.modal, blueprints: state.blueprint }))( Radium(Blueprints) );
+export default connect( state => ( { user: state.auth, modal: state.modal, blueprints: state.blueprint } ) )( Radium( Blueprints ) );

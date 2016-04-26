@@ -24,27 +24,27 @@ class NewBlueprint extends PureComponent {
 	}
 
 	handleChange( field, event ) {
-		this.setState({ [field]: event.target.value });
+		this.setState( { [field]: event.target.value } );
 	}
 
 	postBlueprint( title, description ) {
 		if ( !title || !description ) {
-			return this.setState({ errors: `All fields required`});
+			return this.setState( { errors: `All fields required` } );
 		}
 
-		let dfd = new Promise( ( resolve, reject ) => {
+		const dfd = new Promise( ( resolve, reject ) => {
 			blueprintSrvc.postBlueprint( { title, description }, resolve, reject );
-		});
+		} );
 
-		dfd.then( res => {
+		return dfd.then( res => {
 			this.setState( initialState );
 			store.dispatch( toggleBlueprintModal( false ) );
-			store.dispatch( addBlueprint( res ));
-			return browserHistory.push(`/blueprint/${ res._id }`)
-		})
+			store.dispatch( addBlueprint( res ) );
+			return browserHistory.push( `/blueprint/${ res._id }` );
+		} )
 		.catch( err => {
-			this.setState({ errors: err });
-		});
+			this.setState( { errors: err } );
+		} );
 	}
 
 	render() {
@@ -57,15 +57,17 @@ class NewBlueprint extends PureComponent {
 					<input value={ this.state.title }
 						   onChange={ this.handleChange.bind( this, `title` ) }
 						   style={ styles.input }
-						   type="text"/>
+						   type="text"
+  					/>
 				</div>
 
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.label }>Description</label>
 					<textarea value={ this.state.description }
-							  onChange={ this.handleChange.bind( this, `description` ) }
-							  style={ styles.textArea }
-							  rows="10" />
+						onChange={ this.handleChange.bind( this, `description` ) }
+						style={ styles.textArea }
+						rows="10"
+  					/>
 				</div>
 
 				<button onClick={ this.postBlueprint.bind( this, this.state.title, this.state.description ) } style={ styles.button }>Create!</button>
@@ -109,7 +111,7 @@ class NewBlueprint extends PureComponent {
 					outline: `2px solid #3bd4d7`
 				}
 			}
-		}
+		};
 	}
 }
 

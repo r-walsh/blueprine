@@ -7,49 +7,51 @@ import { setUser, setErrors } from '../ducks/auth';
 export default class LoginSrvc {
 
 	static validateForm( email, password ) {
-		let emailRegex = new RegExp(/\S+@\S+\.\S+/);
-		let errors = [];
+		const emailRegex = new RegExp( /\S+@\S+\.\S+/ );
+		const errors = [];
 
-		if ( !email || !emailRegex.test(email) ) {
-			errors.push(`Invalid Email`);
+		if ( !email || !emailRegex.test( email ) ) {
+			errors.push( `Invalid Email` );
 		}
 
 		if ( password.length === 0 ) {
-			errors.push(`Password Required`);
+			errors.push( `Password Required` );
 		}
 
 		if ( errors.length === 0 ) {
 			return this.getUser( email, password );
 		}
 
-		store.dispatch( setErrors(errors) );
+		return store.dispatch( setErrors( errors ) );
 	}
-	
+
 	static getUser( email, password ) {
-		request.post(`/api/login`)
-				.send({ email, password })
-				.end(( err, res ) => {
+		request.post( `/api/login` )
+				.send( { email, password } )
+				.end( ( err, res ) => {
 					if ( err ) {
 						return store.dispatch( setErrors( [err] ) );
 					}
 
 					if ( res.body.authenticated ) {
 						store.dispatch( setUser( res.body.user ) );
-						return browserHistory.push(`/blueprints`);
-					} else {
-						return store.dispatch( setErrors([`Unknown Error Logging in, please try again`] ) );
+						return browserHistory.push( `/blueprints` );
 					}
-				});
+
+					return store.dispatch( setErrors( [`Unknown Error Logging in, please try again`] ) );
+				} );
 	}
 
 	static verifyAuth( callback, ...args ) {
-		request.get(`/api/verify-auth`, ( err, res ) => {
+		return request.get( `/api/verify-auth`, ( err, res ) => {
 			if ( err ) {
-				return browserHistory.push(`/login`);
+				return browserHistory.push( `/login` );
 			}
-			
-			callback ? callback( ...args ) : null;
+
+			if ( callback ) {
+				callback( ...args );
+			}
 			store.dispatch( setUser( res.body ) );
-		});
+		} );
 	}
 }

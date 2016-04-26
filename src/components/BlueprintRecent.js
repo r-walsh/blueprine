@@ -15,12 +15,12 @@ class BlueprintRecent extends PureComponent {
 			, views: blueprintSrvc.checkCompletion( this.props.views )
 			, endpoints: blueprintSrvc.checkCompletion( this.props.endpoints )
 			, models: blueprintSrvc.checkCompletion( this.props.models )
-		}
+		};
 
 	}
 
 	calculateCompletionTotal() {
-		return (this.state.features + this.state.views + this.state.endpoints + this.state.models) / 4;
+		return ( this.state.features + this.state.views + this.state.endpoints + this.state.models ) / 4;
 	}
 
 	render() {
@@ -62,7 +62,7 @@ class BlueprintRecent extends PureComponent {
 					</div>
 				</section>
 			</div>
-		)
+		);
 	}
 
 	getStyles() {
@@ -99,7 +99,7 @@ class BlueprintRecent extends PureComponent {
 				  margin: `0 0 5px 0`
 				, fontWeight: `bold`
 			}
-		}
+		};
 	}
 }
 

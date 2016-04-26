@@ -5,10 +5,6 @@ import Radium from 'radium';
 import { colors } from '../constants/styles';
 
 class BlueprintThumbnail extends PureComponent {
-	constructor( props ) {
-		super( props );
-	}
-
 	render() {
 		const styles = this.getStyles();
 
@@ -40,7 +36,7 @@ class BlueprintThumbnail extends PureComponent {
 				, whiteSpace: `nowrap`
 				, width: `100%`
 			}
-		}
+		};
 	}
 }
 

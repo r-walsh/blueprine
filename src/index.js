@@ -12,8 +12,8 @@ import Groups from './components/Groups';
 import Blueprint from './components/Blueprints';
 import EditBlueprint from './components/EditBlueprint';
 
-document.addEventListener(`DOMContentLoaded`, () => {
-	let reactNode = document.getElementById(`react-node`);
+document.addEventListener( `DOMContentLoaded`, () => {
+	const reactNode = document.getElementById( `react-node` );
 
 	if ( reactNode ) {
 		ReactDOM.render(
@@ -29,4 +29,4 @@ document.addEventListener(`DOMContentLoaded`, () => {
 			</Provider>
 		, reactNode );
 	}
-});
+} );

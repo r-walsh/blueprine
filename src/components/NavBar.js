@@ -3,7 +3,6 @@ import PureComponent from '../../node_modules/react-pure-render/component';
 import { Link } from 'react-router';
 import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
-import request from 'superagent';
 
 import { colors } from '../constants/styles';
 
@@ -14,10 +13,11 @@ class NavBar extends PureComponent {
 		return (
 			<nav className="nav-bar" style={ styles.navWrapper }>
 				<Style scopeSelector=".nav-bar"
-					   rules={ styles.navLink } />
+					   rules={ styles.navLink }
+  				/>
 				<div style={ styles.logoWrapper }>
 					<a href="/">
-						<img style={ styles.logo } src="/assets/DevMtnLogo.png" alt="DevMtn"/>
+						<img style={ styles.logo } src="/assets/DevMtnLogo.png" alt="DevMtn" />
 					</a>
 				</div>
 				<ul style={ styles.navList }>
@@ -72,8 +72,8 @@ class NavBar extends PureComponent {
 				, width: `auto`
 				, marginTop: `7.5%`
 			}
-		}
+		};
 	}
 }
 
-export default connect( state => ({ user: state.auth }))( Radium( NavBar ) );
+export default connect( state => ( { user: state.auth } ) )( Radium( NavBar ) );

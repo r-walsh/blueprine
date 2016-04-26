@@ -5,10 +5,6 @@ import Radium from 'radium';
 import { colors } from '../constants/styles';
 
 class ItemHeader extends PureComponent {
-	constructor( props ) {
-		super( props );
-	}
-
 	render() {
 		const styles = this.getStyles();
 
@@ -31,8 +27,8 @@ class ItemHeader extends PureComponent {
 			, titleText: {
 				margin: `5px auto`
 			}
-		}
+		};
 	}
 }
 
-export default Radium( ItemHeader )
+export default Radium( ItemHeader );

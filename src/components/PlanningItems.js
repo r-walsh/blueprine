@@ -1,5 +1,5 @@
 import React from 'react';
-import PureComponent from 'react-pure-render/component'
+import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import _ from 'lodash';
 
@@ -11,12 +11,8 @@ import { addButtonStyle } from '../constants/styles';
 import PlanningItem from './PlanningItem';
 
 class PlanningItems extends PureComponent {
-	constructor( props ) {
-		super( props );
-	}
-	
 	openModal() {
-		store.dispatch( togglePlanningItemModal( true, this.props.type, {} ));
+		store.dispatch( togglePlanningItemModal( true, this.props.type, {} ) );
 	}
 
 	render() {
@@ -24,22 +20,21 @@ class PlanningItems extends PureComponent {
 
 		let items;
 		if ( this.props.item ) {
-			items = _.sortBy(this.props.item.toJS().map( item => {
-				return (
+			items = _.sortBy( this.props.item.toJS().map( item =>
 					<PlanningItem
 						{ ...item }
 						type={ this.props.type }
 						blueprint={ this.props.blueprint }
 						key={ item._id }
 					/>
-				);
-			}), `_id`).reverse();
+			 ), `_id` ).reverse();
 		}
 
 		return (
 			<div style={ styles.wrapper }>
 				<button onClick={ this.openModal.bind( this ) }
-						style={ [addButtonStyle, styles.buttonStyle] }>
+					style={ [addButtonStyle, styles.buttonStyle] }
+				>
 					<i className="fa fa-plus" />
 				</button>
 				<div style={ styles.currentItemsOuterWrapper }>
@@ -71,7 +66,7 @@ class PlanningItems extends PureComponent {
 				, padding: 3
 				, overflow: `hidden`
 			}
-			,  itemWrapper: {
+			, itemWrapper: {
 				  display: `flex`
 				, justifyContent: `space-around`
 				, borderBottom: `1px solid rgba(44, 71, 112, 0.6)`
@@ -89,7 +84,7 @@ class PlanningItems extends PureComponent {
 				, width: `100%`
 				, overflow: `scroll`
 			}
-		}
+		};
 	}
 }
 

@@ -27,7 +27,7 @@ class FeatureModal extends PureComponent {
 			};
 		}
 	}
-	
+
 	saveFeature() {
 		if ( this.state.featureName && this.state.feature ) {
 			const feature = {
@@ -46,11 +46,11 @@ class FeatureModal extends PureComponent {
 	}
 
 	handleChange( field, event ) {
-		this.setState({ [field]: event.target.value });
+		this.setState( { [field]: event.target.value } );
 	}
 
 	handleCheckChange() {
-		this.setState({ mvp: !this.state.mvp })
+		this.setState( { mvp: !this.state.mvp } );
 	}
 
 	render() {
@@ -65,16 +65,18 @@ class FeatureModal extends PureComponent {
 					   value={ this.state.featureName }
 					   onChange={ this.handleChange.bind( this, `featureName` ) }
 					   key="featureName"
-					   type="text"/>
+					   type="text"
+  				/>
 
 				<label style={ styles.label }>
 					Feature:
 				</label>
 				<textarea rows="4"
-						  key="feature"
-						  value={ this.state.feature }
-						  onChange={ this.handleChange.bind( this, `feature` ) }
-						  style={ [styles.textArea, styles.textBorders] } />
+					key="feature"
+					value={ this.state.feature }
+					onChange={ this.handleChange.bind( this, `feature` ) }
+					style={ [styles.textArea, styles.textBorders] }
+  				/>
 
 				<label style={ styles.label } htmlFor="mvp">MVP?</label>
 				<input id="mvp"
@@ -82,14 +84,16 @@ class FeatureModal extends PureComponent {
 					   type="checkbox"
 					   value={ this.state.mvp }
 					   checked={ this.state.mvp }
-					   onChange={ this.handleCheckChange.bind( this ) } />
+					   onChange={ this.handleCheckChange.bind( this ) }
+  				/>
 
 				<button style={ [addButtonStyle, styles.saveButton] }
-						onClick={ this.saveFeature.bind( this ) }>
+					onClick={ this.saveFeature.bind( this ) }
+				>
 					Save Feature
 				</button>
 			</div>
-		)
+		);
 	}
 
 	getStyles() {
@@ -125,7 +129,7 @@ class FeatureModal extends PureComponent {
 					outlineWidth: 2
 				}
 			}
-		}
+		};
 	}
 }
 

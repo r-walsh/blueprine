@@ -22,15 +22,15 @@ class ModelModal extends PureComponent {
 			, modelProps: this.props.modelProps.toJS()
 			, editModelName: true
 			, existing: false
-		}
+		};
 	}
 
 	handleChange( field, event ) {
-		this.setState({ [field]: event.target.value });
+		this.setState( { [field]: event.target.value } );
 	}
 
 	editName() {
-		this.setState({ editModelName: true });
+		this.setState( { editModelName: true } );
 	}
 
 	saveName() {
@@ -40,7 +40,7 @@ class ModelModal extends PureComponent {
 	}
 
 	editProperty( property = {} ) {
-		return store.dispatch( toggleEditModelPropertyModal( true, property ) )
+		return store.dispatch( toggleEditModelPropertyModal( true, property ) );
 	}
 
 	modalClose() {
@@ -52,7 +52,7 @@ class ModelModal extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper }>
-				{ this.props.modal.getIn([`editModelPropertyModal`, `toggled`]) &&
+				{ this.props.modal.getIn( [`editModelPropertyModal`, `toggled`] ) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
 							<ModelProp />
@@ -112,7 +112,7 @@ class ModelModal extends PureComponent {
 					Add Property
 				</button>
 			</div>
-		)
+		);
 	}
 
 	getStyles() {
@@ -120,7 +120,7 @@ class ModelModal extends PureComponent {
 			addPropertyButton: {
 				margin: `15px 0 0 0`
 			  , display: `block`
-		  	}
+			}
 			, editNameButton: {
 				margin: 5
 			}
@@ -145,8 +145,8 @@ class ModelModal extends PureComponent {
 				, height: 500
 				, overflow: `scroll`
 			}
-		}
+		};
 	}
 }
 
-export default connect( state => ({ modelProps: state.modelProps, modal: state.modal }))(Radium( ModelModal ));
+export default connect( state => ( { modelProps: state.modelProps, modal: state.modal } ) )( Radium( ModelModal ) );

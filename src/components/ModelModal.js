@@ -111,6 +111,9 @@ class ModelModal extends PureComponent {
 				>
 					Add Property
 				</button>
+				<pre>
+					{ JSON.stringify( this.props.modelProps.toJS() ) }
+				</pre>
 			</div>
 		);
 	}

@@ -37613,7 +37613,7 @@
 							return _react2.default.createElement(
 								'li',
 								{ style: styles.error, key: err },
-								err
+								err.error
 							);
 						})
 					) : null,
@@ -85863,6 +85863,11 @@
 							style: [_styles.addButtonStyle, styles.addPropertyButton]
 						},
 						'Add Property'
+					),
+					_react2.default.createElement(
+						'pre',
+						null,
+						JSON.stringify(this.props.modelProps.toJS())
 					)
 				);
 			}
@@ -85936,7 +85941,23 @@
 	
 	var _component2 = _interopRequireDefault(_component);
 	
+	var _radium = __webpack_require__(/*! radium */ 249);
+	
+	var _radium2 = _interopRequireDefault(_radium);
+	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
+	
+	var _store = __webpack_require__(/*! ../store */ 235);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
+	
+	var _modelProps = __webpack_require__(/*! ../ducks/modelProps */ 241);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -85961,9 +85982,17 @@
 		}
 	
 		_createClass(ModelProp, [{
-			key: 'selectType',
-			value: function selectType(event) {
-				this.setState({ _type: event.target.value });
+			key: 'handleChange',
+			value: function handleChange(field, event) {
+				this.setState(_defineProperty({}, field, event.target.value));
+			}
+		}, {
+			key: 'saveProp',
+			value: function saveProp() {
+				if (this.state.propName && this.state._type && this.state.description) {
+					_store2.default.dispatch((0, _modelProps.addProp)(this.state));
+					return _store2.default.dispatch((0, _modal.toggleEditModelPropertyModal)(false));
+				}
 			}
 		}, {
 			key: 'render',
@@ -85984,7 +86013,11 @@
 						null,
 						'Property Name'
 					),
-					_react2.default.createElement('input', { type: 'text' }),
+					_react2.default.createElement('input', {
+						onChange: this.handleChange.bind(this, 'propName'),
+						type: 'text',
+						value: this.state.propName
+					}),
 					_react2.default.createElement(
 						'label',
 						null,
@@ -85993,7 +86026,7 @@
 					_react2.default.createElement(
 						'select',
 						{
-							onChange: this.selectType.bind(this),
+							onChange: this.handleChange.bind(this, '_type'),
 							value: this.state._type
 						},
 						options
@@ -86005,17 +86038,28 @@
 					),
 					_react2.default.createElement('textarea', {
 						cols: '20',
-						rows: '10'
-					})
+						onChange: this.handleChange.bind(this, 'description'),
+						rows: '10',
+						value: this.state.description
+					}),
+					_react2.default.createElement(
+						'button',
+						{
+							key: 'saveProp',
+							onClick: this.saveProp.bind(this),
+							style: _styles.addButtonStyle
+						},
+						'Save'
+					)
 				);
 			}
 		}]);
 	
 		return ModelProp;
 	}(_component2.default);
-
-	exports.default = ModelProp;
-
+	
+	exports.default = (0, _radium2.default)(ModelProp);
+	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "ModelProp.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }

@@ -18,26 +18,10 @@ const User = Schema( {
 
 User.methods.generateHash = password => hashSync( password, genSaltSync( 8 ), null );
 
-User.methods.validatePassword = password => compareSync( password, this.password );
+User.methods.validatePassword = function( password ) {
+	return compareSync( password, this.password );
+};
 
 User.plugin( deepPopulate );
 
 export default mongoose.model( `User`, User );
-
-// import Sequelize from 'sequelize';
-// import Blueprint from '../blueprint/Blueprint';
-//
-// export default sequelize => {
-// 	const User = sequelize.define(`user`, {
-// 		  email: { type: `citext`, allowNull: false, unique: true }
-// 		, password: { type: Sequelize.TEXT, allowNull: false }
-// 		, admin: { type: Sequelize.BOOLEAN, defaultValue: false }
-// 		, mentor: { type: Sequelize.BOOLEAN, defaultValue: false }
-// 		, uuid: { type: Sequelize.UUID, primaryKey: true }
-// 	});
-//
-// 	User.belongsToMany(Blueprint(sequelize), { foreignKey: `email`, through: `SharedView`});
-// 	User.belongsToMany(Blueprint(sequelize), { foreignKey: `email`, through: `SharedEdit`});
-//
-// 	return User;
-// }

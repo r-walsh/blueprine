@@ -38,7 +38,7 @@ class Login extends PureComponent {
 				{ errors.length !== 0
 					?
 						<ul style={ styles.errorList }>
-							{ errors.map( err => <li style={ styles.error } key={ err }>{ err }</li> )}
+							{ errors.map( err => <li style={ styles.error } key={ err }>{ err.error }</li> )}
 						</ul>
 					:
 						null

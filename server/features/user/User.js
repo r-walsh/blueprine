@@ -3,9 +3,9 @@ import DeepPopulate from 'mongoose-deep-populate';
 import { hashSync, compareSync, genSaltSync } from 'bcrypt';
 
 const { Schema } = mongoose;
-const deepPopulate = DeepPopulate(mongoose);
+const deepPopulate = DeepPopulate( mongoose );
 
-const User = Schema({
+const User = Schema( {
 	  email: { type: String, required: true, unique: true }
 	, password: { type: String, required: true }
 	, admin: { type: Boolean, default: false }
@@ -14,19 +14,15 @@ const User = Schema({
 		  owned: [{ type: Schema.Types.ObjectId, ref: `Blueprint` }]
 		, shared: [{ type: Schema.Types.ObjectId, ref: `Blueprint` }]
 	}
-});
+} );
 
-User.methods.generateHash = password => {
-	return hashSync( password, genSaltSync(8), null );
-};
+User.methods.generateHash = password => hashSync( password, genSaltSync( 8 ), null );
 
-User.methods.validatePassword = function( password ) {
-	return compareSync( password, this.password );
-};
+User.methods.validatePassword = password => compareSync( password, this.password );
 
 User.plugin( deepPopulate );
 
-export default mongoose.model(`User`, User);
+export default mongoose.model( `User`, User );
 
 // import Sequelize from 'sequelize';
 // import Blueprint from '../blueprint/Blueprint';

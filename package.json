@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
+    "lint-front": "eslint \"src/**/*.js\"",
+    "lint-back": "eslint \"server/**/*.js\" server.js",
+    "lint-all": "eslint \"src/**/*.js\" \"server/**/*.js\" server.js",
     "test": "mocha ./spec/masterSpec.js --compilers js:babel-register",
     "test:watch": "mocha ./spec/masterSpec.js --compilers js:babel-register --watch"
   },

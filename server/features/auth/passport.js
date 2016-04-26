@@ -2,22 +2,22 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import User from '../user/User';
 
 export default passport => {
-	passport.serializeUser(( user, done ) => {
-		done(null, user.id);
-	});
+	passport.serializeUser( ( user, done ) => {
+		done( null, user.id );
+	} );
 
-	passport.deserializeUser(( id, done ) => {
+	passport.deserializeUser( ( id, done ) => {
 		User.findById( id, ( err, user ) => {
 			done( err, user );
-		});
-	});
+		} );
+	} );
 
-	passport.use(`local-signup`, new LocalStrategy({
+	passport.use( `local-signup`, new LocalStrategy( {
 		  usernameField: `email`
 		, passwordField: `password`
 		, passReqToCallback: true
 	}, ( req, email, password, done ) => {
-		User.findOne({ email }, ( err, user ) => {
+		User.findOne( { email }, ( err, user ) => {
 			if ( err ) {
 				return done( err );
 			}
@@ -26,7 +26,7 @@ export default passport => {
 				return done( null, false );
 			}
 
-			let newUser = new User({ email });
+			const newUser = new User( { email } );
 			newUser.password = newUser.generateHash( password );
 
 			if ( req.body.admin ) {
@@ -43,17 +43,17 @@ export default passport => {
 				}
 
 				return done( null, user );
-			});
+			} );
 
-		});
-	}));
+		} );
+	} ) );
 
-	passport.use(`local-login`, new LocalStrategy({
+	passport.use( `local-login`, new LocalStrategy( {
 		  usernameField: `email`
 		, passwordField: `password`
 		, passReqToCallback: true
 	}, ( req, email, password, done ) => {
-		User.findOne({ email }, ( err, user ) => {
+		User.findOne( { email }, ( err, user ) => {
 			if ( err ) {
 				return done( err );
 			}
@@ -67,6 +67,6 @@ export default passport => {
 			}
 
 			return done( null, user );
-		});
-	}));
-}
+		} );
+	} ) );
+};

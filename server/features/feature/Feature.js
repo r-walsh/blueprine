@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const Feature = Schema({
-	  name: { type: String, required: true  }
+const Feature = Schema( {
+	  name: { type: String, required: true }
 	, feature: { type: String, required: true }
-	, mvp: { type: Boolean, required: true  }
+	, mvp: { type: Boolean, required: true }
 	, complete: { type: Boolean, default: false }
-});
+} );
 
-export default mongoose.model(`Feature`, Feature);
+export default mongoose.model( `Feature`, Feature );
 
 // import Sequelize from 'sequelize';
 //
@@ -19,6 +19,6 @@ export default mongoose.model(`Feature`, Feature);
 // 		, complete: { type: Sequelize.BOOLEAN, defaultValue: false }
 // 		, uuid: { type: Sequelize.UUID, primaryKey: true }
 // 	} );
-//	
+//
 // 	return Feature;
 // }

@@ -8,8 +8,10 @@ import { addButtonStyle, colors } from '../constants/styles';
 
 import store from '../store';
 import { toggleEditModelPropertyModal } from '../ducks/modal';
+import BlueprintSrvc from '../services/blueprintSrvc';
 
 import ModelProp from './ModelProp';
+import PropListItem from './PropListItem';
 
 class ModelModal extends PureComponent {
 	constructor( props ) {
@@ -29,6 +31,10 @@ class ModelModal extends PureComponent {
 		this.setState( { [ field ]: event.target.value } );
 	}
 
+	handleCheckChange( event ) {
+		this.setState( { mvp: event.target.checked } );
+	}
+
 	editName() {
 		this.setState( { editModelName: true } );
 	}
@@ -36,6 +42,17 @@ class ModelModal extends PureComponent {
 	saveName() {
 		if ( this.state.name ) {
 			this.setState( { editModelName: false } );
+		}
+	}
+
+	saveModel() {
+		if ( this.state.name ) {
+			BlueprintSrvc.postItem( {
+				name: this.state.name
+				, mvp: this.state.mvp
+				, complete: this.state.complete
+				, model: this.props.modelProps.toJS()
+			}, this.props.blueprint, 'models' )
 		}
 	}
 
@@ -49,6 +66,10 @@ class ModelModal extends PureComponent {
 
 	render() {
 		const styles = this.getStyles();
+		const propListItems = this.props.modelProps.toJS()
+								.map( modelProp => (
+									<PropListItem key={ modelProp.propName } { ...modelProp } />
+								));
 
 		return (
 			<div style={ styles.wrapper }>
@@ -101,7 +122,7 @@ class ModelModal extends PureComponent {
 				</label>
 				<input
 					id="model-mvp"
-					onChange={ this.handleChange.bind( this, `mvp` ) }
+					onChange={ this.handleCheckChange.bind( this ) }
 					type="checkbox"
 					value={ this.state.mvp }
 				/>
@@ -111,9 +132,17 @@ class ModelModal extends PureComponent {
 				>
 					Add Property
 				</button>
-				<pre>
-					{ JSON.stringify( this.props.modelProps.toJS() ) }
-				</pre>
+				<div>
+					{ propListItems }
+				</div>
+
+				<button
+					key="saveModel"
+					onClick={ this.saveModel.bind( this ) }
+					style={ [ addButtonStyle, styles.addPropertyButton ] }
+				>
+					Save
+				</button>
 			</div>
 		);
 	}

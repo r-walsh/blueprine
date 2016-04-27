@@ -25,7 +25,11 @@ class ModelProp extends PureComponent {
 
 	saveProp() {
 		if ( this.state.propName && this.state._type && this.state.description ) {
-			store.dispatch( addProp( this.state ) );
+			store.dispatch( addProp( {
+				  propName: this.state.propName
+				, _type: this.state._type
+				, description: this.state.description
+			} ) );
 			return store.dispatch( toggleEditModelPropertyModal( false ) );
 		}
 	}

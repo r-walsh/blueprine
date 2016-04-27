@@ -7,7 +7,6 @@ export default app => {
 	} ) );
 
 	app.post( `/api/login`, passport.authenticate( `local-login` ), ( req, res ) => {
-		console.log( req );
 		res.send( {
 			  authenticated: true
 			, user: {

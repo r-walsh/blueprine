@@ -1,10 +1,6 @@
-import { List, Map } from 'immutable';
+import { List, fromJS } from 'immutable';
 
-const initialState = List.of( Map( {
-	  propName: ``
-	, _type: ``
-	, description: ``
-} ) );
+const initialState = List();
 
 const ADD_PROP = `model/ADD_PROP`;
 
@@ -17,5 +13,5 @@ export default function reducer( state = initialState, action ) {
 }
 
 export function addProp( prop ) {
-	return { type: ADD_PROP, prop };
+	return { type: ADD_PROP, prop: fromJS( prop ) };
 }

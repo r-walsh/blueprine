@@ -8,6 +8,7 @@ import { addButtonStyle, colors } from '../constants/styles';
 
 import store from '../store';
 import { toggleEditModelPropertyModal } from '../ducks/modal';
+import { setProps } from '../ducks/modelProps';
 import BlueprintSrvc from '../services/blueprintSrvc';
 
 import ModelProp from './ModelProp';
@@ -17,14 +18,31 @@ class ModelModal extends PureComponent {
 	constructor( props ) {
 		super( props );
 
-		this.state = {
-			  name: ``
-			, mvp: false
-			, complete: false
-			, modelProps: this.props.modelProps.toJS()
-			, editModelName: true
-			, existing: false
-		};
+		if ( this.props.model.size === 0 ) {
+			this.state = {
+				name: ``
+				, mvp: false
+				, complete: false
+				, editModelName: true
+				, existing: false
+			};
+		} else {
+			this.state = {
+				name: this.props.model.get( `name` )
+				, mvp: this.props.model.get( `mvp` )
+				, modelId: this.props.model.get( `_id` )
+				, editModelName: false
+				, complete: this.props.model.get( `complete` )
+				, existing: true
+			};
+		}
+	}
+
+	componentWillMount() {
+		if ( this.props.model.get( `model` ) !== undefined ) {
+			return store.dispatch( setProps( this.props.model.get( `model` ).toJS() ) );
+		}
+		return store.dispatch( setProps( [] ) );
 	}
 
 	handleChange( field, event ) {
@@ -47,13 +65,21 @@ class ModelModal extends PureComponent {
 
 	saveModel() {
 		if ( this.state.name ) {
-			BlueprintSrvc.postItem( {
+			const model = {
 				name: this.state.name
 				, mvp: this.state.mvp
 				, complete: this.state.complete
 				, model: this.props.modelProps.toJS()
-			}, this.props.blueprint, 'models' )
+				, _id: this.state.modelId
+			};
+
+			if ( !this.state.existing ) {
+				return BlueprintSrvc.postItem( model, this.props.blueprint, 'models' );
+			}
+
+			return BlueprintSrvc.updateFeature( model, this.props.blueprint, 'models');
 		}
+
 	}
 
 	editProperty( property = {} ) {
@@ -121,10 +147,10 @@ class ModelModal extends PureComponent {
 					MVP?
 				</label>
 				<input
+					checked={ this.state.mvp }
 					id="model-mvp"
 					onChange={ this.handleCheckChange.bind( this ) }
 					type="checkbox"
-					value={ this.state.mvp }
 				/>
 				<button
 					onClick={ this.editProperty.bind( this ) }
@@ -132,6 +158,7 @@ class ModelModal extends PureComponent {
 				>
 					Add Property
 				</button>
+
 				<div>
 					{ propListItems }
 				</div>

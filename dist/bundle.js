@@ -32063,12 +32063,14 @@
 	});
 	exports.default = reducer;
 	exports.addProp = addProp;
+	exports.setProps = setProps;
 	
 	var _immutable = __webpack_require__(/*! immutable */ 238);
 	
 	var initialState = (0, _immutable.List)();
 	
 	var ADD_PROP = 'model/ADD_PROP';
+	var SET_PROPS = 'model/SET_PROPS';
 	
 	function reducer() {
 		var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
@@ -32077,12 +32079,18 @@
 		switch (action.type) {
 			case ADD_PROP:
 				return state.push(action.prop);
+			case SET_PROPS:
+				return action.props;
 		}
 		return state;
 	}
 	
 	function addProp(prop) {
 		return { type: ADD_PROP, prop: (0, _immutable.fromJS)(prop) };
+	}
+	
+	function setProps(props) {
+		return { type: SET_PROPS, props: (0, _immutable.fromJS)(props) };
 	}
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "modelProps.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
@@ -84681,7 +84689,7 @@
 					features: _react2.default.createElement(_FeatureModal2.default, { blueprint: this.state.blueprint, feature: this.props.modal.getIn(['planningItemModal', 'item']) }),
 					views: _react2.default.createElement(_ViewModal2.default, { blueprint: this.state.blueprint }),
 					endpoints: _react2.default.createElement(_EndpointModal2.default, { blueprint: this.state.blueprint }),
-					models: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint })
+					models: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint, model: this.props.modal.getIn(['planningItemModal', 'item']) })
 				};
 	
 				return _react2.default.createElement(
@@ -85716,6 +85724,8 @@
 	
 	var _modal = __webpack_require__(/*! ../ducks/modal */ 240);
 	
+	var _modelProps = __webpack_require__(/*! ../ducks/modelProps */ 241);
+	
 	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
@@ -85746,18 +85756,36 @@
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ModelModal).call(this, props));
 	
-			_this.state = {
-				name: '',
-				mvp: false,
-				complete: false,
-				modelProps: _this.props.modelProps.toJS(),
-				editModelName: true,
-				existing: false
-			};
+			if (_this.props.model.size === 0) {
+				_this.state = {
+					name: '',
+					mvp: false,
+					complete: false,
+					editModelName: true,
+					existing: false
+				};
+			} else {
+				_this.state = {
+					name: _this.props.model.get('name'),
+					mvp: _this.props.model.get('mvp'),
+					modelId: _this.props.model.get('_id'),
+					editModelName: false,
+					complete: _this.props.model.get('complete'),
+					existing: true
+				};
+			}
 			return _this;
 		}
 	
 		_createClass(ModelModal, [{
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				if (this.props.model.get('model') !== undefined) {
+					return _store2.default.dispatch((0, _modelProps.setProps)(this.props.model.get('model').toJS()));
+				}
+				return _store2.default.dispatch((0, _modelProps.setProps)([]));
+			}
+		}, {
 			key: 'handleChange',
 			value: function handleChange(field, event) {
 				this.setState(_defineProperty({}, field, event.target.value));
@@ -85783,12 +85811,19 @@
 			key: 'saveModel',
 			value: function saveModel() {
 				if (this.state.name) {
-					_blueprintSrvc2.default.postItem({
+					var model = {
 						name: this.state.name,
 						mvp: this.state.mvp,
 						complete: this.state.complete,
-						model: this.props.modelProps.toJS()
-					}, this.props.blueprint, 'models');
+						model: this.props.modelProps.toJS(),
+						_id: this.state.modelId
+					};
+	
+					if (!this.state.existing) {
+						return _blueprintSrvc2.default.postItem(model, this.props.blueprint, 'models');
+					}
+	
+					return _blueprintSrvc2.default.updateFeature(model, this.props.blueprint, 'models');
 				}
 			}
 		}, {
@@ -85877,10 +85912,10 @@
 						'MVP?'
 					),
 					_react2.default.createElement('input', {
+						checked: this.state.mvp,
 						id: 'model-mvp',
 						onChange: this.handleCheckChange.bind(this),
-						type: 'checkbox',
-						value: this.state.mvp
+						type: 'checkbox'
 					}),
 					_react2.default.createElement(
 						'button',

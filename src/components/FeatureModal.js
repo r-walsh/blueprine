@@ -9,7 +9,7 @@ import BlueprintSrvc from '../services/blueprintSrvc';
 class FeatureModal extends PureComponent {
 	constructor( props ) {
 		super( props );
-
+		
 		if ( this.props.feature.size === 0 ) {
 			this.state = {
 				  featureName: ``

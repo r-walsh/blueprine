@@ -61,7 +61,6 @@ export default passport => {
 			if ( !user ) {
 				return done( null, false );
 			}
-			console.log( user.validatePassword( password ));
 
 			if ( !user.validatePassword( password ) ) {
 				return done( null, false );

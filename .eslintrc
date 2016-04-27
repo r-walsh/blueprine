@@ -20,6 +20,7 @@
     "no-unneeded-ternary": 0,
     "no-console": 0,
     "no-shadow": 0,
+    "computed-property-spacing": [1, "always"],
     "react/jsx-indent-props": [1, "tab"],
     "react/jsx-no-bind": [1, {
       "allowArrowFunctions": false,

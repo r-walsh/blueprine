@@ -130,13 +130,13 @@ export function postPlanningItem( req, res ) {
 		, `models`
 	];
 
-	new planningItems[req.body.itemType]( req.body.feature )
+	new planningItems[ req.body.itemType ]( req.body.feature )
 		.save( ( err, item ) => {
 			if ( err ) {
 				return res.status( 500 ).send( err );
 			}
 
-			Blueprint.findByIdAndUpdate( req.body.blueprint._id, { $push: { [req.body.itemType]: item._id } }, ( err, blueprint ) => {
+			Blueprint.findByIdAndUpdate( req.body.blueprint._id, { $push: { [ req.body.itemType ]: item._id } }, ( err, blueprint ) => {
 				if ( err ) {
 					return res.status( 500 ).send( err );
 				}
@@ -161,7 +161,7 @@ export function postPlanningItem( req, res ) {
 }
 
 export function updatePlanningItem( req, res ) {
-	planningItems[req.body.itemType].findByIdAndUpdate( req.body.item._id, req.body.item, ( err, item ) => {
+	planningItems[ req.body.itemType ].findByIdAndUpdate( req.body.item._id, req.body.item, ( err, item ) => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		}
@@ -172,7 +172,7 @@ export function updatePlanningItem( req, res ) {
 }
 
 export function updateCompletion( req, res ) {
-	planningItems[req.body.itemType].findByIdAndUpdate( req.body.id, { $set: { complete: req.body.completion } }, ( err, item ) => {
+	planningItems[ req.body.itemType ].findByIdAndUpdate( req.body.id, { $set: { complete: req.body.completion } }, ( err, item ) => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		}

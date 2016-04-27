@@ -19,7 +19,7 @@ class Login extends PureComponent {
 	}
 
 	handleChange( type, event ) {
-		this.setState( { [type]: event.target.value } );
+		this.setState( { [ type ]: event.target.value } );
 	}
 
 	login() {

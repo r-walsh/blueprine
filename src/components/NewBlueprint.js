@@ -24,7 +24,7 @@ class NewBlueprint extends PureComponent {
 	}
 
 	handleChange( field, event ) {
-		this.setState( { [field]: event.target.value } );
+		this.setState( { [ field ]: event.target.value } );
 	}
 
 	postBlueprint( title, description ) {

@@ -109,7 +109,7 @@ export default class BlueprintSrvc {
 				if ( err ) {
 					return console.error( err );
 				}
-
+				
 				return store.dispatch( selectBlueprint( savedBlueprint.body ) );
 			} );
 	}

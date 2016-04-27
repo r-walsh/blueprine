@@ -84851,13 +84851,21 @@
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Views' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'views']), type: 'views' })
+						_react2.default.createElement(_PlanningItems2.default, {
+							blueprint: this.state.blueprint,
+							item: this.props.blueprints.getIn(['selectedBlueprint', 'views']),
+							type: 'views'
+						})
 					),
 					_react2.default.createElement(
 						'div',
 						{ style: styles.planningItemWrapper },
 						_react2.default.createElement(_ItemHeader2.default, { itemName: 'Endpoints' }),
-						_react2.default.createElement(_PlanningItems2.default, { item: this.props.blueprints.getIn(['selectedBlueprint', 'endpoints']), type: 'endpoints' })
+						_react2.default.createElement(_PlanningItems2.default, {
+							blueprint: this.state.blueprint,
+							item: this.props.blueprints.getIn(['selectedBlueprint', 'endpoints']),
+							type: 'endpoints'
+						})
 					),
 					_react2.default.createElement(
 						'div',

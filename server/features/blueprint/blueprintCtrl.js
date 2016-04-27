@@ -19,7 +19,7 @@ function savePopulateAndSend( req, res, item ) {
 		, `endpoints.models`
 		, `models`
 	];
-	console.log( item );
+
 	item.save( err => {
 		if ( err ) {
 			return res.status( 500 ).send( err );
@@ -133,26 +133,22 @@ export function postPlanningItem( req, res ) {
 	new planningItems[ req.body.itemType ]( req.body.feature )
 		.save( ( err, item ) => {
 			if ( err ) {
-				console.log( err );
 				return res.status( 500 ).send( err );
 			}
 
 			Blueprint.findByIdAndUpdate( req.body.blueprint._id, { $push: { [ req.body.itemType ]: item._id } }, ( err, blueprint ) => {
 				if ( err ) {
-					console.log( err );
 					return res.status( 500 ).send( err );
 				}
 
 				blueprint.save( ( err, savedBlueprint ) => {
 					if ( err ) {
-						console.log( err );
 						return res.status( 500 ).send( err );
 					}
 
 					Blueprint.findById( savedBlueprint._id, ( err, blueprint ) => {
 						blueprint.deepPopulate( shitToPopulate, ( err, populatedBlueprint ) => {
 							if ( err ) {
-								console.log( err );
 								return res.status( 500 ).send( err );
 							}
 							return res.send( populatedBlueprint );
@@ -169,7 +165,7 @@ export function updatePlanningItem( req, res ) {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		}
-		console.log( item );
+
 		savePopulateAndSend( req, res, item );
 
 	} );
@@ -180,6 +176,7 @@ export function updateCompletion( req, res ) {
 		if ( err ) {
 			return res.status( 500 ).send( err );
 		}
+
 		savePopulateAndSend( req, res, item );
 
 	} );

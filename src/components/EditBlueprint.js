@@ -197,11 +197,19 @@ class EditBlueprint extends PureComponent {
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Views" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `views`]) } type="views" />
+					<PlanningItems
+						blueprint={ this.state.blueprint }
+						item={ this.props.blueprints.getIn([`selectedBlueprint`, `views`]) }
+						type="views"
+					/>
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Endpoints" />
-					<PlanningItems item={ this.props.blueprints.getIn([`selectedBlueprint`, `endpoints`]) } type="endpoints" />
+					<PlanningItems
+						blueprint={ this.state.blueprint }
+						item={ this.props.blueprints.getIn([`selectedBlueprint`, `endpoints`]) }
+						type="endpoints"
+					/>
 				</div>
 				<div style={ styles.planningItemWrapper }>
 					<ItemHeader itemName="Models" />

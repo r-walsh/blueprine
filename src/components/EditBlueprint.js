@@ -68,10 +68,23 @@ class EditBlueprint extends PureComponent {
 	render() {
 		const styles = this.getStyles();
 		const modalItems = {
-			  features: <FeatureModal blueprint={ this.state.blueprint } feature={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) } />
-			, views: <ViewModal blueprint={ this.state.blueprint } />
-			, endpoints: <EndpointModal blueprint={ this.state.blueprint } />
-			, models: <ModelModal blueprint={ this.state.blueprint } model={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) } />
+			  features: <FeatureModal
+				  blueprint={ this.state.blueprint }
+				  feature={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) }
+			  />
+			, views: <ViewModal
+				blueprint={ this.state.blueprint }
+				view={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) }
+			/>
+			, endpoints: <EndpointModal
+				blueprint={ this.state.blueprint }
+				endpoint={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) }
+				models={ this.state.blueprint.models }
+			/>
+			, models: <ModelModal
+				blueprint={ this.state.blueprint }
+				model={ this.props.modal.getIn( [ `planningItemModal`, `item` ] ) }
+			/>
 		};
 
 		return (

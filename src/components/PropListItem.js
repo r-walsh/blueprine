@@ -45,7 +45,7 @@ class PropListItem extends PureComponent {
 			, description: {
 				textOverflow: `ellipsis`
 			}
-		}
+		};
 	}
 }
 

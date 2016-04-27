@@ -2,6 +2,7 @@
   "extends": "airbnb",
   "rules": {
     "no-mixed-spaces-and-tabs": 0,
+    "array-bracket-spacing": [1, "always"],
     "space-in-parens": [1, "always"],
     "eol-last": 0,
     "indent": [1, "tab"],

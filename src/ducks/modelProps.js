@@ -10,7 +10,7 @@ export default function reducer( state = initialState, action ) {
 	case ADD_PROP:
 		return state.push( action.prop );
 	case SET_PROPS:
-			return action.props;
+		return action.props;
 	}
 	return state;
 }

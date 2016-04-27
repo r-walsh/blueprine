@@ -84686,10 +84686,23 @@
 			value: function render() {
 				var styles = this.getStyles();
 				var modalItems = {
-					features: _react2.default.createElement(_FeatureModal2.default, { blueprint: this.state.blueprint, feature: this.props.modal.getIn(['planningItemModal', 'item']) }),
-					views: _react2.default.createElement(_ViewModal2.default, { blueprint: this.state.blueprint }),
-					endpoints: _react2.default.createElement(_EndpointModal2.default, { blueprint: this.state.blueprint }),
-					models: _react2.default.createElement(_ModelModal2.default, { blueprint: this.state.blueprint, model: this.props.modal.getIn(['planningItemModal', 'item']) })
+					features: _react2.default.createElement(_FeatureModal2.default, {
+						blueprint: this.state.blueprint,
+						feature: this.props.modal.getIn(['planningItemModal', 'item'])
+					}),
+					views: _react2.default.createElement(_ViewModal2.default, {
+						blueprint: this.state.blueprint,
+						view: this.props.modal.getIn(['planningItemModal', 'item'])
+					}),
+					endpoints: _react2.default.createElement(_EndpointModal2.default, {
+						blueprint: this.state.blueprint,
+						endpoint: this.props.modal.getIn(['planningItemModal', 'item']),
+						models: this.state.blueprint.models
+					}),
+					models: _react2.default.createElement(_ModelModal2.default, {
+						blueprint: this.state.blueprint,
+						model: this.props.modal.getIn(['planningItemModal', 'item'])
+					})
 				};
 	
 				return _react2.default.createElement(
@@ -85435,13 +85448,13 @@
 					var feature = {
 						feature: this.state.feature,
 						name: this.state.featureName,
-						mvp: this.state.mvp,
-						_id: this.state.featureId
+						mvp: this.state.mvp
 					};
 	
 					if (this.state.existing) {
 						_blueprintSrvc2.default.updateFeature(feature, this.props.blueprint, 'features');
 					} else {
+						feature._id = this.state.featureId;
 						_blueprintSrvc2.default.postItem(feature, this.props.blueprint, 'features');
 					}
 				}
@@ -85646,7 +85659,15 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _styles = __webpack_require__(/*! ../constants/styles */ 295);
+	
+	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
+	
+	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -85657,19 +85678,142 @@
 	var EndpointModal = function (_PureComponent) {
 		_inherits(EndpointModal, _PureComponent);
 	
-		function EndpointModal() {
+		function EndpointModal(props) {
 			_classCallCheck(this, EndpointModal);
 	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(EndpointModal).apply(this, arguments));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EndpointModal).call(this, props));
+	
+			if (_this.props.endpoint.size === 0) {
+				_this.state = {
+					name: '',
+					url: '',
+					mvp: false,
+					description: '',
+					model: '',
+					endpointId: '',
+					existing: false
+				};
+			} else {
+				_this.state = {
+					name: _this.props.endpoint.get('name'),
+					url: _this.props.endpoint.get('url'),
+					mvp: _this.props.endpoint.get('mvp'),
+					description: _this.props.endpoint.get('description'),
+					model: _this.props.endpoint.get('model'),
+					endpointId: _this.props.endpoint.get('_id'),
+					existing: true
+				};
+			}
+			return _this;
 		}
 	
 		_createClass(EndpointModal, [{
+			key: 'saveEndpoint',
+			value: function saveEndpoint() {
+				if (this.state.name && this.state.description && this.state.url && this.state.model) {
+					var endpoint = {
+						name: this.state.name,
+						url: this.state.url,
+						mvp: this.state.mvp,
+						description: this.state.description,
+						model: this.state.model
+					};
+	
+					if (!this.state.existing) {
+						return _blueprintSrvc2.default.postItem(endpoint, this.props.blueprint, 'endpoints');
+					}
+	
+					endpoint._id = this.state.endpointId;
+					return _blueprintSrvc2.default.updateFeature(endpoint, this.props.blueprint, 'endpoints');
+				}
+			}
+		}, {
+			key: 'handleChange',
+			value: function handleChange(field, event) {
+				this.setState(_defineProperty({}, field, event.target.value));
+			}
+		}, {
+			key: 'handleCheckChange',
+			value: function handleCheckChange(event) {
+				this.setState({ mvp: event.target.checked });
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				var modelOptions = this.props.models.map(function (model) {
+					return _react2.default.createElement(
+						'option',
+						{ key: model._id, value: model._id },
+						model.name
+					);
+				});
+				modelOptions.unshift(_react2.default.createElement('option', { value: '', key: 'initialVal' }));
+	
 				return _react2.default.createElement(
-					'h1',
+					'div',
 					null,
-					'ENDPOINT'
+					_react2.default.createElement(
+						'label',
+						null,
+						'Endpoint Name'
+					),
+					_react2.default.createElement('input', {
+						onChange: this.handleChange.bind(this, 'name'),
+						type: 'text',
+						value: this.state.name
+					}),
+					_react2.default.createElement(
+						'label',
+						null,
+						'URL'
+					),
+					_react2.default.createElement('input', {
+						onChange: this.handleChange.bind(this, 'url'),
+						type: 'text',
+						value: this.state.url
+					}),
+					_react2.default.createElement(
+						'label',
+						null,
+						'Model'
+					),
+					_react2.default.createElement(
+						'select',
+						{
+							onChange: this.handleChange.bind(this, 'model'),
+							value: this.state.model
+						},
+						modelOptions
+					),
+					_react2.default.createElement(
+						'label',
+						null,
+						'Description'
+					),
+					_react2.default.createElement('textarea', {
+						cols: '30',
+						onChange: this.handleChange.bind(this, 'description'),
+						rows: '10',
+						value: this.state.description
+					}),
+					_react2.default.createElement(
+						'label',
+						null,
+						'MVP?'
+					),
+					_react2.default.createElement('input', {
+						checked: this.state.mvp,
+						onChange: this.handleCheckChange.bind(this),
+						type: 'checkbox'
+					}),
+					_react2.default.createElement(
+						'button',
+						{
+							onClick: this.saveEndpoint.bind(this),
+							style: _styles.addButtonStyle
+						},
+						'Save'
+					)
 				);
 			}
 		}]);
@@ -85815,14 +85959,14 @@
 						name: this.state.name,
 						mvp: this.state.mvp,
 						complete: this.state.complete,
-						model: this.props.modelProps.toJS(),
-						_id: this.state.modelId
+						model: this.props.modelProps.toJS()
 					};
 	
 					if (!this.state.existing) {
 						return _blueprintSrvc2.default.postItem(model, this.props.blueprint, 'models');
 					}
 	
+					model._id = this.state.modelId;
 					return _blueprintSrvc2.default.updateFeature(model, this.props.blueprint, 'models');
 				}
 			}

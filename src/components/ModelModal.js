@@ -70,14 +70,14 @@ class ModelModal extends PureComponent {
 				, mvp: this.state.mvp
 				, complete: this.state.complete
 				, model: this.props.modelProps.toJS()
-				, _id: this.state.modelId
 			};
 
 			if ( !this.state.existing ) {
-				return BlueprintSrvc.postItem( model, this.props.blueprint, 'models' );
+				return BlueprintSrvc.postItem( model, this.props.blueprint, `models` );
 			}
 
-			return BlueprintSrvc.updateFeature( model, this.props.blueprint, 'models');
+			model._id = this.state.modelId;
+			return BlueprintSrvc.updateFeature( model, this.props.blueprint, `models` );
 		}
 
 	}
@@ -95,7 +95,7 @@ class ModelModal extends PureComponent {
 		const propListItems = this.props.modelProps.toJS()
 								.map( modelProp => (
 									<PropListItem key={ modelProp.propName } { ...modelProp } />
-								));
+								) );
 
 		return (
 			<div style={ styles.wrapper }>

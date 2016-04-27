@@ -9,7 +9,7 @@ import BlueprintSrvc from '../services/blueprintSrvc';
 class FeatureModal extends PureComponent {
 	constructor( props ) {
 		super( props );
-		
+
 		if ( this.props.feature.size === 0 ) {
 			this.state = {
 				  featureName: ``
@@ -34,12 +34,12 @@ class FeatureModal extends PureComponent {
 				  feature: this.state.feature
 				, name: this.state.featureName
 				, mvp: this.state.mvp
-				, _id: this.state.featureId
 			};
 
 			if ( this.state.existing ) {
 				BlueprintSrvc.updateFeature( feature, this.props.blueprint, `features` );
 			} else {
+				feature._id = this.state.featureId;
 				BlueprintSrvc.postItem( feature, this.props.blueprint, `features` );
 			}
 		}

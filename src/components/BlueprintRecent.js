@@ -20,7 +20,8 @@ class BlueprintRecent extends PureComponent {
 	}
 
 	calculateCompletionTotal() {
-		return ( this.state.features + this.state.views + this.state.endpoints + this.state.models ) / 4;
+		const planningItems = [ ...this.props.features, ...this.props.views, ...this.props.endpoints, ...this.props.models ];
+		return ( ( blueprintSrvc.checkCompletion( planningItems ) / planningItems.length ) * 100 ).toFixed( 2 );
 	}
 
 	render() {

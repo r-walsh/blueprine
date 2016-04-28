@@ -54,7 +54,7 @@ class EditBlueprint extends PureComponent {
 	}
 
 	toggleEditField( field, changed, newValue, blueprintId ) {
-		this.setState({ [field]: !this.state[field] });
+		this.setState({ [ field ]: !this.state[ field ] });
 
 		if ( changed && this.props.blueprints.getIn([`selectedBlueprint`, changed ]) !== newValue ) {
 			BlueprintSrvc.updateTopLevel( changed, newValue, blueprintId );
@@ -62,7 +62,7 @@ class EditBlueprint extends PureComponent {
 	}
 
 	handleChange( field, event ) {
-		this.setState({ blueprint: { ...this.state.blueprint, [field]: event.target.value } });
+		this.setState({ blueprint: { ...this.state.blueprint, [ field ]: event.target.value } });
 	}
 
 	render() {
@@ -90,10 +90,10 @@ class EditBlueprint extends PureComponent {
 			<div style={ styles.wrapper }>
 
 				{
-					this.props.modal.getIn([`planningItemModal`, `toggled`]) &&
+					this.props.modal.getIn([ `planningItemModal`, `toggled` ]) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
-							{ modalItems[this.props.modal.getIn( [`planningItemModal`, `type`] )] }
+							{ modalItems[this.props.modal.getIn( [` planningItemModal`, `type` ] )] }
 						</ModalDialog>
 					</ModalContainer>
 				}

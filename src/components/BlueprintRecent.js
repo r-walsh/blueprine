@@ -1,6 +1,7 @@
 import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
+import { Link } from 'react-router';
 
 import blueprintSrvc from '../services/blueprintSrvc';
 
@@ -29,7 +30,11 @@ class BlueprintRecent extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper } className="blueprint-wrapper">
-				<h2 style={ styles.title }>{ this.props.title }</h2>
+				<Link to={ `/blueprint/${ this.props._id }` }>
+					<h2 style={ styles.title }>
+						{ this.props.title }
+					</h2>
+				</Link>
 				<p>
 					<span style={ styles.completion }>Overall Completion: </span>{ this.calculateCompletionTotal() }%
 				</p>
@@ -79,6 +84,7 @@ class BlueprintRecent extends PureComponent {
 			, title: {
 				  textAlign: `center`
 				, textDecoration: `underline`
+				, color: `black`
 			}
 			, completion: {
 				fontWeight: `bold`

@@ -84058,6 +84058,8 @@
 	
 	var _radium2 = _interopRequireDefault(_radium);
 	
+	var _reactRouter = __webpack_require__(/*! react-router */ 160);
+	
 	var _blueprintSrvc = __webpack_require__(/*! ../services/blueprintSrvc */ 347);
 	
 	var _blueprintSrvc2 = _interopRequireDefault(_blueprintSrvc);
@@ -84107,9 +84109,13 @@
 					'div',
 					{ style: styles.wrapper, className: 'blueprint-wrapper' },
 					_react2.default.createElement(
-						'h2',
-						{ style: styles.title },
-						this.props.title
+						_reactRouter.Link,
+						{ to: '/blueprint/' + this.props._id },
+						_react2.default.createElement(
+							'h2',
+							{ style: styles.title },
+							this.props.title
+						)
 					),
 					_react2.default.createElement(
 						'p',
@@ -84216,7 +84222,8 @@
 					},
 					title: {
 						textAlign: 'center',
-						textDecoration: 'underline'
+						textDecoration: 'underline',
+						color: 'black'
 					},
 					completion: {
 						fontWeight: 'bold'
@@ -84716,7 +84723,7 @@
 						_react2.default.createElement(
 							_reactModalDialog.ModalDialog,
 							{ onClose: this.modalClose.bind(this) },
-							modalItems[this.props.modal.getIn(['planningItemModal', 'type'])]
+							modalItems[this.props.modal.getIn([' planningItemModal', 'type'])]
 						)
 					),
 					_react2.default.createElement(

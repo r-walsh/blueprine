@@ -2,19 +2,18 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 
 
 import LoginSrvc from '../services/loginSrvc';
 
 import { colors } from '../constants/styles';
 
-class Login extends PureComponent {
+class Signup extends PureComponent {
 	constructor( props ) {
 		super( props );
 
 		this.state = {
-			  email: `test@test.com`
+			email: `test@test.com`
 			, password: `guest`
 		};
 	}
@@ -23,8 +22,8 @@ class Login extends PureComponent {
 		this.setState( { [ type ]: event.target.value } );
 	}
 
-	login() {
-		LoginSrvc.validateForm( this.state.email, this.state.password );
+	signup() {
+		LoginSrvc.validateForm( this.state.email, this.state.password, true );
 	}
 
 	render() {
@@ -34,15 +33,15 @@ class Login extends PureComponent {
 		return (
 			<div className="login-wrapper"
 				 style={ styles.loginWrapper }
-  			>
+			>
 
 				{ errors.length !== 0
 					?
-						<ul style={ styles.errorList }>
-							{ errors.map( err => <li style={ styles.error } key={ err }>{ err.error }</li> )}
-						</ul>
+					<ul style={ styles.errorList }>
+						{ errors.map( err => <li style={ styles.error } key={ err }>{ err.error }</li> )}
+					</ul>
 					:
-						null
+					null
 				}
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.labels }>Email</label>
@@ -51,7 +50,7 @@ class Login extends PureComponent {
 						   value={ this.state.email }
 						   key="email"
 						   type="email"
-  					/>
+					/>
 				</div>
 				<div style={ styles.inputWrapper } className="input-wrapper">
 					<label style={ styles.labels }>Password</label>
@@ -60,15 +59,13 @@ class Login extends PureComponent {
 						   value={ this.state.password }
 						   key="password"
 						   type="password"
-  					/>
+					/>
 				</div>
 				<button style={ styles.button }
-					onClick={ this.login.bind( this ) }
-  				>
-					Login
+						onClick={ this.signup.bind( this ) }
+				>
+					Signup
 				</button>
-
-				<p>No account? <Link to="/signup">Sign up!</Link></p>
 
 			</div>
 		);
@@ -77,36 +74,36 @@ class Login extends PureComponent {
 
 	getStyles() {
 		return {
-			  loginWrapper: {
-				  width: 400
+			loginWrapper: {
+				width: 400
 				, margin: `80px auto`
 			}
 			, errorList: {
-				  listStyleType: `none`
+				listStyleType: `none`
 				, paddingLeft: 20
 			}
 			, error: {
-				  color: `red`
+				color: `red`
 			}
 			, inputWrapper: {
-				  width: `90%`
+				width: `90%`
 				, margin: `10px auto`
 			}
 			, inputs: {
-				  width: `100%`
+				width: `100%`
 				, height: `1.6em`
 				, marginTop: 3
 				, borderRadius: 3
 				, border: `1px solid grey`
 				, ':focus': {
-					  outlineWidth: 2
+					outlineWidth: 2
 				}
 			}
 			, labels: {
 				fontSize: `.95em`
 			}
 			, button: {
-				  margin: `7px 20px`
+				margin: `7px 20px`
 				, backgroundColor: colors.blue
 				, color: colors.white
 				, border: `none`
@@ -123,4 +120,4 @@ class Login extends PureComponent {
 	}
 }
 
-export default connect( state => ( { user: state.auth } ) )( Radium( Login ) );
+export default connect( state => ( { user: state.auth } ) )( Radium( Signup ) );

@@ -6,7 +6,7 @@ import { setUser, setErrors } from '../ducks/auth';
 
 export default class LoginSrvc {
 
-	static validateForm( email, password ) {
+	static validateForm( email, password, signup = false ) {
 		const emailRegex = new RegExp( /\S+@\S+\.\S+/ );
 		const errors = [];
 
@@ -18,8 +18,12 @@ export default class LoginSrvc {
 			errors.push( `Password Required` );
 		}
 
-		if ( errors.length === 0 ) {
+		if ( errors.length === 0 && !signup ) {
 			return this.getUser( email, password );
+		}
+
+		if ( errors.length === 0 && signup ) {
+			return this.signup( email, password );
 		}
 
 		return store.dispatch( setErrors( errors ) );
@@ -38,8 +42,25 @@ export default class LoginSrvc {
 						return browserHistory.push( `/blueprints` );
 					}
 
-					return store.dispatch( setErrors( [`Unknown Error Logging in, please try again`] ) );
+					return store.dispatch( setErrors( [ `Unknown Error Logging in, please try again` ] ) );
 				} );
+	}
+
+	static signup( email, password ) {
+		request.post( `/api/signup` )
+				.send( { email, password } )
+				.end( ( err, res ) => {
+					if ( err ) {
+						return store.dispatch( setErrors( [err] ) );
+					}
+
+					if ( res.body.authenticated ) {
+						store.dispatch( setUser( res.body.user ) );
+						return browserHistory.push( `/blueprints` );
+					}
+
+					return store.dispatch( setErrors( [ `Unknown Error Logging in, please try again` ] ) );
+				});
 	}
 
 	static verifyAuth( callback, ...args ) {

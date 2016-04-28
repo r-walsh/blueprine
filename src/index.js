@@ -8,6 +8,7 @@ import 'normalize-css';
 
 import App from './components/App';
 import Login from './components/Login';
+import Signup from './components/Signup';
 import Groups from './components/Groups';
 import Blueprint from './components/Blueprints';
 import EditBlueprint from './components/EditBlueprint';
@@ -21,6 +22,7 @@ document.addEventListener( `DOMContentLoaded`, () => {
 				<Router history={ browserHistory }>
 					<Route path="/" component={ App }>
 						<Route path="login" component={ Login } />
+						<Route path="signup" component={ Signup } />
 						<Route path="groups" component={ Groups } />
 						<Route path="blueprints" component={ Blueprint } />
 						<Route path="blueprint/:blueprintId" component={ EditBlueprint } />

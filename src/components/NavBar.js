@@ -28,7 +28,10 @@ class NavBar extends PureComponent {
 								<li style={ styles.navItem }><Link to="/blueprints">Blueprints</Link></li>
 							</span>
 						:
-							<li style={ styles.navItem }><Link to="/login">Login</Link></li>
+							<span>
+								<li style={ styles.navItem }><Link to="/signup">Sign Up</Link></li>
+								<li style={ styles.navItem }><Link to="/login">Login</Link></li>
+							</span>
 					}
 					<li style={ styles.navItem }><Link to="/">Home</Link></li>
 				</ul>

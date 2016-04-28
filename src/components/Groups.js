@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class Settings extends PureComponent {
 	render() {
 		return (
-			<h1>HALLO</h1>
+			<h1>COMING SOONish</h1>
 		);
 	}
 }

@@ -35935,12 +35935,25 @@
 								)
 							)
 						) : _react2.default.createElement(
-							'li',
-							{ style: styles.navItem },
+							'span',
+							null,
 							_react2.default.createElement(
-								_reactRouter.Link,
-								{ to: '/login' },
-								'Login'
+								'li',
+								{ style: styles.navItem },
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/signup' },
+									'Sign Up'
+								)
+							),
+							_react2.default.createElement(
+								'li',
+								{ style: styles.navItem },
+								_react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/login' },
+									'Login'
+								)
 							)
 						),
 						_react2.default.createElement(
@@ -38105,7 +38118,7 @@
 				return _react2.default.createElement(
 					'h1',
 					null,
-					'HALLO'
+					'COMING SOONish'
 				);
 			}
 		}]);

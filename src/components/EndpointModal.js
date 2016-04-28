@@ -17,7 +17,6 @@ class EndpointModal extends PureComponent {
 				, mvp: false
 				, description: ``
 				, model: ``
-				, endpointId: ``
 				, existing: false
 			};
 		} else {
@@ -61,7 +60,7 @@ class EndpointModal extends PureComponent {
 	}
 
 	render() {
-		const modelOptions = this.props.models.map( model => <option key={ model._id } value={ model._id }>{ model.name }</option> );
+		const modelOptions = this.props.blueprint.models.map( model => <option key={ model._id } value={ model._id }>{ model.name }</option> );
 		modelOptions.unshift( <option value="" key="initialVal" /> );
 
 		return (

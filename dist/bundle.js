@@ -84967,7 +84967,7 @@
 						_react2.default.createElement(
 							_reactModalDialog.ModalDialog,
 							{ onClose: this.modalClose.bind(this) },
-							modalItems[this.props.modal.getIn([' planningItemModal', 'type'])]
+							modalItems[this.props.modal.getIn(['planningItemModal', 'type'])]
 						)
 					),
 					_react2.default.createElement(

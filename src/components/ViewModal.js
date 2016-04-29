@@ -3,7 +3,7 @@ import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 import Select from 'react-select';
 
-import { addButtonStyle } from '../constants/styles';
+import { addButtonStyle, textInput, textArea, label } from '../constants/styles';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
 
@@ -70,22 +70,25 @@ class ViewModal extends PureComponent {
 
 		return (
 			<div>
-				<label>View Name</label>
+				<label style={ label }>View Name</label>
 				<input
 					onChange={ this.handleChange.bind( this, `name` ) }
+					style={ textInput }
 					type="text"
 					value={ this.state.name }
 				/>
 
-				<label>Description</label>
+				<label style={ label }>Description</label>
 				<textarea
 					cols="30"
+					key="viewDescription"
 					onChange={ this.handleChange.bind( this, `description` ) }
 					rows="10"
+					style={ textArea }
 					value={ this.state.description }
 				/>
 
-				<label>MVP?</label>
+				<label style={ label }>MVP?</label>
 				<input
 					checked={ this.state.mvp }
 					onChange={ this.handleCheckChange.bind( this ) }
@@ -111,6 +114,7 @@ class ViewModal extends PureComponent {
 				/>
 
 				<button
+					key="saveView"
 					onClick={ this.saveView.bind( this ) }
 					style={ addButtonStyle }
 				>

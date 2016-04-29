@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 
-import { addButtonStyle } from '../constants/styles';
+import { addButtonStyle, label, textInput, textArea } from '../constants/styles';
 
 import store from '../store';
 import { toggleEditModelPropertyModal } from '../ducks/modal';
@@ -40,13 +40,14 @@ class ModelProp extends PureComponent {
 
 		return (
 			<div>
-				<label>Property Name</label>
+				<label style={ label }>Property Name</label>
 				<input
 					onChange={ this.handleChange.bind( this, `propName` ) }
+					style={ textInput }
 					type="text"
 					value={ this.state.propName }
 				/>
-				<label>Type</label>
+				<label style={ label }>Type</label>
 				<select
 					onChange={ this.handleChange.bind( this, `_type` ) }
 					value={ this.state._type }
@@ -54,11 +55,14 @@ class ModelProp extends PureComponent {
 					{ options }
 				</select>
 
-				<label>Description</label>
+				<div />
+
+				<label style={ label }>Description</label>
 				<textarea
-					cols="20"
+					cols="30"
 					onChange={ this.handleChange.bind( this, `description` ) }
-					rows="10"
+					rows="8"
+					style={ textArea }
 					value={ this.state.description }
 				/>
 

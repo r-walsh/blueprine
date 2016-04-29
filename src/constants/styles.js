@@ -21,3 +21,29 @@ export const addButtonStyle = {
 		backgroundColor: colors.lightBlue
 	}
 };
+
+export const label = {
+	display: `inline-block`
+	, margin: `10px 7px 3px 0`
+};
+
+export const labelFirst = {
+	margin: `0 7px 3px 0`
+};
+
+export const textInput = {
+	display: `block`
+	, width: `100%`
+	, height: `1.4em`
+};
+
+export const textArea = {
+	resize: `none`
+	, display: `block`
+	, width: `100%`
+	, border: `1px solid black`
+	, borderRadius: 3
+	, ':focus': {
+		outlineWidth: 2
+	}
+};

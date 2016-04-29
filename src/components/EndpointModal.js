@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from 'react-pure-render/component';
 import Radium from 'radium';
 
-import { addButtonStyle } from '../constants/styles';
+import { addButtonStyle, textInput, textArea, label } from '../constants/styles';
 
 import BlueprintSrvc from '../services/blueprintSrvc';
 
@@ -65,21 +65,23 @@ class EndpointModal extends PureComponent {
 
 		return (
 			<div>
-				<label>Endpoint Name</label>
+				<label style={ label }>Endpoint Name</label>
 				<input
 					onChange={ this.handleChange.bind( this, `name` ) }
+					style={ textInput }
 					type="text"
 					value={ this.state.name }
 				/>
 
-				<label>URL</label>
+				<label style={ label }>URL</label>
 				<input
 					onChange={ this.handleChange.bind( this, `url` ) }
+					style={ textInput }
 					type="text"
 					value={ this.state.url }
 				/>
 
-				<label>Model</label>
+				<label style={ label }>Model</label>
 				<select
 					onChange={ this.handleChange.bind( this, `model` ) }
 					value={ this.state.model }
@@ -87,15 +89,19 @@ class EndpointModal extends PureComponent {
 					{ modelOptions }
 				</select>
 
-				<label>Description</label>
+				<div />
+
+				<label style={ label }>Description</label>
 				<textarea
 					cols="30"
+					key="endpointDescription"
 					onChange={ this.handleChange.bind( this, `description` ) }
 					rows="10"
+					style={ textArea }
 					value={ this.state.description }
 				/>
 
-				<label>MVP?</label>
+				<label style={ label }>MVP?</label>
 				<input
 					checked={ this.state.mvp }
 					onChange={ this.handleCheckChange.bind( this ) }
@@ -103,6 +109,7 @@ class EndpointModal extends PureComponent {
 				/>
 
 				<button
+					key="saveEndpoint"
 					onClick={ this.saveEndpoint.bind( this ) }
 					style={ addButtonStyle }
 				>

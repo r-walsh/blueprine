@@ -35837,6 +35837,32 @@
 		}
 	};
 	
+	var label = exports.label = {
+		display: 'inline-block',
+		margin: '10px 7px 3px 0'
+	};
+	
+	var labelFirst = exports.labelFirst = {
+		margin: '0 7px 3px 0'
+	};
+	
+	var textInput = exports.textInput = {
+		display: 'block',
+		width: '100%',
+		height: '1.4em'
+	};
+	
+	var textArea = exports.textArea = {
+		resize: 'none',
+		display: 'block',
+		width: '100%',
+		border: '1px solid black',
+		borderRadius: 3,
+		':focus': {
+			outlineWidth: 2
+		}
+	};
+	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/ryanwalsh/projects/blueprint/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "styles.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
@@ -85963,28 +85989,31 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'View Name'
 					),
 					_react2.default.createElement('input', {
 						onChange: this.handleChange.bind(this, 'name'),
+						style: _styles.textInput,
 						type: 'text',
 						value: this.state.name
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Description'
 					),
 					_react2.default.createElement('textarea', {
 						cols: '30',
+						key: 'viewDescription',
 						onChange: this.handleChange.bind(this, 'description'),
 						rows: '10',
+						style: _styles.textArea,
 						value: this.state.description
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'MVP?'
 					),
 					_react2.default.createElement('input', {
@@ -86011,6 +86040,7 @@
 					_react2.default.createElement(
 						'button',
 						{
+							key: 'saveView',
 							onClick: this.saveView.bind(this),
 							style: _styles.addButtonStyle
 						},
@@ -87622,27 +87652,29 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Endpoint Name'
 					),
 					_react2.default.createElement('input', {
 						onChange: this.handleChange.bind(this, 'name'),
+						style: _styles.textInput,
 						type: 'text',
 						value: this.state.name
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'URL'
 					),
 					_react2.default.createElement('input', {
 						onChange: this.handleChange.bind(this, 'url'),
+						style: _styles.textInput,
 						type: 'text',
 						value: this.state.url
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Model'
 					),
 					_react2.default.createElement(
@@ -87653,20 +87685,23 @@
 						},
 						modelOptions
 					),
+					_react2.default.createElement('div', null),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Description'
 					),
 					_react2.default.createElement('textarea', {
 						cols: '30',
+						key: 'endpointDescription',
 						onChange: this.handleChange.bind(this, 'description'),
 						rows: '10',
+						style: _styles.textArea,
 						value: this.state.description
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'MVP?'
 					),
 					_react2.default.createElement('input', {
@@ -87677,6 +87712,7 @@
 					_react2.default.createElement(
 						'button',
 						{
+							key: 'saveEndpoint',
 							onClick: this.saveEndpoint.bind(this),
 							style: _styles.addButtonStyle
 						},
@@ -88096,17 +88132,18 @@
 					null,
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Property Name'
 					),
 					_react2.default.createElement('input', {
 						onChange: this.handleChange.bind(this, 'propName'),
+						style: _styles.textInput,
 						type: 'text',
 						value: this.state.propName
 					}),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Type'
 					),
 					_react2.default.createElement(
@@ -88117,15 +88154,17 @@
 						},
 						options
 					),
+					_react2.default.createElement('div', null),
 					_react2.default.createElement(
 						'label',
-						null,
+						{ style: _styles.label },
 						'Description'
 					),
 					_react2.default.createElement('textarea', {
-						cols: '20',
+						cols: '30',
 						onChange: this.handleChange.bind(this, 'description'),
-						rows: '10',
+						rows: '8',
+						style: _styles.textArea,
 						value: this.state.description
 					}),
 					_react2.default.createElement(

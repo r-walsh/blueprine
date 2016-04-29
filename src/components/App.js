@@ -1,5 +1,5 @@
 import React from 'react';
-import PureComponent from '../../node_modules/react-pure-render/component';
+import PureComponent from 'react-pure-render/component';
 import { StyleRoot } from 'radium';
 
 import { colors } from '../constants/styles';
@@ -11,8 +11,9 @@ export default class App extends PureComponent {
 		const styles = this.getStyles();
 
 		return (
-			<div className="main-wrapper"
-				 style={ styles.mainWrapper }
+			<div
+				className="main-wrapper"
+				style={ styles.mainWrapper }
 			>
 				<StyleRoot>
 					<NavBar />

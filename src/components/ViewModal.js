@@ -65,8 +65,8 @@ class ViewModal extends PureComponent {
 	}
 
 	render() {
-		const endpointOptions = this.props.blueprint.endpoints.map( endpoint => ({ value: endpoint._id, label: endpoint.name }) );
-		const featureOptions = this.props.blueprint.features.map( feature => ({ value: feature._id, label: feature.name }) );
+		const endpointOptions = this.props.blueprint.endpoints.map( endpoint => ( { value: endpoint._id, label: endpoint.name } ) );
+		const featureOptions = this.props.blueprint.features.map( feature => ( { value: feature._id, label: feature.name } ) );
 
 		return (
 			<div>
@@ -96,7 +96,7 @@ class ViewModal extends PureComponent {
 				/>
 
 				<Select
-					multi={ true }
+					multi
 					name="featureOptions"
 					onChange={ this.handleSelectChange.bind( this, `features` ) }
 					options={ featureOptions }
@@ -105,7 +105,7 @@ class ViewModal extends PureComponent {
 				/>
 
 				<Select
-					multi={ true }
+					multi
 					name="endpointOptions"
 					onChange={ this.handleSelectChange.bind( this, `endpoints` ) }
 					options={ endpointOptions }

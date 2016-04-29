@@ -35,7 +35,7 @@ class ModelProp extends PureComponent {
 	}
 
 	render() {
-		let options = [``, `String`, `Number`, `Date`, `Buffer`, `Boolean`, `Mixed`, `ObjectId`, `Array`]
+		let options = [ ``, `String`, `Number`, `Date`, `Buffer`, `Boolean`, `Mixed`, `ObjectId`, `Array` ]
 							.map( ( option, index ) => <option value={ option } key={ index }>{ option }</option> );
 
 		return (

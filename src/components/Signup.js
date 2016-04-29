@@ -61,8 +61,9 @@ class Signup extends PureComponent {
 						   type="password"
 					/>
 				</div>
-				<button style={ styles.button }
-						onClick={ this.signup.bind( this ) }
+				<button
+					style={ styles.button }
+					onClick={ this.signup.bind( this ) }
 				>
 					Signup
 				</button>

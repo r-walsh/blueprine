@@ -9,11 +9,11 @@ const Blueprint = Schema( {
 	, description: { type: String, required: true }
 	, idea: { type: String, default: `` }
 	, users: { type: String, default: `` }
-	, features: [{ type: Schema.Types.ObjectId, ref: `Feature` }]
-	, views: [{ type: Schema.Types.ObjectId, ref: `View` }]
-	, endpoints: [{ type: Schema.Types.ObjectId, ref: `Endpoint` }]
-	, models: [{ type: Schema.Types.ObjectId, ref: `Model` }]
-	, editPermissions: [{ type: Schema.Types.ObjectId }]
+	, features: [ { type: Schema.Types.ObjectId, ref: `Feature` } ]
+	, views: [ { type: Schema.Types.ObjectId, ref: `View` } ]
+	, endpoints: [ { type: Schema.Types.ObjectId, ref: `Endpoint` } ]
+	, models: [ { type: Schema.Types.ObjectId, ref: `Model` } ]
+	, editPermissions: [ { type: Schema.Types.ObjectId } ]
 } );
 
 Blueprint.plugin( deepPopulate );

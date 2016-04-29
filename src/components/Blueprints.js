@@ -48,7 +48,7 @@ class Blueprints extends PureComponent {
 	}
 
 	constructBlueprints( owned, shared, styles ) {
-		const all = [...owned, ...shared];
+		const all = [ ...owned, ...shared ];
 		return _.sortBy( all.filter( blueprint => blueprint.title.toLowerCase().indexOf( this.state.searchText.toLowerCase() ) !== -1 ), `_id` )
 					.reverse()
 					.map( blueprint => (
@@ -88,7 +88,7 @@ class Blueprints extends PureComponent {
 
 		let recent, blueprints;
 		if ( this.props.blueprints.get( `ownedBlueprints` ).count() > 0 || this.props.blueprints.get( `sharedBlueprints` ).count() > 0 ) {
-			recent = _.sortBy( [...this.props.blueprints.get( `ownedBlueprints` ).toJS(), ...this.props.blueprints.get( `sharedBlueprints` ).toJS()], `_id` )
+			recent = _.sortBy( [ ...this.props.blueprints.get( `ownedBlueprints` ).toJS(), ...this.props.blueprints.get( `sharedBlueprints` ).toJS() ], `_id` )
 						.reverse()
 						.splice( 0, 2 )
 						.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );

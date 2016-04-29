@@ -99,7 +99,7 @@ class ModelModal extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper }>
-				{ this.props.modal.getIn( [`editModelPropertyModal`, `toggled`] ) &&
+				{ this.props.modal.getIn( [ `editModelPropertyModal`, `toggled` ] ) &&
 					<ModalContainer onClose={ this.modalClose.bind( this ) }>
 						<ModalDialog onClose={ this.modalClose.bind( this ) }>
 							<ModelProp />
@@ -116,7 +116,7 @@ class ModelModal extends PureComponent {
 							<button
 								key="editName"
 								onClick={ this.editName.bind( this ) }
-								style={ [addButtonStyle, styles.editNameButton] }
+								style={ [ addButtonStyle, styles.editNameButton ] }
 							>
 								Edit
 							</button>
@@ -154,7 +154,7 @@ class ModelModal extends PureComponent {
 				/>
 				<button
 					onClick={ this.editProperty.bind( this ) }
-					style={ [addButtonStyle, styles.addPropertyButton] }
+					style={ [ addButtonStyle, styles.addPropertyButton ] }
 				>
 					Add Property
 				</button>

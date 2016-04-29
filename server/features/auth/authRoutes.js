@@ -12,7 +12,7 @@ export default app => {
 				, _id: req.user._id
 			}
 		} );
-	}  );
+	} );
 
 	app.post( `/api/login`, passport.authenticate( `local-login` ), ( req, res ) => {
 		res.send( {

@@ -11,8 +11,8 @@ const User = Schema( {
 	, admin: { type: Boolean, default: false }
 	, mentor: { type: Boolean, default: false }
 	, blueprints: {
-		  owned: [{ type: Schema.Types.ObjectId, ref: `Blueprint` }]
-		, shared: [{ type: Schema.Types.ObjectId, ref: `Blueprint` }]
+		  owned: [ { type: Schema.Types.ObjectId, ref: `Blueprint` } ]
+		, shared: [ { type: Schema.Types.ObjectId, ref: `Blueprint` } ]
 	}
 } );
 

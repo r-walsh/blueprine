@@ -33,7 +33,7 @@ class PlanningItems extends PureComponent {
 		return (
 			<div style={ styles.wrapper }>
 				<button onClick={ this.openModal.bind( this ) }
-					style={ [addButtonStyle, styles.buttonStyle] }
+					style={ [ addButtonStyle, styles.buttonStyle ] }
 				>
 					<i className="fa fa-plus" />
 				</button>

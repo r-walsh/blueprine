@@ -58,10 +58,10 @@ class FeatureModal extends PureComponent {
 
 		return (
 			<div style={ styles.wrapper }>
-				<label style={ [styles.label, styles.labelFirst] }>
+				<label style={ [ styles.label, styles.labelFirst ] }>
 					Feature name:
 				</label>
-				<input style={ [styles.textInput, styles.textBorders] }
+				<input style={ [ styles.textInput, styles.textBorders ] }
 					   value={ this.state.featureName }
 					   onChange={ this.handleChange.bind( this, `featureName` ) }
 					   key="featureName"
@@ -75,7 +75,7 @@ class FeatureModal extends PureComponent {
 					key="feature"
 					value={ this.state.feature }
 					onChange={ this.handleChange.bind( this, `feature` ) }
-					style={ [styles.textArea, styles.textBorders] }
+					style={ [ styles.textArea, styles.textBorders ] }
   				/>
 
 				<label style={ styles.label } htmlFor="mvp">MVP?</label>
@@ -87,7 +87,7 @@ class FeatureModal extends PureComponent {
 					   onChange={ this.handleCheckChange.bind( this ) }
   				/>
 
-				<button style={ [addButtonStyle, styles.saveButton] }
+				<button style={ [ addButtonStyle, styles.saveButton ] }
 					onClick={ this.saveFeature.bind( this ) }
 				>
 					Save Feature

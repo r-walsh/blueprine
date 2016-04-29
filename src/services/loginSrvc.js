@@ -34,7 +34,7 @@ export default class LoginSrvc {
 				.send( { email, password } )
 				.end( ( err, res ) => {
 					if ( err ) {
-						return store.dispatch( setErrors( [err] ) );
+						return store.dispatch( setErrors( [ err ] ) );
 					}
 
 					if ( res.body.authenticated ) {
@@ -51,7 +51,7 @@ export default class LoginSrvc {
 				.send( { email, password } )
 				.end( ( err, res ) => {
 					if ( err ) {
-						return store.dispatch( setErrors( [err] ) );
+						return store.dispatch( setErrors( [ err ] ) );
 					}
 
 					if ( res.body.authenticated ) {
@@ -60,7 +60,7 @@ export default class LoginSrvc {
 					}
 
 					return store.dispatch( setErrors( [ `Unknown Error Logging in, please try again` ] ) );
-				});
+				} );
 	}
 
 	static verifyAuth( callback, ...args ) {

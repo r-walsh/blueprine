@@ -30,7 +30,6 @@ class EditBlueprint extends PureComponent {
 			, editUsers: false
 			, blueprint: this.props.blueprints.get(`selectedBlueprint`).toJS()
 		};
-
 	}
 
 	componentWillMount() {
@@ -65,6 +64,12 @@ class EditBlueprint extends PureComponent {
 		this.setState({ blueprint: { ...this.state.blueprint, [ field ]: event.target.value } });
 	}
 
+	calculateCompletionTotal( items ) {
+		const completion = ( ( BlueprintSrvc.checkCompletion( items ) / items.length ) * 100 ).toFixed( 2 );
+
+		return isNaN( completion ) ? "0" : completion;
+	}
+
 	render() {
 		const styles = this.getStyles();
 		const modalItems = {
@@ -86,6 +91,20 @@ class EditBlueprint extends PureComponent {
 			/>
 		};
 
+
+		// TODO Fix state management of this component so this nonsense isn't necessary
+		let mvpCompletion = 0;
+		let totalCompletion = 0;
+
+		if ( this.state.blueprint.title ) {
+			let all = [ ...this.state.blueprint.features, ...this.state.blueprint.models, ...this.state.blueprint.endpoints, ...this.state.blueprint.views ];
+
+			totalCompletion = this.calculateCompletionTotal( all );
+
+			mvpCompletion = this.calculateCompletionTotal( all.filter( item => item.mvp ) );
+		}
+
+
 		return (
 			<div style={ styles.wrapper }>
 
@@ -100,7 +119,11 @@ class EditBlueprint extends PureComponent {
 				<div style={ styles.planningItemWrapper }>
 					<h2 style={ styles.title }>{ this.state.blueprint.title }</h2>
 					<p style={ styles.description }><b>Description:</b> { this.state.blueprint.description }</p>
-					{ /* TODO Completion tracking component */ }
+
+					<div style={ styles.completionWrapper }>
+						<h4>MVP: { mvpCompletion }%</h4>
+						<h4>Total: { totalCompletion }%</h4>
+					</div>
 				</div>
 
 				<div style={ styles.planningItemWrapper }>
@@ -279,6 +302,12 @@ class EditBlueprint extends PureComponent {
 				, resize: `none`
 				, borderRadius: 2
 				, borderColor: colors.blue
+			}
+			, completionWrapper: {
+				height: `35%`
+				, width: `100%`
+				, overflow: `hidden`
+				, textAlign: `center`
 			}
 		}
 	}

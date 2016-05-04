@@ -22,7 +22,9 @@ class BlueprintRecent extends PureComponent {
 
 	calculateCompletionTotal() {
 		const planningItems = [ ...this.props.features, ...this.props.views, ...this.props.endpoints, ...this.props.models ];
-		return ( ( blueprintSrvc.checkCompletion( planningItems ) / planningItems.length ) * 100 ).toFixed( 2 );
+		const completion = ( ( blueprintSrvc.checkCompletion( planningItems ) / planningItems.length ) * 100 ).toFixed( 2 );
+
+		return isNaN( completion ) ? `0` : completion;
 	}
 
 	render() {

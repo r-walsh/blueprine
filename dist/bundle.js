@@ -38336,7 +38336,7 @@
 				var recent = void 0,
 				    blueprints = void 0;
 				if (this.props.blueprints.get('ownedBlueprints').count() > 0 || this.props.blueprints.get('sharedBlueprints').count() > 0) {
-					recent = _lodash2.default.sortBy([].concat(_toConsumableArray(this.props.blueprints.get('ownedBlueprints').toJS()), _toConsumableArray(this.props.blueprints.get('sharedBlueprints').toJS())), '_id').reverse().splice(0, 2).map(function (blueprint) {
+					recent = _lodash2.default.sortBy([].concat(_toConsumableArray(this.props.blueprints.get('ownedBlueprints').toJS()), _toConsumableArray(this.props.blueprints.get('sharedBlueprints').toJS())), 'updatedAt').reverse().splice(0, 2).map(function (blueprint) {
 						return _react2.default.createElement(_BlueprintRecent2.default, _extends({ key: blueprint._id }, blueprint));
 					});
 	
@@ -84372,7 +84372,7 @@
 				var planningItems = [].concat(_toConsumableArray(this.props.features), _toConsumableArray(this.props.views), _toConsumableArray(this.props.endpoints), _toConsumableArray(this.props.models));
 				var completion = (_blueprintSrvc2.default.checkCompletion(planningItems) / planningItems.length * 100).toFixed(2);
 	
-				return isNaN(completion) ? '0' : completion;
+				return isNaN(completion) ? 0 : completion;
 			}
 		}, {
 			key: 'render',
@@ -84971,7 +84971,7 @@
 			value: function calculateCompletionTotal(items) {
 				var completion = (_blueprintSrvc2.default.checkCompletion(items) / items.length * 100).toFixed(2);
 	
-				return isNaN(completion) ? "0" : completion;
+				return isNaN(completion) ? 0 : completion;
 			}
 		}, {
 			key: 'render',

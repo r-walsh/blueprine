@@ -24,7 +24,7 @@ class BlueprintRecent extends PureComponent {
 		const planningItems = [ ...this.props.features, ...this.props.views, ...this.props.endpoints, ...this.props.models ];
 		const completion = ( ( blueprintSrvc.checkCompletion( planningItems ) / planningItems.length ) * 100 ).toFixed( 2 );
 
-		return isNaN( completion ) ? `0` : completion;
+		return isNaN( completion ) ? 0 : completion;
 	}
 
 	render() {

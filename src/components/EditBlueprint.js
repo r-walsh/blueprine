@@ -67,7 +67,7 @@ class EditBlueprint extends PureComponent {
 	calculateCompletionTotal( items ) {
 		const completion = ( ( BlueprintSrvc.checkCompletion( items ) / items.length ) * 100 ).toFixed( 2 );
 
-		return isNaN( completion ) ? "0" : completion;
+		return isNaN( completion ) ? 0 : completion;
 	}
 
 	render() {

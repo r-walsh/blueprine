@@ -14,7 +14,7 @@ const Blueprint = Schema( {
 	, endpoints: [ { type: Schema.Types.ObjectId, ref: `Endpoint` } ]
 	, models: [ { type: Schema.Types.ObjectId, ref: `Model` } ]
 	, editPermissions: [ { type: Schema.Types.ObjectId } ]
-} );
+}, { timestamps: true } );
 
 Blueprint.plugin( deepPopulate );
 

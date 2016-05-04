@@ -88,7 +88,7 @@ class Blueprints extends PureComponent {
 
 		let recent, blueprints;
 		if ( this.props.blueprints.get( `ownedBlueprints` ).count() > 0 || this.props.blueprints.get( `sharedBlueprints` ).count() > 0 ) {
-			recent = _.sortBy( [ ...this.props.blueprints.get( `ownedBlueprints` ).toJS(), ...this.props.blueprints.get( `sharedBlueprints` ).toJS() ], `_id` )
+			recent = _.sortBy( [ ...this.props.blueprints.get( `ownedBlueprints` ).toJS(), ...this.props.blueprints.get( `sharedBlueprints` ).toJS() ], `updatedAt` )
 						.reverse()
 						.splice( 0, 2 )
 						.map( blueprint => <BlueprintRecent key={ blueprint._id } { ...blueprint } /> );

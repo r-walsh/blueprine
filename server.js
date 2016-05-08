@@ -10,7 +10,7 @@ import passportConfig from './server/features/auth/passport';
 import masterRoutes from './server/masterRoutes';
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const dbName = `blueprint`;
 const mongoUri = `mongodb://localhost:27017/${ dbName }`;
 

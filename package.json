@@ -1,19 +1,27 @@
 {
   "name": "blueprint",
+  "description": "github.com/r-walsh/blueprint",
   "version": "1.0.0",
-  "description": "",
+  "author": "Ryan Walsh",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "lint-front": "eslint \"src/**/*.js\"",
-    "lint-back": "eslint \"server/**/*.js\" server.js",
     "lint-all": "eslint \"src/**/*.js\" \"server/**/*.js\" server.js",
+    "lint-back": "eslint \"server/**/*.js\" server.js",
+    "lint-front": "eslint \"src/**/*.js\"",
+    "start": "nodemon index.js",
     "test": "mocha ./spec/masterSpec.js --compilers js:babel-register",
     "test:watch": "mocha ./spec/masterSpec.js --compilers js:babel-register --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/r-walsh/blueprint#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/r-walsh/blueprint"
+  },
+  "bugs": "https://github.com/r-walsh/blueprint/issues",
+  "keywords": [
+    "blueprint"
+  ],
   "dependencies": {
     "babel-core": "^6.7.2",
     "babel-preset-es2015": "^6.6.0",

@@ -9,7 +9,8 @@
     "lint-all": "eslint \"src/**/*.js\" \"server/**/*.js\" server.js",
     "lint-back": "eslint \"server/**/*.js\" server.js",
     "lint-front": "eslint \"src/**/*.js\"",
-    "prod": "forever -a -l f.log -o o.log -e e.log index.js",
+    "prestart": "webpack",
+    "prod": "webpack ; forever -a -l f.log -o o.log -e e.log index.js",
     "start": "nodemon index.js",
     "test": "mocha ./spec/masterSpec.js --compilers js:babel-register",
     "test:watch": "mocha ./spec/masterSpec.js --compilers js:babel-register --watch"
